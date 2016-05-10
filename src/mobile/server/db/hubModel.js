@@ -1,6 +1,6 @@
-var db = require('./dbConfig');
+var db = require('../config/dbConfig');
 db.plugin('registry');
-var User = require('./userModel');
+var User = require('../db/userModel');
 var Hub = db.Model.extend({
   tableName: 'hubs',
   users: function() {

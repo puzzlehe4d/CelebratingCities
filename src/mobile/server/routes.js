@@ -1,4 +1,5 @@
 var uber = require('./config/uberAuthConfig.js');
+var User = require('./db/userController.js');
 
 module.exports = function (app) {
   app.get('/auth/uber', function(request, response) {
@@ -15,7 +16,12 @@ module.exports = function (app) {
       } else {
         request.session.isLoggedIn = true;
         uber.user.getProfile(function(err, res) {
-        })
+          User.addUser(res, function(err, res) {
+            if(err) {
+              console.log(err)
+            }
+          });
+        });
         // store the user id and associated access token
         // redirect the user back to your actual app
         response.redirect('/#/tab/dash');
