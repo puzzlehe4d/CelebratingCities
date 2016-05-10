@@ -1,11 +1,6 @@
 (function() {
-
 angular.module("starter")
-  .controller('AccountCtrl', CreateHUBCtrl);
-
-  CreateHUBCtrl.$inject = ["$scope", "Geocoder", "hubSearch", "$location"];
-
-  function CreateHUBCtrl($scope, Geocoder, hubSearch, $location) {
+  .controller('AccountCtrl', function ($scope, Geocoder, hubSearch, $location) {
     var vm = $scope;
 
     vm.search = hubSearch.getData();
@@ -43,5 +38,5 @@ angular.module("starter")
           });
       }
     };
- };
+  }); 
 })();

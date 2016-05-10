@@ -5,9 +5,19 @@
 	margin-top: 5px;
 }
 
+.logo {
+	float:left;
+	font-size: 30px;
+	line-height: 15px;
+	margin-top:10px;
+}
+
+.logout {
+	float:right;
+}
 
 .content-main {
-	background: #1d093d url(../img/background.png) bottom center no-repeat;
+	background: #1d093d;
 	background-size: cover;
 }
 

@@ -14,8 +14,8 @@ module.exports = function (app) {
         console.error(err);
       } else {
         console.log(access_token, refresh_token)
+        request.session.isLoggedIn = true;
         uber.user.getProfile(function(err, res) {
-          console.log(res)
         })
         // store the user id and associated access token
         // redirect the user back to your actual app
@@ -24,6 +24,16 @@ module.exports = function (app) {
     });
 
     console.log(request.sessionId)
+  });
+
+  app.get('/api/auth/isLoggedIn', function(req, res) {
+    console.log(req.session)
+    res.status(200).send(req.session.isLoggedIn);
+  })
+  app.get('/logout', function (req, res) {
+    req.session.isLoggedIn = false;
+    console.log('logging out...')
+    res.redirect('/');
   });
   
 

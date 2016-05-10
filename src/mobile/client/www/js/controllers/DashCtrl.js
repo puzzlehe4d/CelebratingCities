@@ -1,6 +1,7 @@
 (function() {
   angular.module("starter")
-    .controller('DashCtrl', function($scope, Geocoder, hubSearch, $location) {
+    .controller('DashCtrl', function($scope, Geocoder, Authorization, hubSearch, $location) {
+      console.log('DashCtrl initialized')
       var vm = this;
 
         vm.search = {
@@ -12,6 +13,16 @@
           travelDate: "",
           recurring: "",
         };
+
+
+   
+        Authorization.isLoggedIn().then(function(response) {
+          if(!response.data) {
+            $location.path("tab/login");
+          } 
+        })
+
+
 
         vm.scheduleRide = false;
 

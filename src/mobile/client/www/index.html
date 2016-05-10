@@ -27,8 +27,8 @@
     <script src="js/controllers/LoginCtrl.js"></script>
     <script src="js/controllers/MapCtrl.js"></script>
     <script src="js/controllers/SearchResultsCtrl.js"></script>
-    <script src="js/controllers/CreateHubCtrl.controller.js"></script>
-    <script src="js/controllers/SearchCtrl.controller.js"></script>
+    <script src="js/controllers/AccountCtrl.js"></script>
+    <script src="js/controllers/DashCtrl.js"></script>
     <script src="js/services.js"></script>
     <script src="js/services/HubSearch.service.js"></script>
   </head>
@@ -38,7 +38,10 @@
     -->
 
     <ion-header-bar align-title="center" class="bar-ridehub">
-      <h1 class="title"><img src="img/ridehub-type.png" alt=""></h1>
+      <h1 class="title">
+        <span class='logo' alt="">RideHUB</span>
+        <a class='button button-stable logout' href='/logout'>LOGOUT</a>
+      </h1> 
     </ion-header-bar>
     <!--
       The views will be rendered in the <ion-nav-view> directive below

@@ -84,4 +84,20 @@ angular.module('starter.services', [])
       return deferred.promise;
     }
   };
-});
+})
+
+.factory('Authorization', function($http) {
+  var isLoggedIn = function() {
+    return $http({
+      method: 'GET',
+      url: '/api/auth/isLoggedIn'
+    }).then(function(result){
+      console.log('in services', result)
+      return result;
+    })
+  }
+
+  return {
+    isLoggedIn: isLoggedIn
+  }
+})
