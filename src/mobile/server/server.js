@@ -6,7 +6,7 @@ var morgan = require('morgan');
 var response = require('response');
 var bodyParser = require('body-parser');
 var session = require('express-session');
-
+var db = require('./config/dbConfig.js');
 
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());

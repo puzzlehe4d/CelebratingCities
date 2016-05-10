@@ -13,7 +13,6 @@ module.exports = function (app) {
       if (err) {
         console.error(err);
       } else {
-        console.log(access_token, refresh_token)
         request.session.isLoggedIn = true;
         uber.user.getProfile(function(err, res) {
         })
@@ -22,12 +21,9 @@ module.exports = function (app) {
         response.redirect('/#/tab/dash');
       }
     });
-
-    console.log(request.sessionId)
   });
 
   app.get('/api/auth/isLoggedIn', function(req, res) {
-    console.log(req.session)
     res.status(200).send(req.session.isLoggedIn);
   })
   app.get('/logout', function (req, res) {

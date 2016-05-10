@@ -92,7 +92,6 @@ angular.module('starter.services', [])
       method: 'GET',
       url: '/api/auth/isLoggedIn'
     }).then(function(result){
-      console.log('in services', result)
       return result;
     })
   }

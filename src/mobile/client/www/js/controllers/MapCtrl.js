@@ -1,6 +1,14 @@
 (function() {
   angular.module("starter")
-    .controller('MapCtrl', function($scope) {
+    .controller('MapCtrl', function($scope, Authorization) {
+
+      // check if user is logged in; if not, navigate to login
+      Authorization.isLoggedIn().then(function(response) {
+        if(!response.data) {
+          $location.path("tab/login");
+        } 
+      });
+
     	document.addEventListener("DOMContentLoaded", function () {
     	          try {
     	              ////window.setTimeout(onDeviceReady, 2000);

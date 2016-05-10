@@ -1,8 +1,15 @@
 (function() {
 angular.module("starter")
-  .controller('AccountCtrl', function ($scope, Geocoder, hubSearch, $location) {
-    var vm = $scope;
+  .controller('AccountCtrl', function ($scope, Geocoder, hubSearch, $location, Authorization) {
+    var vm = this;
 
+    // check if user is logged in; if not, navigate to login
+    Authorization.isLoggedIn().then(function(response) {
+      if(!response.data) {
+        $location.path("tab/login");
+      } 
+    });
+    
     vm.search = hubSearch.getData();
 
     vm.scheduleRide = false;

@@ -16,11 +16,12 @@
 
 
    
+        // check if user is logged in; if not, navigate to login
         Authorization.isLoggedIn().then(function(response) {
           if(!response.data) {
             $location.path("tab/login");
           } 
-        })
+        });
 
 
 
