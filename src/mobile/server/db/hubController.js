@@ -47,6 +47,17 @@ module.exports = {
 		}).catch(function(err){
 			res.status(500).send(err);
 		})
+	},
 
+	createHub: function(req, res) {
+		console.log(req.body)
+		Hub.forge(req.body).save().then(function(hub){
+			console.log('succesfully added hub');
+			res.status(201).send(hub);
+		}).catch(function(error){
+			console.log('error adding hub', error);
+			res.status(500).send(error);
+		})
 	}
+
 }

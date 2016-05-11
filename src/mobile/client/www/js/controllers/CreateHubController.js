@@ -1,6 +1,7 @@
 (function() {
 angular.module("starter")
-  .controller('CreateHubController', function ($scope, Geocoder, hubSearch, $location, Authorization) {
+  .controller('CreateHubController', function ($scope, Geocoder, hubSearch, $location, Authorization, Hubs) {
+    console.log('initializing CreateHubController...')
     var vm = this;
 
     // check if user is logged in; if not, navigate to login
@@ -19,6 +20,19 @@ angular.module("starter")
     $scope.$watch(hubSearch.getData, function(newSearchData){
       vm.search = newSearchData;
     });
+
+    vm.createHub = function() {
+      console.log('in controller')
+      var hub = {
+        address: vm.startAt,
+        endPoint: vm.arriveAt
+      }
+      Hubs.createHub(hub).then(function(response) {
+        console.log(response);
+      }).catch(function(error){
+        console.log('error adding hub', error);
+      })
+    }
 
     vm.geolocate = function (end) {
       if (navigator && navigator.geolocation && navigator.geolocation.getCurrentPosition) {

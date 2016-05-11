@@ -39,7 +39,8 @@ module.exports = function (app) {
     res.redirect('/');
   });
 
-app.get('/api/hubs', hubController.getAllHubs);
+  app.get('/api/hubs', hubController.getAllHubs);
+  app.post('/api/hubs', hubController.createHub)
 
   app.get('/api/resetDBWithData', function (req,res) {
     db.resetEverythingPromise().then(function(){

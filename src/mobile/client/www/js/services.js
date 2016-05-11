@@ -1,7 +1,7 @@
 angular.module('starter.services', [])
 
-.factory('Hubs', function($http) {
-  var getAllHubs = function() {
+.factory('Hubs', function ($http) {
+  var getAllHubs = function () {
     return $http({
       method: 'GET',
       url: '/api/hubs'
@@ -9,11 +9,28 @@ angular.module('starter.services', [])
       return result;
     }).catch(function(err){
       return err;
-    })
+    });
+  }
+
+  var createHub = function (hub) {
+    console.log('in services', hub)
+    return $http({
+      method: 'POST',
+      url: '/api/hubs',
+      data: {
+        address: hub.address,
+        endPoint: hub.endPoint
+      }
+    }).then(function(result){
+      return result;
+    }).catch(function(err){
+      return err;
+    });
   }
 
   return {
-    getAllHubs: getAllHubs
+    getAllHubs: getAllHubs,
+    createHub: createHub
   }
 })
 

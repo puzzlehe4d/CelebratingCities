@@ -105,7 +105,7 @@ angular.module('starter', ['ionic', 'starter.services'])
     }
   })
 
-  .state('tab.creatHub', {
+  .state('tab.createHub', {
     url: '/createHub',
     views: {
       'tab-createHub': {

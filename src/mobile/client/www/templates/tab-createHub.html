@@ -1,11 +1,11 @@
-<ion-view view-title="Account" class="content-main">
+<ion-view view-title="Account" class="content-main" ng-controller='CreateHubController as vm'>
   <ion-content>
-    <form ng-submit="vm.search()">
+    <form ng-submit="vm.createHub()">
 
     	<div class="form-group vertical">
 	      <label for="startFrom">HUB Pickup:</label>
       	<div class="input-group">
-		      <input type="text" name="startAt" size="40" ng-model="search.startAt"/>
+		      <input type="text" name="startAt" size="40" ng-model="vm.startAt"/>
 		      <button type="button" class="geolocate" ng-click="geolocate('start')"><span class="ion-icon ion-android-pin"></span></button>
 		    </div>
 	    </div>
@@ -13,7 +13,7 @@
   		<div class="form-group vertical">
   	      <label for="goingTo">HUB Drop Off:</label>
         	<div class="input-group">
-  		      <input type="text" name="arriveAt" ng-model="search.arriveAt"/>
+  		      <input type="text" name="arriveAt" ng-model="vm.arriveAt"/>
   		      <button type="button" class="geolocate" ng-click="geolocate('arrive')"><span class="ion-icon ion-android-pin"></span></button>
   		    </div>
        </div>
@@ -28,7 +28,7 @@
       <ion-toggle  ng-model="search.recurring">
         Recurring
       </ion-toggle>
-
+      <button class='button button-block button-balanced' type='sumit'> Create Hub </button>
       <img class="img-responsive" src="/img/hub-suggestion.jpg">
 
     </form>
