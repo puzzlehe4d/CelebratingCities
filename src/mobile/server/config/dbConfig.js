@@ -44,8 +44,15 @@ var createUsersTable = function () {
 var createHubsTable = function () {
   return db.knex.schema.createTable('hubs', function (hub) {
     hub.increments('id').primary();
-    hub.string('lat');
-    hub.string('lon');
+    hub.string('name');
+    hub.string('address');
+    hub.decimal('distance');
+    hub.decimal('duration');
+    hub.string('leaveTime');
+    hub.string('arriveTime');
+    hub.string('endPoint');
+    hub.decimal('lat');
+    hub.decimal('lon');
     hub.timestamps();
   }).then(function (table) {
     console.log('Created hub Table');
@@ -63,6 +70,33 @@ db.knex.schema.hasTable('users').then(function(exists) {
     createUsersTable();
   }
 });
+
+// Shortcut function to reset challenges
+var resetUsersTable = function () {
+  return db.knex.schema.dropTable('users').then(createUsersTable);
+};
+
+// Shortcut function to reset matches
+var resetHubsTable = function () {
+  return db.knex.schema.dropTable('hubs').then(createHubsTable);
+};
+
+// Exposed function that resets the entire database
+db.resetEverything = function (req, res) {
+  resetUsersTable().then(function() {
+    resetHubsTable();
+  }).then(function() {
+    res.status(201).end();
+  });
+};
+
+db.resetEverythingPromise = function () {
+  return resetUsersTable().then(function() {
+    return resetHubsTable();
+  }).catch(function(e) {
+    console.log(e);
+  });
+};
 
 
 

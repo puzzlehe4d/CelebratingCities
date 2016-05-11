@@ -1,6 +1,7 @@
 var uber = require('./config/uberAuthConfig.js');
 var User = require('./db/userController.js');
-
+var Hub = require('./db/hubController.js');
+var db = require('./config/dbConfig.js');
 module.exports = function (app) {
   app.get('/auth/uber', function(request, response) {
     var url = uber.getAuthorizeUrl(['history','profile', 'request', 'places']);
@@ -37,6 +38,12 @@ module.exports = function (app) {
     console.log('logging out...')
     res.redirect('/');
   });
+
+  app.get('/api/resetDBWithData', function (req,res) {
+    db.resetEverythingPromise().then(function(){
+      return Hub.seedWithData();
+    })
+  })
   
 
 };
