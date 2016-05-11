@@ -29,6 +29,8 @@ angular.module("starter")
       }
       Hubs.createHub(hub).then(function(response) {
         console.log(response);
+        vm.startAt = '';
+        vm.arriveAt = '';
       }).catch(function(error){
         console.log('error adding hub', error);
       })

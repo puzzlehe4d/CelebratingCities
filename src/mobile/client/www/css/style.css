@@ -4,12 +4,26 @@
 .bar .title {
 	margin-top: 5px;
 }
-
-.logo {
+.scroll-content {
+  display: table !important;
+  width: 100% !important;
+  height: 100% !important;
+}
+.scroll {
+  display: table-cell;
+  vertical-align: middle;
+  text-align: center;
+}
+.logotitle {
 	float:left;
 	font-size: 30px;
 	line-height: 15px;
 	margin-top:10px;
+}
+
+.logo {
+	height: 300px;
+	width: 300px;
 }
 .header {
 	background-color: #e6eeeb;
@@ -20,6 +34,7 @@
 .center {
 	margin-right: auto;
 	margin-left:auto;
+	display: block;
 }
 .content-main {
 	background: #FFFF;
