@@ -1,8 +1,14 @@
-<ion-view view-title="Login" ng-controller="LoginCtrl as vm" class="content-main">
+<ion-view view-title="Login" ng-controller="LoginController as vm" class="content-main">
 
   <ion-content>
-  <div class='row row-center'>
-    <a class='button button-light col' href="/auth/uber">Sign In with Uber</a>
-  </div>
+    <div class='row'>
+      <div class='center'>
+        <h1>RideHUB</h1>
+      </div>
+    </div>
+    <form action="/auth/uber">
+        <input type="submit" class='button button-block button-balanced' value="Sign in with Uber">
+    </form>
+
   </ion-content>
 </ion-view>

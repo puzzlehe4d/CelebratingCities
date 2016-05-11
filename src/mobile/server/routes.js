@@ -24,7 +24,7 @@ module.exports = function (app) {
         });
         // store the user id and associated access token
         // redirect the user back to your actual app
-        response.redirect('/#/tab/dash');
+        response.redirect('/#/tab/start');
       }
     });
   });

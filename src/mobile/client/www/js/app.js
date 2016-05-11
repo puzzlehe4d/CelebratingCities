@@ -54,32 +54,28 @@ angular.module('starter', ['ionic', 'starter.services'])
 
   // Each tab has its own nav history stack:
 
-  .state('tab.dash', {
-    url: '/dash',
+  .state('tab.start', {
+    url: '/start',
     views: {
-      'tab-dash': {
-        templateUrl: 'templates/tab-dash.html',
-        controller: 'DashCtrl'
+      'tab-start': {
+        templateUrl: 'templates/tab-start.html',
+        controller: 'StartController'
       }
     }
   })
-  .state('tab.chats', {
-    url: '/dash/results',
+  .state('tab.results', {
+    url: '/start/results',
     views: {
-      'tab-dash': {
-        templateUrl: 'templates/tab-chats.html',
-        controller: 'ChatsCtrl'
+      'tab-start': {
+        templateUrl: 'templates/tab-searchResults.html',
+        controller: 'SearchResultsController'
       }
     }
   })
-  .state('tab.auth', {
+  .state('login', {
     url: '/login',
-    views: {
-      'tab-dash': {
-        templateUrl: 'templates/tab-login.html',
-        controller: 'LoginCtrl'
-      }
-    }
+    templateUrl: 'templates/tab-login.html',
+    controller: 'LoginController'
   })
   // .state('tab.chats', {
   //     url: '/chats',
@@ -90,36 +86,46 @@ angular.module('starter', ['ionic', 'starter.services'])
   //       }
   //     }
   //   })
-    .state('tab.chat-detail', {
-      url: '/dash/results/:chatId',
+    .state('tab.hub-detail', {
+      url: '/start/results/:hubId',
       views: {
-        'tab-dash': {
-          templateUrl: 'templates/chat-detail.html',
-          controller: 'ChatDetailCtrl'
+        'tab-start': {
+          templateUrl: 'templates/hub-detail.html',
+          controller: 'HubDetailController'
         }
       }
     })
-  .state('tab.account', {
-    url: '/account',
+  .state('tab.profile', {
+    url: '/profile',
     views: {
-      'tab-account': {
-        templateUrl: 'templates/tab-account.html',
-        controller: 'AccountCtrl'
+      'tab-profile': {
+        templateUrl: 'templates/tab-profile.html',
+        controller: 'ProfileController'
       }
     }
   })
-  .state('tab.map', {
-    url: '/map',
+
+  .state('tab.creatHub', {
+    url: '/createHub',
     views: {
-      'tab-map': {
-        templateUrl: 'templates/tab-map.html',
-        controller: 'MapCtrl'
+      'tab-createHub': {
+        templateUrl: 'templates/tab-createHub.html',
+        controller: 'CreateHubController'
       }
     }
-  });
+  })
+  // .state('tab.map', {
+  //   url: '/map',
+  //   views: {
+  //     'tab-map': {
+  //       templateUrl: 'templates/tab-map.html',
+  //       controller: 'MapCtrl'
+  //     }
+  //   }
+  // });
 
   // if none of the above states are matched, use this as the fallback
-  $urlRouterProvider.otherwise('/tab/login');
+  $urlRouterProvider.otherwise('/tab/start');
 
   (function () {
       if (typeof (Connection) !== "undefined") {

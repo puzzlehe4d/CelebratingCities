@@ -1,40 +1,31 @@
 (function() {
   angular.module("starter")
-    .controller('DashCtrl', function($scope, Geocoder, Authorization, hubSearch, $location) {
+    .controller('StartController', function($scope, Geocoder, Authorization, hubSearch, $location) {
       console.log('DashCtrl initialized')
       var vm = this;
 
-        vm.search = {
-          startAt: "",
-          arriveAt: "",
-          latestTime: "",
-          earliestTime: "",
-          timingType: "",
-          travelDate: "",
-          recurring: "",
-        };
-
 
    
-        // check if user is logged in; if not, navigate to login
-        Authorization.isLoggedIn().then(function(response) {
-          if(!response.data) {
-            $location.path("tab/login");
-          } 
+      // check if user is logged in; if not, navigate to login
+      Authorization.isLoggedIn().then(function(response) {
+        if(!response.data) {
+          $location.path("/login");
+        } 
+      });
+
+
+
+      vm.scheduleRide = false;
+
+      vm.processing = false;
+
+      vm.findHubs = function() {
+        console.log(vm.start)
+        hubSearch.setData(angular.copy(vm.search))
+        .then(function() {
+          $location.path("tab/start/results");
         });
-
-
-
-        vm.scheduleRide = false;
-
-        vm.processing = false;
-
-        vm.findHubs = function() {
-          hubSearch.setData(angular.copy(vm.search))
-          .then(function() {
-            $location.path("tab/dash/results");
-          });
-        };
+      };
 
       vm.geolocate = function (end) {
         if (navigator && navigator.geolocation && navigator.geolocation.getCurrentPosition) {

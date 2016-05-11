@@ -11,13 +11,18 @@
 	line-height: 15px;
 	margin-top:10px;
 }
-
+.header {
+	background-color: #e6eeeb;
+}
 .logout {
 	float:right;
 }
-
+.center {
+	margin-right: auto;
+	margin-left:auto;
+}
 .content-main {
-	background: #1d093d;
+	background: #FFFF;
 	background-size: cover;
 }
 
@@ -50,7 +55,7 @@
 
 /*Forms*/
 form {
-	color: white;
+/*	color: white;*/
 }
 
 .form-group.vertical {

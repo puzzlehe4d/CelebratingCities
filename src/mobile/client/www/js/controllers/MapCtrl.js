@@ -1,11 +1,11 @@
 (function() {
   angular.module("starter")
-    .controller('MapCtrl', function($scope, Authorization) {
+    .controller('MapCtrl', function($scope, Authorization, $location) {
 
       // check if user is logged in; if not, navigate to login
       Authorization.isLoggedIn().then(function(response) {
         if(!response.data) {
-          $location.path("tab/login");
+          $location.path("/login");
         } 
       });
 

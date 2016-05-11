@@ -35,7 +35,6 @@ var createUsersTable = function () {
     user.string('rider_id');
     user.string('access_token');
     user.string('refresh_token');
-    user.specificType('hubs', 'json[]').unsigned().references('hubs.id');
     user.timestamps();
   }).then(function (table) {
     console.log('Created user Table');
@@ -47,7 +46,6 @@ var createHubsTable = function () {
     hub.increments('id').primary();
     hub.string('lat');
     hub.string('lon');
-    hub.specificType('users', 'json[]').unsigned().references('users.id')
     hub.timestamps();
   }).then(function (table) {
     console.log('Created hub Table');

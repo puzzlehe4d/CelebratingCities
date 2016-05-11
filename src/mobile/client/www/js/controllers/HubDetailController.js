@@ -1,13 +1,13 @@
 (function() {
   angular.module("starter")
-    .controller('ChatDetailCtrl', function($scope, $stateParams, Chats, Authorization) {
+    .controller('HubDetailController', function($scope, $stateParams, Hubs, Authorization, $location) {
     	// check if user is logged in; if not, navigate to login
     	Authorization.isLoggedIn().then(function(response) {
     	  if(!response.data) {
-    	    $location.path("tab/login");
+    	    $location.path("/login");
     	  } 
     	});
     	
-      $scope.chat = Chats.get($stateParams.chatId);
+      $scope.hub = Hubs.get($stateParams.hubId);
     });
 })();

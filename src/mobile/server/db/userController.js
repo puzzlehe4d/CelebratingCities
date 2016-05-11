@@ -13,7 +13,6 @@ module.exports = {
 			rider_id: req.rider_id,
 			access_token: req.access_token,
 			refresh_token: req.refresh_token
-			
 		}
 	  User.forge(userObject).save().then(function(user) {
 	    console.log('added user', user.attributes.first_name, user.attributes.last_name, 'to db');
