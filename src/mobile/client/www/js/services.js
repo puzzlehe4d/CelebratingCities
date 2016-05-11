@@ -1,54 +1,20 @@
 angular.module('starter.services', [])
 
-.factory('Hubs', function() {
-  // Might use a resource here that returns a JSON array
-
-  // Some fake testing data
-  var hubs = [{
-    id: 0,
-    name: 'Giant Food on 33rd',
-    address: '601 E 33rd Street',
-    distance: 0.3,
-    duration: 6,
-    leaveTime: '7:06am',
-    arriveTime: '7:12am',
-    endPoint: 'West Balitmore (MARC)'
-  },{
-    id: 1,
-    name: '7-11 in Lucille Park',
-    address: '5129 Reisterstown Rd',
-    distance: 0.6,
-    duration: 9,
-    leaveTime: '7:20am',
-    arriveTime: '7:29am',
-    endPoint: 'West Balitmore (MARC)'
-  },{
-    id: 2,
-    name: 'ALDI East Arlington',
-    address: '3601 W Cold Spring Ln',
-    distance: 1.1,
-    duration: 12,
-    leaveTime: '7:01am',
-    arriveTime: '7:13am',
-    endPoint: 'West Balitmore (MARC)'
-  }, ];
+.factory('Hubs', function($http) {
+  var getAllHubs = function() {
+    return $http({
+      method: 'GET',
+      url: '/api/hubs'
+    }).then(function(result){
+      return result;
+    }).catch(function(err){
+      return err;
+    })
+  }
 
   return {
-    all: function() {
-      return hubs;
-    },
-    remove: function(hub) {
-      hubs.splice(hubs.indexOf(hub), 1);
-    },
-    get: function(hubId) {
-      for (var i = 0; i < hubs.length; i++) {
-        if (hubs[i].id === parseInt(hubId)) {
-          return hubs[i];
-        }
-      }
-      return null;
-    }
-  };
+    getAllHubs: getAllHubs
+  }
 })
 
 .factory('Geocoder', function($http, $q) {
@@ -93,6 +59,8 @@ angular.module('starter.services', [])
       url: '/api/auth/isLoggedIn'
     }).then(function(result){
       return result;
+    }).catch(function(err){
+      return err;
     })
   }
 

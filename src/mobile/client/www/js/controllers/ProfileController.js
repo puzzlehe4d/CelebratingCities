@@ -9,6 +9,6 @@ angular.module("starter")
         $location.path("/login");
       } 
     });
-    
+  })
     
 })();

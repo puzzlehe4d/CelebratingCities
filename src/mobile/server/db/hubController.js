@@ -39,5 +39,14 @@ module.exports = {
 				console.log('error adding hub', error);
 			})
 		})
+	},
+
+	getAllHubs: function(req, res) {
+		Hub.fetchAll().then(function(hubs){
+			res.status(200).send(hubs);
+		}).catch(function(err){
+			res.status(500).send(err);
+		})
+
 	}
 }

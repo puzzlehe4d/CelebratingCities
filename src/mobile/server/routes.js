@@ -1,6 +1,6 @@
 var uber = require('./config/uberAuthConfig.js');
-var User = require('./db/userController.js');
-var Hub = require('./db/hubController.js');
+var userController = require('./db/userController.js');
+var hubController = require('./db/hubController.js');
 var db = require('./config/dbConfig.js');
 module.exports = function (app) {
   app.get('/auth/uber', function(request, response) {
@@ -17,7 +17,7 @@ module.exports = function (app) {
       } else {
         request.session.isLoggedIn = true;
         uber.user.getProfile(function(err, res) {
-          User.addUser(res, function(err, res) {
+          userController.addUser(res, function(err, res) {
             if(err) {
               console.log(err)
             }
@@ -39,9 +39,17 @@ module.exports = function (app) {
     res.redirect('/');
   });
 
+app.get('/api/hubs', hubController.getAllHubs);
+
   app.get('/api/resetDBWithData', function (req,res) {
     db.resetEverythingPromise().then(function(){
-      return Hub.seedWithData();
+      return hubController.seedWithData();
+    }).then(function() {
+      res.status(201).send('successfully reset db with data');
+      return;
+    }).catch(function(err){
+      res.status(500).send(err);
+      return;
     })
   })
   
