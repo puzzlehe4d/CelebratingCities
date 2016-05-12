@@ -1,6 +1,6 @@
 (function() {
 angular.module("RideHUB")
-  .controller('CreateHubController', function ($scope, Geocoder, hubSearch, $location, Authorization, Hubs) {
+  .controller('CreateHubController', function ($scope, hubSearch, $location, Authorization, Hubs) {
     console.log('initializing CreateHubController...')
     var vm = this;
 

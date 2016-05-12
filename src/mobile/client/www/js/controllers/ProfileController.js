@@ -1,6 +1,6 @@
 (function() {
 angular.module("RideHUB")
-  .controller('ProfileController', function ($scope, Geocoder, hubSearch, $location, Authorization) {
+  .controller('ProfileController', function ($scope, hubSearch, $location, Authorization) {
     var vm = this;
 
     // check if user is logged in; if not, navigate to login

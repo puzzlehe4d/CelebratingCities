@@ -5,9 +5,10 @@
 // the 2nd parameter is an array of 'requires'
 // 'starter.services' is found in services.js
 // 'starter.controllers' is found in controllers.js
-angular.module('RideHUB', ['ionic', 'RideHUB.services'])
+angular.module('RideHUB', ['ionic', 'RideHUB.services', 'ngMap'])
 
 .run(function($ionicPlatform, $ionicNavBarDelegate) {
+
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
@@ -37,8 +38,8 @@ angular.module('RideHUB', ['ionic', 'RideHUB.services'])
   });
 })
 
-.config(function($stateProvider, $urlRouterProvider) {
-
+.config(function($stateProvider, $urlRouterProvider, $ionicConfigProvider) {
+  $ionicConfigProvider.tabs.position('bottom');
   // Ionic uses AngularUI Router which uses the concept of states
   // Learn more here: https://github.com/angular-ui/ui-router
   // Set up the various states which the app can be in.
@@ -59,7 +60,8 @@ angular.module('RideHUB', ['ionic', 'RideHUB.services'])
     views: {
       'tab-start': {
         templateUrl: 'templates/tab-start.html',
-        controller: 'StartController'
+        controller: 'StartController',
+        controllerAs: 'vm'
       }
     }
   })
@@ -68,14 +70,16 @@ angular.module('RideHUB', ['ionic', 'RideHUB.services'])
     views: {
       'tab-start': {
         templateUrl: 'templates/tab-searchResults.html',
-        controller: 'SearchResultsController'
+        controller: 'SearchResultsController',
+        controllerAs: 'vm'
       }
     }
   })
   .state('login', {
     url: '/login',
     templateUrl: 'templates/tab-login.html',
-    controller: 'LoginController'
+    controller: 'LoginController',
+    controllerAs: 'vm'
   })
   // .state('tab.chats', {
   //     url: '/chats',
@@ -91,7 +95,8 @@ angular.module('RideHUB', ['ionic', 'RideHUB.services'])
       views: {
         'tab-start': {
           templateUrl: 'templates/hub-detail.html',
-          controller: 'HubDetailController'
+          controller: 'HubDetailController',
+          controllerAs: 'vm'
         }
       }
     })
@@ -100,7 +105,8 @@ angular.module('RideHUB', ['ionic', 'RideHUB.services'])
     views: {
       'tab-profile': {
         templateUrl: 'templates/tab-profile.html',
-        controller: 'ProfileController'
+        controller: 'ProfileController',
+        controllerAs: 'vm'
       }
     }
   })
@@ -110,7 +116,8 @@ angular.module('RideHUB', ['ionic', 'RideHUB.services'])
     views: {
       'tab-createHub': {
         templateUrl: 'templates/tab-createHub.html',
-        controller: 'CreateHubController'
+        controller: 'CreateHubController',
+        controllerAs: 'vm'
       }
     }
   })
@@ -127,25 +134,25 @@ angular.module('RideHUB', ['ionic', 'RideHUB.services'])
   // if none of the above states are matched, use this as the fallback
   $urlRouterProvider.otherwise('/tab/start');
 
-  (function () {
-      if (typeof (Connection) !== "undefined") {
-          if (navigator.connection.type === Connection.NONE || loadPending || isGoogleMapsLoaded()) {
-              return;
-          }
-      }
-      loadScript("https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=true&libraries=visualization&callback=onMapsApiLoaded");
-  })();
+  // (function () {
+  //     if (typeof (Connection) !== "undefined") {
+  //         if (navigator.connection.type === Connection.NONE || loadPending || isGoogleMapsLoaded()) {
+  //             return;
+  //         }
+  //     }
+  //     loadScript("https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=true&libraries=visualization&callback=onMapsApiLoaded");
+  // })();
 
 
 
-        function loadScript(src) {
-            var script = document.createElement('script');
-            script.type = 'text/javascript';
-            script.src = src;
-            document.body.appendChild(script);
-        }
+  //       function loadScript(src) {
+  //           var script = document.createElement('script');
+  //           script.type = 'text/javascript';
+  //           script.src = src;
+  //           document.body.appendChild(script);
+  //       }
 
-        window.onMapsApiLoaded = function () {
-        };
+  //       window.onMapsApiLoaded = function () {
+  //       };
 
 });

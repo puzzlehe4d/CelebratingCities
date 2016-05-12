@@ -1,16 +1,30 @@
 (function() {
   angular.module("RideHUB")
-    .controller('StartController', function($scope, Geocoder, Authorization, hubSearch, $location) {
+    .controller('StartController', function($scope, $timeout, Authorization, hubSearch, $location, NgMap) {
       console.log('DashCtrl initialized')
       var vm = this;
-      
-       vm.map = L.map('map').setView([37.8, -96], 4);
+        // NgMap.getMap().then(function(map) {
+        //     vm.map = map;
+        //   });
 
+        // vm.stores = {
+        //   foo: { position:[41, -87], items: [1,2,3,4]},
+        //   bar:{ position:[41, -83], items: [5,6,7,8]}
+        // };
 
-      L.tileLayer('http://otile{s}.mqcdn.com/tiles/1.0.0/map/{z}/{x}/{y}.jpeg', {
-                  attribution: 'Tiles Courtesy of <a href="http://www.mapquest.com/">MapQuest</a> &mdash; Map data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-                  subdomains: '1234'
-              }).addTo(vm.map);
+        // vm.googleMapsUrl = 'https://maps.google.com/maps/api/js';
+        // vm.pauseLoading=true;
+        // console.log("Starting a timer to wait for 2 seconds before the map will start loading");
+
+        // $timeout(function() {
+        //   console.debug("Showing the map. The google maps api should load now.");
+        //   vm.pauseLoading=false;
+        // }, 2000);
+
+        // vm.showStore = function(evt, id) {
+        //   vm.store = vm.stores[id];
+        //   vm.map.showInfoWindow('foo', this);
+        // };
    
       // check if user is logged in; if not, navigate to login
       Authorization.isLoggedIn().then(function(response) {
@@ -26,11 +40,9 @@
       vm.processing = false;
 
       vm.findHubs = function() {
-        console.log(vm.start)
-        hubSearch.setData(angular.copy(vm.search))
-        .then(function() {
+          console.log('in controller')
           $location.path("tab/start/results");
-        });
+  
       };
 
       vm.geolocate = function (end) {
