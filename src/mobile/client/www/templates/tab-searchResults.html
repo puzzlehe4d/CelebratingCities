@@ -1,5 +1,6 @@
-<ion-view view-title="Results" class="content-main" ng-controller="SearchResultsController as vm">
+<ion-view view-title="Results" class="content-main">
   <ion-content>
+    <h4>Hubs near {{vm.address}}</h4>
     <ion-list class="hub-list">
       <ion-item class="item-remove-animate item-avatar item-icon-right" ng-repeat="hub in vm.hubs" type="item-text-wrap" href="#/tab/start/results/{{hub.id}}">
         <div class="badge">

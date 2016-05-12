@@ -1,8 +1,9 @@
 (function() {
   angular.module("RideHUB")
-    .controller('SearchResultsController', function($scope, Hubs, $location, Authorization) {
+    .controller('SearchResultsController', function($scope, Hubs, $stateParams, Geocoder, $location, Authorization) {
       var vm = this;
-      vm.hubs;
+      vm.address = $stateParams.address.split('_').join(' ');
+      vm.hubs = [];
       // checks if user is logged in; if not, navigate to login
       Authorization.isLoggedIn().then(function(response) {
         console.log(response.data)
@@ -11,11 +12,24 @@
         } 
       });
 
-    	Hubs.getAllHubs().then(function(response){
-        vm.hubs = response.data;
-      }).catch(function(err) {
-        console.log('error getting hubs', err);
+      Geocoder.getGeoCode($stateParams.address).then(function(response) {
+        var position = {
+          coords: {
+            latitude: response.data.results[0].geometry.location.lat,
+            longitude: response.data.results[0].geometry.location.lng
+          }
+        }
+        Hubs.getHubsByGeoCode(position).then(function(response){
+          response.data.forEach(function(element) {
+            vm.hubs.push(element);
+          });  
+        })
       });
+    	// Hubs.getHubsBy().then(function(response){
+     //    vm.hubs = response.data;
+     //  }).catch(function(err) {
+     //    console.log('error getting hubs', err);
+     //  });
 
     	vm.remove = function(hub) {
     	  Hubs.remove(hub);

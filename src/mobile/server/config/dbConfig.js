@@ -51,8 +51,8 @@ var createHubsTable = function () {
     hub.string('leaveTime');
     hub.string('arriveTime');
     hub.string('endPoint');
-    hub.decimal('lat');
-    hub.decimal('lon');
+    hub.decimal('lat', undefined, 5);
+    hub.decimal('lon', undefined, 5);
     hub.timestamps();
   }).then(function (table) {
     console.log('Created hub Table');
