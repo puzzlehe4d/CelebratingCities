@@ -11,7 +11,9 @@ module.exports = {
 	    duration: 6,
 	    leaveTime: '7:06am',
 	    arriveTime: '7:12am',
-	    endPoint: 'West Balitmore (MARC)'
+	    endPoint: 'West Balitmore (MARC)',
+	    lat: 39.32,
+	    lon: -76.60
 		},
 		{
 	    name: '7-11 in Lucille Park',
@@ -20,7 +22,9 @@ module.exports = {
 	    duration: 9,
 	    leaveTime: '7:20am',
 	    arriveTime: '7:29am',
-	    endPoint: 'West Balitmore (MARC)'
+	    endPoint: 'West Balitmore (MARC)',
+	    lat: 39.34,
+	    lon: -76.68
 		},
 		{
 			name: 'ALDI East Arlington',
@@ -29,8 +33,22 @@ module.exports = {
 			duration: 12,
 			leaveTime: '7:01am',
 			arriveTime: '7:13am',
-			endPoint: 'West Balitmore (MARC)'
-		}]
+			endPoint: 'West Balitmore (MARC)',
+			lat: 39.33,
+			lon: -76.67
+		},
+		{
+			name: 'ALDI East Arlington',
+			address: '3601 W Cold Spring Ln',
+			distance: 1.1,
+			duration: 12,
+			leaveTime: '7:01am',
+			arriveTime: '7:13am',
+			endPoint: 'West Balitmore (MARC)',
+			lat: '38.9461282',
+			lon: '-77.3398399'
+		}
+		]
 
 		hubs.forEach(function(element){
 			Hub.forge(element).save().then(function(hub){
@@ -50,6 +68,7 @@ module.exports = {
 	},
 
 	createHub: function(req, res) {
+		console.log(req.body)
 		Hub.forge(req.body).save().then(function(hub){
 			console.log('succesfully added hub');
 			res.status(201).send(hub);
@@ -66,6 +85,15 @@ module.exports = {
 		}).catch(function(error) {
 			res.status(500).send(error);
 		});
+	},
+
+	getHubsByGeoCode: function (req, res) {
+		return Hub.query().where('lat', '<=', Number(req.params.lat) + .5).andWhere('lat', '>=', Number(req.params.lat) - .5).andWhere('lon', '<=', Number(req.params.lon) + .5).andWhere('lon', '>=', Number(req.params.lon) - .5)
+		.then(function(collection) {
+			res.status(200).send(collection);
+		}).catch(function(error) {
+			res.status(500).send(error);
+		})
 	}
 
 }

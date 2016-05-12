@@ -1,17 +1,15 @@
 
 <ion-view view-title="Dashboard" class="content-main">
 
-  <ion-content >
+  <ion-content>
 
     <div id="map" map-lazy-load="https://maps.google.com/maps/api/js" map-lazy-load-params="{{vm.googleMapsUrl}}" >
-      <ng-map default-style="true" center="41,-87" zoom="3" styles="{{vm.mapStyle}}">
-        <directions
-          draggable="true"
-          panel="directions-panel"
-          travel-mode="DRIVING"
-          origin="1135 Karamea-Kohaihai Rd, Kahurangi National Park, Tasman"
-          destination="Pier St, Jackson Bay, West Coast, New Zeland">
-        </directions>
+      <ng-map default-style="true" center="{{vm.location}}" zoom="15" styles="{{vm.mapStyle}}" >
+        <marker no-watcher="true"
+      ng-repeat="p in vm.positions"
+      draggable="true"
+      position="{{p.lat}}, {{p.lng}}"
+      title="pos: {{p}}"></marker>
       </ng-map>
        
     </div>

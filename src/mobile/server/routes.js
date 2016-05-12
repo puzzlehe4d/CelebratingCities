@@ -42,6 +42,7 @@ module.exports = function (app) {
   app.get('/api/hubs', hubController.getAllHubs);
   app.post('/api/hubs', hubController.createHub);
   app.get('/api/hubs/:hubId', hubController.getHubById);
+  app.get('/api/hubs/:lat/:lon', hubController.getHubsByGeoCode);
 
   app.get('/api/resetDBWithData', function (req,res) {
     db.resetEverythingPromise().then(function(){

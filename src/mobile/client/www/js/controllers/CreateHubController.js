@@ -1,6 +1,6 @@
 (function() {
 angular.module("RideHUB")
-  .controller('CreateHubController', function ($scope, hubSearch, $location, Authorization, Hubs) {
+  .controller('CreateHubController', function ($scope, hubSearch, Geocoder, $location, Authorization, Hubs) {
     console.log('initializing CreateHubController...')
     var vm = this;
 
@@ -23,16 +23,22 @@ angular.module("RideHUB")
 
     vm.createHub = function() {
       console.log('in controller')
-      var hub = {
-        address: vm.startAt,
-        endPoint: vm.arriveAt
-      }
-      Hubs.createHub(hub).then(function(response) {
-        console.log(response);
-        vm.startAt = '';
-        vm.arriveAt = '';
-      }).catch(function(error){
-        console.log('error adding hub', error);
+      Geocoder.getGeoCode(vm.startAt).then(function(response) {
+        var hub = {
+          address: vm.startAt,
+          endPoint: vm.arriveAt,
+          lat: response.data.results[0].geometry.location.lat,
+          lon: response.data.results[0].geometry.location.lng
+        }
+        Hubs.createHub(hub).then(function(response) {
+          console.log(response);
+          vm.startAt = '';
+          vm.arriveAt = '';
+        }).catch(function(error){
+          console.log('error adding hub', error);
+        })
+      }).catch(function(error) {
+        console.log(error)
       })
     }
 
