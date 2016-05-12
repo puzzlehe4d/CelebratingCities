@@ -1,7 +1,8 @@
 (function() {
-  angular.module("starter")
+  angular.module("RideHUB")
     .controller('SearchResultsController', function($scope, Hubs, $location, Authorization) {
-      $scope.hubs;
+      var vm = this;
+      vm.hubs;
       // checks if user is logged in; if not, navigate to login
       Authorization.isLoggedIn().then(function(response) {
         console.log(response.data)
@@ -11,16 +12,16 @@
       });
 
     	Hubs.getAllHubs().then(function(response){
-        $scope.hubs = response.data;
+        vm.hubs = response.data;
       }).catch(function(err) {
         console.log('error getting hubs', err);
       });
 
-    	$scope.remove = function(hub) {
+    	vm.remove = function(hub) {
     	  Hubs.remove(hub);
     	};
 
-    	$scope.createHub = function(){
+    	vm.createHub = function(){
     	  $location.path("tab/createHub");
     	}
 

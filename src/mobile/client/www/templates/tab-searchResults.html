@@ -1,8 +1,7 @@
-<ion-view view-title="Results" class="content-main">
+<ion-view view-title="Results" class="content-main" ng-controller="SearchResultsController as vm">
   <ion-content>
-  <h3 class="page-title">Available Hubs</h3>
     <ion-list class="hub-list">
-      <ion-item class="item-remove-animate item-avatar item-icon-right" ng-repeat="hub in hubs" type="item-text-wrap" href="#/tab/dash/results/{{hub.id}}">
+      <ion-item class="item-remove-animate item-avatar item-icon-right" ng-repeat="hub in vm.hubs" type="item-text-wrap" href="#/tab/start/results/{{hub.id}}">
         <div class="badge">
           <span>{{hub.duration}} <p>mins</p></span>
         </div>
@@ -12,9 +11,9 @@
         <p>Ride: <strong>{{hub.leaveTime}}</strong> - <strong>{{hub.arriveTime}}</strong></p>
         <i class="icon ion-chevron-right icon-accessory"></i>
 
-        <ion-option-button class="button-assertive" ng-click="remove(hub)">
+       <!--  <ion-option-button class="button-assertive" ng-click="remove(hub)">
           Delete
-        </ion-option-button>
+        </ion-option-button> -->
       </ion-item>
     </ion-list>
     <div class="content-lower">

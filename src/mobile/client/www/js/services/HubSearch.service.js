@@ -1,7 +1,7 @@
 (function() {
   "use strict";
 
-  angular.module("starter")
+  angular.module("RideHUB")
     .service("hubSearch", HubSearchService);
 
     HubSearchService.$inject = ["$http", "$q"];

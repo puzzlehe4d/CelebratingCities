@@ -1,9 +1,16 @@
 /* Empty. Add your own CSS if you like */
 
 /*Logo*/
-.bar .title {
-	margin-top: 5px;
+.titleLogo {
+	color:#A6A6A6;
+	font-size: 20px;
 }
+#map {
+		padding: 30px;
+    height: 400px;
+   
+}
+
 .scroll-content {
   display: table !important;
   width: 100% !important;
@@ -23,11 +30,9 @@
 
 .logo {
 	height: 300px;
-	width: 300px;
+	width: 319px;
 }
-.header {
-	background-color: #e6eeeb;
-}
+
 .logout {
 	float:right;
 }
@@ -54,18 +59,17 @@
 
 .page-title {
 	padding: 10px;
-    background: #680148;
+    background: #28C948;
     margin-bottom: 0;
     font-size: 18px;
     letter-spacing: 0.038em;
 }
 
 .item-toggle {
-	margin: 25px 0;
-	background: #680148;
-	color: white;
+	border: 0px;
+	color:#28C948;
+	text-align: left;
 	border-radius: 3px;
-	border-color: #4f0137;
 }
 
 /*Forms*/
@@ -89,7 +93,7 @@ form {
 }
 
 input[type=text] {
-	border: 1px solid #999;
+	border: 2px solid #BFBFBF;
 	font-size: 18px;
 	border-radius: 3px;
 	width: 100%;
@@ -107,7 +111,7 @@ button.geolocate.activated {
 	right: 0;
     width: 50px;
     height: 40px;
-    background: #7db4b5;
+    background: #28C948;
     color: white;
     border: 0;
     border-top-right-radius: 3px;
@@ -160,12 +164,12 @@ button span.ion-icon {
 	left: 10px;
 	width: 50px;
 	height: 50px;
-	background-color: #1d093d;
+	background-color: #28C948;
 	border-radius: 50%;
 	text-align: center;
 	color: white;
-	font-size: 16px;
-	padding-top: 10px;
+	font-size: 12px;
+	padding: 10px;
 }
 
 .hub-list .badge span {

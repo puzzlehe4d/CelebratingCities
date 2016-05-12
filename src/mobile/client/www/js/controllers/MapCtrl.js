@@ -1,5 +1,5 @@
 (function() {
-  angular.module("starter")
+  angular.module("RideHUB")
     .controller('MapCtrl', function($scope, Authorization, $location) {
 
       // check if user is logged in; if not, navigate to login

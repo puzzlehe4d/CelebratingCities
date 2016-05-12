@@ -50,7 +50,6 @@ module.exports = {
 	},
 
 	createHub: function(req, res) {
-		console.log(req.body)
 		Hub.forge(req.body).save().then(function(hub){
 			console.log('succesfully added hub');
 			res.status(201).send(hub);
@@ -58,6 +57,15 @@ module.exports = {
 			console.log('error adding hub', error);
 			res.status(500).send(error);
 		})
+	},
+
+	getHubById: function(req, res) {
+		Hub.forge({id: req.params.hubId}).fetch().then(function (hub) {
+			console.log('sucessfully found hub');
+			res.status(200).send(hub);
+		}).catch(function(error) {
+			res.status(500).send(error);
+		});
 	}
 
 }

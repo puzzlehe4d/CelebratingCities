@@ -1,4 +1,4 @@
-angular.module('starter.services', [])
+angular.module('RideHUB.services', [])
 
 .factory('Hubs', function ($http) {
   var getAllHubs = function () {
@@ -13,7 +13,6 @@ angular.module('starter.services', [])
   }
 
   var createHub = function (hub) {
-    console.log('in services', hub)
     return $http({
       method: 'POST',
       url: '/api/hubs',
@@ -28,9 +27,21 @@ angular.module('starter.services', [])
     });
   }
 
+  var getHubById = function(hubId) {
+    return $http({
+      method: 'GET',
+      url: '/api/hubs/' + hubId 
+    }).then(function (result) {
+      return result;
+    }).catch(function (err) {
+      return err
+    })
+  }
+
   return {
     getAllHubs: getAllHubs,
-    createHub: createHub
+    createHub: createHub,
+    getHubById: getHubById
   }
 })
 

@@ -1,5 +1,5 @@
 (function() {
-angular.module("starter")
+angular.module("RideHUB")
   .controller('CreateHubController', function ($scope, Geocoder, hubSearch, $location, Authorization, Hubs) {
     console.log('initializing CreateHubController...')
     var vm = this;

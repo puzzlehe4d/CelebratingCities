@@ -1,5 +1,5 @@
 (function() {
-angular.module("starter")
+angular.module("RideHUB")
   .controller('ProfileController', function ($scope, Geocoder, hubSearch, $location, Authorization) {
     var vm = this;
 
