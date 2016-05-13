@@ -22,7 +22,7 @@
           vm.location = position.coords.latitude + ',' + position.coords.longitude;
           Hubs.getHubsByGeoCode(position).then(function(response) {
             response.data.forEach(function(element) {
-              var point = {lat: element.lat, lng: element.lon};
+              var point = {lat: element.lat, lng: element.lon, name: element.name, address: element.address};
               vm.positions.push(point); 
             })  
           }).then(function(){

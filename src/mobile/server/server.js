@@ -23,4 +23,5 @@ app.use(express.static(__dirname + '/../client/www'));
 
 var port = process.env.PORT || 3000;
 server.listen(port);
+console.log(process.env)
 console.log('listening on port...', port)
