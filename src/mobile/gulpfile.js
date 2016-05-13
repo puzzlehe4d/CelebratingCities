@@ -59,4 +59,5 @@ gulp.task('tests', function(done) {
         args: ['--baseUrl', 'http://localhost:8000']
     }))
     .on('error', function(e) { throw e })
+    done();
 });

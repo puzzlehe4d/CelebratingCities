@@ -16,37 +16,37 @@ module.exports = {
 	    lon: -76.60
 		},
 		{
-	    name: '7-11 in Lucille Park',
-	    address: '5129 Reisterstown Rd',
+	    name: 'Olive Express',
+	    address: '11490 Commerce Park Drive, Reston, VA 20191',
 	    distance: 0.6,
 	    duration: 9,
 	    leaveTime: '7:20am',
 	    arriveTime: '7:29am',
-	    endPoint: 'West Balitmore (MARC)',
-	    lat: 39.34,
-	    lon: -76.68
+	    endPoint: '11400 Commerce Park Dr # 600, Reston, VA 20191',
+	    lat: 38.94631,
+	    lon: -77.34287
 		},
 		{
-			name: 'ALDI East Arlington',
-			address: '3601 W Cold Spring Ln',
+			name: 'Architecture Inc',
+			address: '1902 Campus Commons Dr # 101, Reston, VA 20191',
 			distance: 1.1,
 			duration: 12,
 			leaveTime: '7:01am',
 			arriveTime: '7:13am',
-			endPoint: 'West Balitmore (MARC)',
-			lat: 39.33,
-			lon: -76.67
+			endPoint: '11400 Commerce Park Dr # 600, Reston, VA 20191',
+			lat: 38.94523,
+			lon: -77.33751
 		},
 		{
-			name: 'ALDI East Arlington',
-			address: '3601 W Cold Spring Ln',
+			name: 'Applie Information Sciences',
+			address: '11400 Commerce Park Dr # 600, Reston, VA 20191',
 			distance: 1.1,
 			duration: 12,
 			leaveTime: '7:01am',
 			arriveTime: '7:13am',
-			endPoint: 'West Balitmore (MARC)',
-			lat: '38.9461282',
-			lon: '-77.3398399'
+			endPoint: '1108 Columbia Road NW Washington D.C. 20009',
+			lat: '38.94617',
+			lon: '-77.34005'
 		}
 		]
 

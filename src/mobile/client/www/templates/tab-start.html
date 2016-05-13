@@ -14,7 +14,7 @@
       </ng-map>
        
     </div>
-    <form ng-submit="vm.findHubs()" >
+    <form id='findHubs' ng-submit="vm.findHubs()" >
 
     	<div class="form-group vertical">
       	<div class="input-group">
@@ -25,7 +25,7 @@
 
 		<div class="form-group vertical">
       	<div class="input-group">
-		      <input type="text" placeholder="Enter destination" name="arriveAt" ng-model="vm.search.arriveAt"/>
+		      <input type="text" placeholder="Enter destination" name="arriveAt" ng-model="vm.arriveAt"/>
 		      <button type="button" class="geolocate" ng-click="vm.geolocate('arrive')"><span class="ion-icon ion-android-pin"></span></button>
 		    </div>
 	     </div>
@@ -36,7 +36,7 @@
       <div ng-show="vm.scheduleRide">
        <div class="form-group vertical">
          	<div class="input-group">
-   		      <input type="text" placeholder="Enter travel date" name="travelDate" size="40" ng-model="vm.search.travelDate"/>
+   		      <input type="text" placeholder="Enter travel date" name="travelDate" size="40" ng-model="vm.travelDate"/>
    		    </div>
    	    </div>
         <br>
@@ -45,7 +45,7 @@
               <div class="input-label">
                 {{vm.search.timingType}}
               </div>
-              <select ng-model="vm.search.timingType" ng-init="vm.search.timingType = 'Arrive'">
+              <select ng-model="vm.search.timingType" ng-init="vm.timingType = 'Arrive'">
                 <option ng-value="Arrive">Arrive</option>
                 <option ng-value="Leave">Leave</option>
               </select>
