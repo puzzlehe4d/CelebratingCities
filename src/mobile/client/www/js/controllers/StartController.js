@@ -1,6 +1,6 @@
 (function() {
   angular.module("RideHUB")
-    .controller('StartController', function($scope, Geocoder, Hubs, $timeout, Authorization, hubSearch, $location, NgMap) {
+    .controller('StartController', function($scope, Geocoder, Hubs, $timeout, Authorization, hubSearch, $ionicPopup, $location, NgMap) {
       console.log('DashCtrl initialized')
       var vm = this;
       vm.lat;
@@ -49,7 +49,17 @@
         
           if(vm.startAt) {
             var query = vm.startAt.split(' ').join('_')
-            $location.path("tab/start/results/" + query);
+            $location.path("tab/start/results/address/" + query);
+          } else {
+            var myPopup = $ionicPopup.show({
+                title: 'Please choose a starting location',
+                scope: $scope,
+                buttons: [
+                  { text: 'OK',
+                    type: 'button-balanced'
+                  },
+                ]
+              });
           }
           
     
@@ -63,21 +73,20 @@
 
         if (navigator && navigator.geolocation && navigator.geolocation.getCurrentPosition) {
             navigator.geolocation.getCurrentPosition(function(position) {
-              vm.location = position;
-              // console.log(position)
-              //   var latLong = [position.coords.latitude, position.coords.longitude].map(function (coord) {
-              //       return Number(coord).toFixed(5);
-              //   }).toString().replace(",", ", ");
-              //   $scope.$apply(function () {
-              //     vm[end + "At"] = String(latLong);
-              //   });
-              //   Geocoder.getAddress([position.coords.latitude, position.coords.longitude])
-              //       .then(function (address) {
-              //         vm.search[end + "At"] = String(address);
-              //       },
-              //       function () {
-              //         console.warn("Could not find address for location");
-              //       });
+              
+                // var latLong = [position.coords.latitude, position.coords.longitude].map(function (coord) {
+                //     return Number(coord).toFixed(5);
+                // }).toString().replace(",", ", ");
+                // $scope.$apply(function () {
+                //   vm[end + "At"] = String(latLong);
+                // });
+                Geocoder.getAddress([position.coords.latitude, position.coords.longitude])
+                    .then(function (address) {
+                      vm.startAt = String(address);
+                    },
+                    function () {
+                      console.warn("Could not find address for location");
+                    });
             },
             function (error) { console.error(error); },
             {

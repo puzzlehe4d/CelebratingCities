@@ -11,7 +11,7 @@
           $location.path("/login");
         } 
       });
-
+      console.log($stateParams, 'state')
       Geocoder.getGeoCode($stateParams.address).then(function(response) {
         var position = {
           coords: {

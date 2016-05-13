@@ -2,8 +2,9 @@
 <ion-view view-title="Dashboard" class="content-main">
 
   <ion-content>
-
-    <div id="map" map-lazy-load="https://maps.google.com/maps/api/js" map-lazy-load-params="{{vm.googleMapsUrl}}" >
+    <h4>Hubs near your location</h4>
+    <div class='card' id="map" map-lazy-load="https://maps.google.com/maps/api/js" map-lazy-load-params="{{vm.googleMapsUrl}}" >
+    
       <ng-map default-style="true" center="{{vm.location}}" zoom="15" styles="{{vm.mapStyle}}" >
         <marker no-watcher="true"
       ng-repeat="p in vm.positions"
@@ -13,7 +14,7 @@
       </ng-map>
        
     </div>
-    <form class='list card' ng-submit="vm.findHubs()" >
+    <form ng-submit="vm.findHubs()" >
 
     	<div class="form-group vertical">
       	<div class="input-group">

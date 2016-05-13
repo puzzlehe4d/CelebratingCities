@@ -2,7 +2,7 @@
   <ion-content>
     <h4>Hubs near {{vm.address}}</h4>
     <ion-list class="hub-list">
-      <ion-item class="item-remove-animate item-avatar item-icon-right" ng-repeat="hub in vm.hubs" type="item-text-wrap" href="#/tab/start/results/{{hub.id}}">
+      <ion-item class="item-remove-animate item-avatar item-icon-right" ng-repeat="hub in vm.hubs" type="item-text-wrap" href="/#/tab/start/results/{{hub.id}}">
         <div class="badge">
           <span>{{hub.duration}} <p>mins</p></span>
         </div>
@@ -20,7 +20,7 @@
     <div class="content-lower">
       <p>Don't see a hub that works for you? Create your own &amp; invite neightbors to join you!</p>
       <div class="form-group vertical">
-        <input type="submit" class="button button-balanced button-block" value="Start a Hub" ng-click="createHub()">
+        <input type="submit" class="button button-balanced button-block" value="Start a Hub" ng-click="vm.createHub()">
       </div>
   </div>
   </ion-content>

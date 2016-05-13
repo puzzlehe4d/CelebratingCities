@@ -66,7 +66,7 @@ angular.module('RideHUB', ['ionic', 'RideHUB.services', 'ngMap'])
     }
   })
   .state('tab.results', {
-    url: '/start/results/:address',
+    url: '/start/results/address/:address',
     views: {
       'tab-start': {
         templateUrl: 'templates/tab-searchResults.html',
