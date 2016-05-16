@@ -9,8 +9,11 @@
     <a class="button button-clear button-icon icon ion-chevron-left" ui-sref="tab.dash"></a>
   </ion-nav-bar>
 
-  <ion-content class="hub-list-item">
-    <h3 class="bar bar-light center" style="margin-top:0;">{{vm.hub.name}}</h3>
+  <ion-content>
+    <h4>{{vm.hub.name}}</h4>
+    <form ng-submit='vm.joinHub()'>
+      <button type='submit' class='button button-balanced button-small'>+ Join Hub</button>
+    </form>
     <p>Start Point: <strong>{{vm.hub.address}}</strong></p>
     <p>End Point: <strong>{{vm.hub.endPoint}}</strong></p>
     <p>Leave at: <strong>{{vm.hub.leaveTime}}</strong></p>

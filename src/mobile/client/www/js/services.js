@@ -128,3 +128,23 @@ angular.module('RideHUB.services', [])
     isLoggedIn: isLoggedIn
   }
 })
+
+.factory('User', function($http) {
+  var addHub = function(id) {
+    return $http({
+      method: 'POST',
+      url: '/api/user/hubs',
+      data: {
+        id: id
+      }
+    }).then(function(result){
+      return result;
+    }).catch(function(err){
+      return err;
+    })
+  }
+
+  return {
+    addHub: addHub
+  }
+})

@@ -1,6 +1,6 @@
 (function() {
   angular.module("RideHUB")
-    .controller('HubDetailController', function($scope, $stateParams, Hubs, Authorization, $location) {
+    .controller('HubDetailController', function($scope, $stateParams, Hubs, Authorization, User, $location) {
         console.log('initialized Hub Detail Controller')
     	var vm = this;
         vm.hub;
@@ -11,12 +11,21 @@
     	    $location.path("/login");
     	  } 
     	});
-        console.log($stateParams, 'state')
       Hubs.getHubById($stateParams.hubId).then(function(response){
         console.log(response)
         vm.hub = response.data;
       }).catch(function(error) {
         console.log('error getting hub', error);
       })
+
+      vm.joinHub = function(){
+        console.log('in hub')
+        User.addHub($stateParams.hubId).then(function(response){
+          $location.path('/profile');
+        }).catch(function(error) {
+          console.log('error adding hub', error)
+        })
+
+      }
     });
 })();

@@ -59,6 +59,18 @@ var createHubsTable = function () {
   });
 };
 
+var createHubsUsersTable = function () {
+  return db.knex.schema.createTable('hubs_users', function (hubs_users) {
+    hubs_users.increments('id').primary();
+    hubs_users.string('user_id');
+    hubs_users.string('hub_id');
+    hubs_users.string('status');
+    hubs_users.timestamps();
+  }).then(function (table) {
+    console.log('Created hubs_users Table');
+  });
+};
+
 db.knex.schema.hasTable('hubs').then(function(exists) {
   if (!exists) {
     createHubsTable();
@@ -68,6 +80,12 @@ db.knex.schema.hasTable('hubs').then(function(exists) {
 db.knex.schema.hasTable('users').then(function(exists) {
   if (!exists) {
     createUsersTable();
+  }
+});
+
+db.knex.schema.hasTable('hubs_users').then(function(exists) {
+  if (!exists) {
+    createHubsUsersTable();
   }
 });
 
@@ -81,10 +99,16 @@ var resetHubsTable = function () {
   return db.knex.schema.dropTable('hubs').then(createHubsTable);
 };
 
+var resetHubsUsersTable = function () {
+  return db.knex.schema.dropTable('hubs_users').then(createHubsUsersTable);
+};
+
 // Exposed function that resets the entire database
 db.resetEverything = function (req, res) {
   resetUsersTable().then(function() {
     resetHubsTable();
+  }).then(function(){
+    resetHubsUsersTable();
   }).then(function() {
     res.status(201).end();
   });
@@ -93,6 +117,8 @@ db.resetEverything = function (req, res) {
 db.resetEverythingPromise = function () {
   return resetUsersTable().then(function() {
     return resetHubsTable();
+  }).then(function(){
+    return resetHubsUsersTable();
   }).catch(function(e) {
     console.log(e);
   });

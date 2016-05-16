@@ -4,8 +4,27 @@ var hubController = require('./db/hubController.js');
 var db = require('./config/dbConfig.js');
 module.exports = function (app) {
   app.get('/auth/uber', function(request, response) {
-    var url = uber.getAuthorizeUrl(['history','profile', 'request', 'places']);
-    response.redirect(url);
+    if(process.env.TEST) {
+      request.session.isLoggedIn = true;
+      var userObject = {
+        picture:'mock picture',
+        first_name:'mock first_name',
+        last_name:'mock last_name',
+        uuid:'mock uuid',
+        rider_id:'mock rider_id',
+        access_token:'mock access_token',
+        refresh_token:'mock access_token'
+      }
+      userController.addUser(userObject, function(err, res) {
+        if(err) {
+          console.log(err)
+        }
+      });
+      response.redirect('/#/tab/start');
+    } else {
+      var url = uber.getAuthorizeUrl(['history','profile', 'request', 'places']);
+      response.redirect(url); 
+    }
   });
 
   app.get('/auth/uber/callback', function(request, response) {
@@ -21,6 +40,7 @@ module.exports = function (app) {
             if(err) {
               console.log(err)
             }
+
           });
         });
         // store the user id and associated access token
@@ -37,6 +57,21 @@ module.exports = function (app) {
     req.session.isLoggedIn = false;
     console.log('logging out...')
     res.redirect('/');
+  });
+
+  app.post('/api/user/hubs', function(request, response) {
+    uber.user.getProfile(function(err,res){
+      if(err) {
+        console.log(err)
+      }
+      userController.addHub(request.body, res, function(err, res) {
+        if(err) {
+          console.log(error)
+        } 
+
+        response.send(res);
+      })
+    })
   });
 
   app.get('/api/hubs', hubController.getAllHubs);

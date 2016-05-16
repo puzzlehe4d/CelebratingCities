@@ -1,10 +1,11 @@
 var db = require('../config/dbConfig');
 db.plugin('registry');
 var User = require('../db/userModel');
+var HubsUsers = require('../db/hubsUsersModel');
 var Hub = db.Model.extend({
   tableName: 'hubs',
   users: function() {
-    return this.belongsToMany('User', 'id');
+    return this.belongsToMany(User);
   }
 });
 module.exports = db.model('Hub', Hub);;
