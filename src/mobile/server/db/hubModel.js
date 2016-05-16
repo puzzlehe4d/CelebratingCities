@@ -5,7 +5,7 @@ var HubsUsers = require('../db/hubsUsersModel');
 var Hub = db.Model.extend({
   tableName: 'hubs',
   users: function() {
-    return this.belongsToMany(User);
+    return this.belongsToMany(User).through(HubsUsers);
   }
 });
 module.exports = db.model('Hub', Hub);;

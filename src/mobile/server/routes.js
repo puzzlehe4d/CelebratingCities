@@ -66,10 +66,10 @@ module.exports = function (app) {
       }
       userController.addHub(request.body, res, function(err, res) {
         if(err) {
-          console.log(error)
+          console.log(err)
         } 
-
         response.send(res);
+
       })
     })
   });
@@ -77,6 +77,15 @@ module.exports = function (app) {
   app.get('/api/hubs', hubController.getAllHubs);
   app.post('/api/hubs', hubController.createHub);
   app.get('/api/hubs/:hubId', hubController.getHubById);
+  app.get('/api/user', function(request, response) {
+    uber.user.getProfile(function(err, res) {
+      if(err) {
+        console.log(err)
+      }
+      response.status(200).send(res)
+    });
+  });
+  app.get('/api/:id/hubs', userController.getHubs);
   app.get('/api/hubs/:lat/:lon', hubController.getHubsByGeoCode);
 
   app.get('/api/resetDBWithData', function (req,res) {

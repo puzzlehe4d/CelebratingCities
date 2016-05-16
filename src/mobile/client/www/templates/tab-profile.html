@@ -1,5 +1,32 @@
 <ion-view view-title="Account" class="content-main">
   <ion-content>
-    tab will contain user's hubs
+  <div class='row'>
+	  <img src='{{vm.profile.picture}}' class='profile'>
+	  {{vm.profile.first_name}} {{vm.profile.last_name}}
+  </div>
+   <ion-refresher on-refresh="doRefresh()"
+                         pulling-text="Pull to refresh..."
+                         refreshing-text="Refreshing!"
+                         refreshing-icon="ion-loading-c">
+
+          </ion-refresher>
+
+          <h4>Your Hubs</h4>
+  <ion-list class="hub-list">
+      <ion-item class="item-avatar item-icon-right" ng-repeat="hub in vm.hubs" type="item-text-wrap" href="/#/tab/start/results/{{hub.id}}">
+        <div class="badge">
+          <span>{{hub.duration}} <p>mins</p></span>
+        </div>
+        <h2>{{hub.name}}</h2>
+        <p>{{hub.address}}</p>
+        <p>To: <strong>{{hub.endPoint}}</strong></p>
+        <p>Ride: <strong>{{hub.leaveTime}}</strong> - <strong>{{hub.arriveTime}}</strong></p>
+        <i class="icon ion-chevron-right icon-accessory"></i>
+
+       <!--  <ion-option-button class="button-assertive" ng-click="remove(hub)">
+          Delete
+        </ion-option-button> -->
+      </ion-item>
+    </ion-list>
   </ion-content>
 </ion-view>

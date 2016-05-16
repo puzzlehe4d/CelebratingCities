@@ -12,7 +12,7 @@
     	  } 
     	});
       Hubs.getHubById($stateParams.hubId).then(function(response){
-        console.log(response)
+      
         vm.hub = response.data;
       }).catch(function(error) {
         console.log('error getting hub', error);
@@ -21,7 +21,7 @@
       vm.joinHub = function(){
         console.log('in hub')
         User.addHub($stateParams.hubId).then(function(response){
-          $location.path('/profile');
+          $location.path('/tab/profile');
         }).catch(function(error) {
           console.log('error adding hub', error)
         })

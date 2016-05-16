@@ -144,7 +144,32 @@ angular.module('RideHUB.services', [])
     })
   }
 
+  var getProfile = function () {
+    return $http({
+      method:'GET',
+      url: '/api/user'
+    }).then(function(result) {
+      return result;
+    }).catch(function(err) {
+      return err;
+    })
+  }
+
+  var getHubs = function(id) {
+    console.log(id, 'in services')
+    return $http ({
+      method:'GET',
+      url: '/api/' + id + '/' + 'hubs'
+    }).then(function(result) {
+      return result;
+    }).catch(function(err) {
+      return err;
+    })
+  }
+
   return {
-    addHub: addHub
+    addHub: addHub,
+    getHubs: getHubs,
+    getProfile: getProfile
   }
 })

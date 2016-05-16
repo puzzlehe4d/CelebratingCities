@@ -62,9 +62,8 @@ var createHubsTable = function () {
 var createHubsUsersTable = function () {
   return db.knex.schema.createTable('hubs_users', function (hubs_users) {
     hubs_users.increments('id').primary();
-    hubs_users.string('user_id');
-    hubs_users.string('hub_id');
-    hubs_users.string('status');
+    hubs_users.integer('user_id');
+    hubs_users.integer('hub_id');
     hubs_users.timestamps();
   }).then(function (table) {
     console.log('Created hubs_users Table');

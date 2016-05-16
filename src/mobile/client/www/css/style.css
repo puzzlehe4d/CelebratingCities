@@ -10,7 +10,11 @@
 	padding: 2px;
 	margin: 20px 30px 20px 30px;   
 }
-
+.profile {
+	width:100px;
+	height: 100px;
+	display: block;
+}
 .scroll-content {
   display: table !important;
   width: 100% !important;
