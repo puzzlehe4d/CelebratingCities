@@ -173,3 +173,22 @@ angular.module('RideHUB.services', [])
     getProfile: getProfile
   }
 })
+
+.factory('Ride', function($http, Hubs) {
+  var requestRide = function(id) {
+    return Hubs.getHubById(id).then(function(response){
+      return $http({
+        method:'GET',
+        url: '/api/uber/products/' + response.data.lat + '/' + response.data.lon
+      }).then(function(response) {
+        return response;
+      }).catch(function(err) {
+        return err;
+      })
+    })
+    
+  }
+  return {
+    requestRide: requestRide
+  }
+})

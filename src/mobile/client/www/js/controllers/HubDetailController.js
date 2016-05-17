@@ -1,6 +1,6 @@
 (function() {
   angular.module("RideHUB")
-    .controller('HubDetailController', function($scope, $stateParams, Hubs, Authorization, User, $location) {
+    .controller('HubDetailController', function($scope, $stateParams, Hubs, Authorization, User, Ride, $location) {
         console.log('initialized Hub Detail Controller')
     	var vm = this;
         vm.hub;
@@ -24,6 +24,12 @@
           $location.path('/tab/profile');
         }).catch(function(error) {
           console.log('error adding hub', error)
+        })
+      }
+
+      vm.requestRide = function(){
+        Ride.requestRide(vm.hub.id).then(function(response) {
+          console.log(response)
         })
 
       }

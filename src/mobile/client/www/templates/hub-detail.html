@@ -12,7 +12,10 @@
   <ion-content>
     <h4>{{vm.hub.name}}</h4>
     <form ng-submit='vm.joinHub()'>
-      <button type='submit' class='button button-balanced button-small'>+ Join Hub</button>
+      <button type='submit' class='button button-balanced button-small'>+ add</button>
+    </form>
+     <form ng-submit='vm.requestRide()'>
+      <button type='submit' class='button button-balanced button-small'>+ request ride</button>
     </form>
     <p>Start Point: <strong>{{vm.hub.address}}</strong></p>
     <p>End Point: <strong>{{vm.hub.endPoint}}</strong></p>

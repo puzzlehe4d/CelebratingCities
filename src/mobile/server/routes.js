@@ -36,6 +36,8 @@ module.exports = function (app) {
       } else {
         request.session.isLoggedIn = true;
         uber.user.getProfile(function(err, res) {
+          res.access_token = access_token;
+          res.refresh_token = refresh_token;
           userController.addUser(res, function(err, res) {
             if(err) {
               console.log(err)
@@ -86,6 +88,21 @@ module.exports = function (app) {
     });
   });
   app.get('/api/:id/hubs', userController.getHubs);
+  app.get('/api/uber/products/:lat/:lon', function(req, res) {
+    // var lat = Number(req.params.lat);
+    // var lon = Number(req.params.lon);
+     var lat = Number(req.params.lat);
+    var lon = Number(req.params.lon);
+    console.log(lat, lon)
+    uber.products.getAllForLocation(lat, lon, function(err, response) {
+          if (err) {
+            console.error(err);
+            res.status(500);
+          } else {
+            res.json(response);
+          }
+      })
+  })
   app.get('/api/hubs/:lat/:lon', hubController.getHubsByGeoCode);
 
   app.get('/api/resetDBWithData', function (req,res) {
