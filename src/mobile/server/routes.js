@@ -103,6 +103,17 @@ module.exports = function (app) {
           }
       })
   })
+
+  app.get('/api/uber/product/:id', function(req, res) {
+    uber.products.getByID(req.params.id, function(err, response) {
+      if (err) {
+        console.error(err);
+        res.status(500);
+      } else {
+        res.json(response);
+      }
+    })
+  })
   app.get('/api/hubs/:lat/:lon', hubController.getHubsByGeoCode);
 
   app.get('/api/resetDBWithData', function (req,res) {

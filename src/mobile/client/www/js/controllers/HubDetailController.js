@@ -27,10 +27,10 @@
         })
       }
 
-      vm.requestRide = function(){
-        Ride.requestRide(vm.hub.id).then(function(response) {
-          console.log(response)
-        })
+      vm.navToRequest = function(){
+        if(vm.hub){ 
+          $location.path('/tab/start/request/' + vm.hub.id);
+        }
 
       }
     });

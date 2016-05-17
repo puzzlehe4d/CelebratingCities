@@ -11,12 +11,12 @@
 
   <ion-content>
     <h4>{{vm.hub.name}}</h4>
-    <form ng-submit='vm.joinHub()'>
-      <button type='submit' class='button button-balanced button-small'>+ add</button>
-    </form>
-     <form ng-submit='vm.requestRide()'>
-      <button type='submit' class='button button-balanced button-small'>+ request ride</button>
-    </form>
+    
+    <button type='submit' ng-click='vm.joinHub()' class='button button-balanced button-small'>+ add</button>
+
+  
+    <button type='submit' ng-click='vm.navToRequest()' class='button button-balanced button-small'>+ request ride</button>
+
     <p>Start Point: <strong>{{vm.hub.address}}</strong></p>
     <p>End Point: <strong>{{vm.hub.endPoint}}</strong></p>
     <p>Leave at: <strong>{{vm.hub.leaveTime}}</strong></p>
@@ -26,7 +26,7 @@
     <div id="map" map-lazy-load="https://maps.google.com/maps/api/js" map-lazy-load-params="{{vm.googleMapsUrl}}" >
       <ng-map default-style="true" center="41,-87" zoom="3" styles="{{vm.mapStyle}}">
        <directions
-         draggable="true"
+         draggable="false"
          panel="directions-panel"
          travel-mode="DRIVING"
          origin="{{vm.hub.address}}"

@@ -156,7 +156,6 @@ angular.module('RideHUB.services', [])
   }
 
   var getHubs = function(id) {
-    console.log(id, 'in services')
     return $http ({
       method:'GET',
       url: '/api/' + id + '/' + 'hubs'
@@ -186,9 +185,21 @@ angular.module('RideHUB.services', [])
         return err;
       })
     })
-    
   }
+
+  var getProductInfo = function(id) {
+    return $http({
+      method:'GET',
+      url: '/api/uber/product/' + id
+    }).then(function(result) {
+      return result;
+    }).catch(function(err) {
+      return err;
+    })
+  }
+
   return {
-    requestRide: requestRide
+    requestRide: requestRide,
+    getProductInfo: getProductInfo
   }
 })

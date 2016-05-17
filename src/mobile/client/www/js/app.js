@@ -100,6 +100,18 @@ angular.module('RideHUB', ['ionic', 'RideHUB.services', 'ngMap'])
         }
       }
     })
+
+    .state('tab.hub-request', {
+      url: '/start/request/:hubId',
+      views: {
+        'tab-start': {
+          templateUrl: 'templates/hub-request.html',
+          controller: 'HubRequestController',
+          controllerAs: 'vm'
+        }
+      }
+    })
+
   .state('tab.profile', {
     url: '/profile',
     views: {

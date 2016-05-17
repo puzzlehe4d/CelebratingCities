@@ -1,0 +1,26 @@
+
+<ion-view view-title="{{request.name}}">
+  <ion-nav-bar side="left">
+    <a class="button button-clear button-icon icon ion-chevron-left" ui-sref="tab.dash"></a>
+  </ion-nav-bar>
+
+  <ion-content>
+
+	  <div class="button-bar">
+	    <a ng-class="vm.detail.display_name === product.display_name ? 'button button-balanced' : 'button button-stable'" ng-repeat='product in vm.products' ng-click="vm.getProductInfo(product.product_id)">{{product.display_name}}</a>
+	  </div>
+
+	  <div id='requestInformation' class='list'>
+	  	<img src='{{vm.detail.image}}'>
+		  <div class='list-item'>
+				{{vm.detail.description}}
+		  </div>
+		  <div class='list-item'>
+		  	Cost per minute: {{vm.detail.price_details.cost_per_minute}}
+		  </div>
+		  <div class='list-item'>
+		  	Cost per distance: {{vm.detail.price_details.cost_per_distance}}
+		  </div>
+	  </div>
+  </ion-content>
+</ion-view>

@@ -18,7 +18,12 @@
 .scroll-content {
   display: table !important;
   width: 100% !important;
-  height: 100% !important;
+/*  height: 100% !important;*/
+}
+
+.button-bar {
+	margin-top: 5px;
+	margin-bottom: 5px;
 }
 .scroll {
   display: table-cell;
