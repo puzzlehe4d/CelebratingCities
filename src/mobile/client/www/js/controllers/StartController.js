@@ -69,31 +69,17 @@
   
       }
 
-      vm.geolocate = function (end) {
-
-        if (navigator && navigator.geolocation && navigator.geolocation.getCurrentPosition) {
-            navigator.geolocation.getCurrentPosition(function(position) {
-              
-                // var latLong = [position.coords.latitude, position.coords.longitude].map(function (coord) {
-                //     return Number(coord).toFixed(5);
-                // }).toString().replace(",", ", ");
-                // $scope.$apply(function () {
-                //   vm[end + "At"] = String(latLong);
-                // });
-                Geocoder.getAddress([position.coords.latitude, position.coords.longitude])
-                    .then(function (address) {
-                      vm.startAt = String(address);
-                    },
-                    function () {
-                      console.warn("Could not find address for location");
-                    });
-            },
-            function (error) { console.error(error); },
-            {
-                enableHighAccuracy: true,
-                maximumAge: 10000
-            });
-        }
+      vm.geolocate = function (position) {
+        Geocoder.getAddress().then(function(location) {
+          console.log(location)
+          if(position === 'start') {
+            vm.startAt = location;
+          } else {
+            vm.arriveAt = location;
+          }  
+        }).catch(function(err) {
+          console.log(err)
+        })
       };
     });
 })();

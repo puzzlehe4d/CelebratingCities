@@ -37,7 +37,7 @@ module.exports = {
 	},
 
 	getHubs: function(req, res) {
-		return new User().query({where: {uuid: req.params.id}})
+		return new User().query({where: {uuid: req.params.user}})
 		.fetch({withRelated: ['hubs'], require: true})
 		.then(function(model) {
 			if(model) {

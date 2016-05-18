@@ -51,6 +51,8 @@ angular.module('RideHUB.services', [])
     })
   } 
 
+
+
   return {
     getAllHubs: getAllHubs,
     createHub: createHub,
@@ -60,35 +62,6 @@ angular.module('RideHUB.services', [])
 })
 
 .factory('Geocoder', function($http, $q) {
-  var baseUrl = "https://maps.google.com/maps/api/geocode/json";
-
-  var getAddress = function(coords) {
-    var deferred = $q.defer();
-    try {
-      $http({
-        method: "GET",
-        url: baseUrl + "?sensor=false&latlng=" + encodeURIComponent(String(coords))
-      }).then(function (response) {
-        try {
-          var json = response.data;
-          if (json && json.results && json.results.length && json.results[0].formatted_address) {
-            deferred.resolve(json.results[0].formatted_address);
-          }
-          else {  
-            deferred.reject("Unexpected JSON response format: results[0].formatted_address not found");
-          }
-        }
-        catch (ex) {
-          deferred.reject("Cannot parse response as JSON");
-        }
-      }, deferred.reject);
-    }
-    catch (ex) {
-      deferred.reject(ex.message);
-    }
-
-    return deferred.promise;
-  }
 
   var getGeoCode = function(address) {
     var address = address.split(' ').join('+');
@@ -103,11 +76,57 @@ angular.module('RideHUB.services', [])
     })
   }
 
+  var getAddress = function() {
+    var baseUrl = "https://maps.google.com/maps/api/geocode/json";
+    var getAddressFromGeo = function(coords) {
+      var deferred = $q.defer();
+      try {
+        $http({
+          method: "GET",
+          url: baseUrl + "?sensor=false&latlng=" + encodeURIComponent(String(coords))
+        }).then(function (response) {
+          try {
+            var json = response.data;
+            if (json && json.results && json.results.length && json.results[0].formatted_address) {
+              deferred.resolve(json.results[0].formatted_address);
+            }
+            else {  
+              deferred.reject("Unexpected JSON response format: results[0].formatted_address not found");
+            }
+          }
+          catch (ex) {
+            deferred.reject("Cannot parse response as JSON");
+          }
+        }, deferred.reject);
+      }
+      catch (ex) {
+        deferred.reject(ex.message);
+      }
 
+      return deferred.promise;
+    }
+    var deferred = $q.defer();
+    if (navigator && navigator.geolocation && navigator.geolocation.getCurrentPosition) {
+      navigator.geolocation.getCurrentPosition(function(position) {
+        getAddressFromGeo([position.coords.latitude, position.coords.longitude]).then(function (address) {
+          deferred.resolve(String(address));
+        }, function () {
+          deferred.reject("Could not find address for location");
+        });
+      }, function (error) { 
+        deferred.reject(error); 
+      }, {
+          enableHighAccuracy: true,
+          maximumAge: 10000
+      });
+    }
+
+    return deferred.promise;
+  };
 
   return {
-    getAddress: getAddress,
-    getGeoCode: getGeoCode
+    getGeoCode: getGeoCode,
+    getAddress: getAddress
   }
 })
 

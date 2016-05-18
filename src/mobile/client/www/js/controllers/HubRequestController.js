@@ -55,7 +55,7 @@
       vm.requestRide = function(product_id) {
         Ride.requestRide(product_id, vm.hub).then(function(response) {
           var myPopup = $ionicPopup.show({
-            title: 'sucess!',
+            title: 'success!',
             scope: $scope,
             buttons: [
               { text: 'OK',
