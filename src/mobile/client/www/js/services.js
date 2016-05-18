@@ -1,6 +1,12 @@
 angular.module('RideHUB.services', [])
 
+/*====================================
+=            HUBS FACTORY           =
+====================================*/
+
 .factory('Hubs', function ($http, Geocoder) {
+
+  /*----------  get all hubs from database: GET to /api/hubs ----------*/
   var getAllHubs = function () {
     return $http({
       method: 'GET',
@@ -10,8 +16,9 @@ angular.module('RideHUB.services', [])
     }).catch(function(err){
       return err;
     });
-  }
+  };
 
+  /*----------  create hub in database: POST to /api/hubs  ----------*/
   var createHub = function (hub) {
     return $http({
       method: 'POST',
@@ -27,8 +34,9 @@ angular.module('RideHUB.services', [])
     }).catch(function(err){
       return err;
     });
-  }
+  };
 
+  /*----------  get a hub from the databse by its id: GET to /api/hubs/:hubID  ----------*/
   var getHubById = function(hubId) {
     return $http({
       method: 'GET',
@@ -38,8 +46,9 @@ angular.module('RideHUB.services', [])
     }).catch(function (err) {
       return err
     })
-  }
+  };
 
+  /*----------  get a hub from the database by its start location (lat, long): GET to /api/hubs/:lat/:lon  ----------*/
   var getHubsByGeoCode = function(location) {
     return $http({
       method: 'GET',
@@ -49,21 +58,30 @@ angular.module('RideHUB.services', [])
     }).catch(function(err) {
       return err;
     })
-  } 
+  };
 
-
-
+  /*----------  export functions  ----------*/
   return {
     getAllHubs: getAllHubs,
     createHub: createHub,
     getHubById: getHubById,
     getHubsByGeoCode: getHubsByGeoCode
   }
+
 })
+
+/*=====  End of HUBS FACTORY ======*/
+
+
+/*========================================
+=            GEOCODER FACTORY            =
+========================================*/
 
 .factory('Geocoder', function($http, $q) {
 
+  /*----------  get geo coordinates by address: GET to google maps api ----------*/
   var getGeoCode = function(address) {
+    var baseUrl = "https://maps.google.com/maps/api/geocode/json";
     var address = address.split(' ').join('+');
     console.log(address)
     return $http({
@@ -74,8 +92,9 @@ angular.module('RideHUB.services', [])
     }).catch(function(err) {
       return err;
     })
-  }
+  };
 
+  /*----------  get current address from current geo location: GET to google maps api  ----------*/
   var getAddress = function() {
     var baseUrl = "https://maps.google.com/maps/api/geocode/json";
     var getAddressFromGeo = function(coords) {
@@ -105,7 +124,9 @@ angular.module('RideHUB.services', [])
 
       return deferred.promise;
     }
+
     var deferred = $q.defer();
+
     if (navigator && navigator.geolocation && navigator.geolocation.getCurrentPosition) {
       navigator.geolocation.getCurrentPosition(function(position) {
         getAddressFromGeo([position.coords.latitude, position.coords.longitude]).then(function (address) {
@@ -124,13 +145,22 @@ angular.module('RideHUB.services', [])
     return deferred.promise;
   };
 
+  /*----------  export functions  ----------*/
   return {
     getGeoCode: getGeoCode,
     getAddress: getAddress
   }
+
 })
+/*=====  End of GEOCODER FACTORY  ======*/
+
+/*=============================================
+=            AUTHORIZATION FACTORY            =
+=============================================*/
 
 .factory('Authorization', function($http) {
+
+  /*----------  check whether user is logged in: GET to /api/auth/isLoggedIn  ----------*/
   var isLoggedIn = function() {
     return $http({
       method: 'GET',
@@ -142,12 +172,23 @@ angular.module('RideHUB.services', [])
     })
   }
 
+  /*----------  export functions  ----------*/
   return {
     isLoggedIn: isLoggedIn
   }
+
 })
 
+/*=====  End of AUTHORIZATION FACTORY  ======*/
+
+
+/*======================================
+=            USER FACTORIES            =
+======================================*/
+
 .factory('User', function($http) {
+
+  /*----------  adds hub to specfic user: POST to /api/user/hubs ----------*/
   var addHub = function(id) {
     return $http({
       method: 'POST',
@@ -162,6 +203,7 @@ angular.module('RideHUB.services', [])
     })
   }
 
+  /*----------  get user profile: GET to /api/user  ----------*/
   var getProfile = function () {
     return $http({
       method:'GET',
@@ -173,6 +215,7 @@ angular.module('RideHUB.services', [])
     })
   }
 
+  /*----------  get hubs that belong to specfic user: GET to /api/:user/hubs  ----------*/
   var getHubs = function(id) {
     return $http ({
       method:'GET',
@@ -184,14 +227,22 @@ angular.module('RideHUB.services', [])
     })
   }
 
+  /*----------  export functions  ----------*/
   return {
     addHub: addHub,
     getHubs: getHubs,
     getProfile: getProfile
   }
-})
 
+})
+/*=====  End of USER FACTORIES  ======*/
+
+/*====================================
+=            RIDE FACTORY            =
+====================================*/
 .factory('Ride', function($http, Hubs) {
+
+  /*----------  get available products by lat and lon: GET to /api/uber/products/:lat/:lon  ----------*/
   var getProducts = function(id) {
     return Hubs.getHubById(id).then(function(response){
       return $http({
@@ -201,11 +252,11 @@ angular.module('RideHUB.services', [])
         return response;
       }).catch(function(err) {
         return err;
-      })
-    })
-  }
+      });
+    });
+  };
 
-  // not used
+  /*----------  get specific product info by product_id: GET to /api/ubser/product/:product_id  ----------*/
   var getProductInfo = function(id) {
     return $http({
       method:'GET',
@@ -214,9 +265,10 @@ angular.module('RideHUB.services', [])
       return result;
     }).catch(function(err) {
       return err;
-    })
-  }
+    });
+  };
 
+  /*----------  get estimate for a specic hub: GET to /api/uber/estimate/:product_id/:hub_id  ----------*/
   var getEstimate = function(product_id, hub_id) {
     return $http({
       method:'GET',
@@ -225,14 +277,15 @@ angular.module('RideHUB.services', [])
       return result;
     }).catch(function(err) {
       return err;
-    })
-  }
+    });
+  };
 
+  /*----------  request ride from uber: POST to /api/uber/request ----------*/
   var requestRide = function(product_id, hub) {
     var coordinates = hub.geoRoute.split(', ');
     return $http({
       method:'POST',
-      url: '/api/uber/request/',
+      url: '/api/uber/request',
       data: {
         product_id: product_id,
         coordinates: coordinates
@@ -241,9 +294,10 @@ angular.module('RideHUB.services', [])
       return result;
     }).catch(function(err) {
       return err;
-    })
-  }
+    });
+  };
 
+  /*----------  export functions  ----------*/
   return {
     requestRide: requestRide,
     getProductInfo: getProductInfo,
@@ -251,3 +305,8 @@ angular.module('RideHUB.services', [])
     getProducts: getProducts
   }
 })
+/*=====  End of RIDE FACTORY  ======*/
+
+
+
+

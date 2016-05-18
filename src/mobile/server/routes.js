@@ -204,12 +204,12 @@ module.exports = function (app) {
       "start_longitude": Number(request.body.coordinates[1]),
       "end_latitude": Number(request.body.coordinates[2]),
       "end_longitude": Number(request.body.coordinates[3])
-    }, function (err, response) {
+    }, function (err, res) {
       if (err) {
-        console.log(err)
+        console.log('error requesting ride',  err)
         response.status(500).send(err);
       } else {
-        response.status(201).send(response);
+        response.status(201).send(res);
       }
     });
   })

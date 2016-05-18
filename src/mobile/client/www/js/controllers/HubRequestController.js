@@ -9,8 +9,6 @@
       vm.estimate;
       vm.req_category;
 
-      // get hub information
-
       Hubs.getHubById($stateParams.hubId).then(function(response) {
         vm.hub = response.data;
       }).catch(function(err) {
@@ -54,25 +52,30 @@
 
       vm.requestRide = function(product_id) {
         Ride.requestRide(product_id, vm.hub).then(function(response) {
-          var myPopup = $ionicPopup.show({
-            title: 'success!',
-            scope: $scope,
-            buttons: [
-              { text: 'OK',
-                type: 'button-balanced'
-              },
-            ]
-          });
+          console.log(response)
+          if(response.status === 500) {
+            var myPopup = $ionicPopup.show({
+              title: 'request failed!',
+              scope: $scope,
+              buttons: [
+                { text: 'OK',
+                  type: 'button-balanced'
+                },
+              ]
+            });
+          } else {
+            var myPopup = $ionicPopup.show({
+              title: 'success!',
+              scope: $scope,
+              buttons: [
+                { text: 'OK',
+                  type: 'button-balanced'
+                },
+              ]
+            }); 
+          }
         }).catch(function(error) {
-          var myPopup = $ionicPopup.show({
-            title: 'request failed!',
-            scope: $scope,
-            buttons: [
-              { text: 'OK',
-                type: 'button-balanced'
-              },
-            ]
-          });
+          console.log('error making request', error);
         })
       }
         
