@@ -4,11 +4,11 @@
     <a class="button button-clear button-icon icon ion-chevron-left" ui-sref="tab.dash"></a>
   </ion-nav-bar>
 
-  <ion-content>
-
-	  <div class="button-bar">
+  <ion-content class='center'>
+  	<div class="button-bar">
 	    <a ng-class="vm.detail.display_name === product.display_name ? 'button button-balanced rides' : 'button button-stable rides'" ng-repeat='product in vm.products' ng-click="vm.getProductInfo(product.product_id)">{{product.display_name}}</a>
 	  </div>
+	  
 
 	  <div ng-show="vm.detail" id='requestInformation' class='list list-inset'>
 	
@@ -29,7 +29,7 @@
 		  	SURGE: {{vm.detail.surge_multiplier}}
 		  </div>
 
-		  <a ng-click='vm.requestRide(vm.detail.product_id)' class='button button-balanced button-large'>REQUEST</a>
+		  <a ng-click='vm.requestRide(vm.detail.product_id)' class='button button-balanced button-small'>REQUEST</a>
 	  </div>
   </ion-content>
 </ion-view>

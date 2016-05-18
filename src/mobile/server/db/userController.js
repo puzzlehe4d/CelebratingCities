@@ -15,14 +15,20 @@ module.exports = {
 			access_token: req.access_token,
 			refresh_token: req.refresh_token
 		}
-	  User.forge(userObject).save().then(function(user) {
-	    console.log('added user', user.attributes.first_name, user.attributes.last_name, 'to db');
-	    callback(null, user);
-	  }).catch(function(err){
-	    console.log('error adding user', err);
-	    callback(err, null);
-	    // next(err);
-	  });
+		User.forge({uuid: userObject.uuid}).fetch().then(function(user){
+			if(user) {
+			  User.forge(userObject).save().then(function(user) {
+			    console.log('added user', user.attributes.first_name, user.attributes.last_name, 'to db');
+			    callback(null, user);
+			  }).catch(function(err){
+			    console.log('error adding user', err);
+			    callback(err, null);  // next(err);
+			  });
+			} else {
+				console.log('user already exists')
+				callback(null, null);
+			}
+		})
 	},
 
 	addHub: function(hub, user, callback) {

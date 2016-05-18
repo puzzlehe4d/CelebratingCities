@@ -1,17 +1,10 @@
 <ion-view view-title="Account" class="content-main">
-  <ion-content>
-  <div class='row'>
-	  <img src='{{vm.profile.picture}}' class='profile'>
-  </div>
-   <ion-refresher on-refresh="doRefresh()"
-                         pulling-text="Pull to refresh..."
-                         refreshing-text="Refreshing!"
-                         refreshing-icon="ion-loading-c">
+  <ion-content class='center'>
 
-          </ion-refresher>
+   
 
-          <h4>Your Hubs</h4>
-  <ion-list class="hub-list">
+  	<h4 ng-show='!vm.loading'>Your Hubs</h4>
+  	<ion-list class="hub-list">
       <ion-item class="item-avatar item-icon-right" ng-repeat="hub in vm.hubs" type="item-text-wrap" href="/#/tab/start/results/{{hub.id}}">
         <div class="badge">
           <span>{{hub.duration}} <p>mins</p></span>

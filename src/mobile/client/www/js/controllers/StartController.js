@@ -1,6 +1,6 @@
 (function() {
   angular.module("RideHUB")
-    .controller('StartController', function($scope, Geocoder, Hubs, $timeout, Authorization, hubSearch, $ionicPopup, $location, NgMap, spinnerService) {
+    .controller('StartController', function($scope, Geocoder, Hubs, $timeout, $ionicLoading, Authorization, hubSearch, $ionicPopup, $location, NgMap, spinnerService) {
       
       console.log('DashCtrl initialized')
       var vm = this;
@@ -17,32 +17,40 @@
         } 
       });
 
+      vm.show = function() {
+        $ionicLoading.show({
+          template: '<ion-spinner icon="ripple"></ion-spinner>'
+        });
+      };
+
+      vm.hide = function(){
+        $ionicLoading.hide();
+      };
       
-      vm.init = function() {
-        if (navigator && navigator.geolocation && navigator.geolocation.getCurrentPosition) {
-          spinnerService.show('bookSpinner');
-          navigator.geolocation.getCurrentPosition(function(position) {
-            vm.location = position.coords.latitude + ',' + position.coords.longitude;
-            Hubs.getHubsByGeoCode(position).then(function(response) {
-              response.data.forEach(function(element) {
-                var point = {lat: element.lat, lng: element.lon, name: element.name, address: element.address};
-                vm.positions.push(point); 
-              })  
-            }).then(function(){
-                NgMap.getMap().then(function(map) {
-                  map.setCenter();
-                });
-                spinnerService.hide('bookSpinner');
-                vm.loading = false;
-              })
-            
-          },
-          function (error) { console.error(error); },
-          {
-              enableHighAccuracy: true,
-              maximumAge: 10000
-          });
-        }
+    
+      if (navigator && navigator.geolocation && navigator.geolocation.getCurrentPosition) {
+        vm.show($ionicLoading);
+        navigator.geolocation.getCurrentPosition(function(position) {
+          vm.location = position.coords.latitude + ',' + position.coords.longitude;
+          Hubs.getHubsByGeoCode(position).then(function(response) {
+            response.data.forEach(function(element) {
+              var point = {lat: element.lat, lng: element.lon, name: element.name, address: element.address};
+              vm.positions.push(point); 
+            })  
+          }).then(function(){
+              NgMap.getMap().then(function(map) {
+                map.setCenter();
+              });
+              vm.hide($ionicLoading);
+              vm.loading = false;
+            })
+          
+        },
+        function (error) { console.error(error); },
+        {
+            enableHighAccuracy: true,
+            maximumAge: 10000
+        });
       }
 
 
