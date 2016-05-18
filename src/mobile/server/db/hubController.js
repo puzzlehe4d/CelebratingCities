@@ -72,6 +72,9 @@ module.exports = {
 	},
 
 	createHub: function(req, res) {
+		if(!req.body.name && req.body.address){
+			req.body.name = req.body.address;
+		}
 		console.log(req.body)
 		Hub.forge(req.body).save().then(function(hub){
 			console.log('succesfully added hub');

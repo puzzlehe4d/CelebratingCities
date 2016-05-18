@@ -20,6 +20,7 @@ angular.module('RideHUB.services', [])
 
   /*----------  create hub in database: POST to /api/hubs  ----------*/
   var createHub = function (hub) {
+    console.log(hub, 'in services')
     return $http({
       method: 'POST',
       url: '/api/hubs',
@@ -27,7 +28,8 @@ angular.module('RideHUB.services', [])
         address: hub.address,
         endPoint: hub.endPoint,
         lat: hub.lat,
-        lon: hub.lon
+        lon: hub.lon,
+        geoRoute: hub.geoRoute
       }
     }).then(function(result){
       return result;
@@ -83,7 +85,7 @@ angular.module('RideHUB.services', [])
   var getGeoCode = function(address) {
     var baseUrl = "https://maps.google.com/maps/api/geocode/json";
     var address = address.split(' ').join('+');
-    console.log(address)
+
     return $http({
       method: 'GET',
       url: baseUrl + '?address=' + address +"&key=AIzaSyCkSG2lTumeJ0awN_qxDoTj2Jenl2u3fUY"

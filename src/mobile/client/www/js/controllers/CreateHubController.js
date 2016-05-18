@@ -23,10 +23,10 @@ angular.module("RideHUB")
 
     vm.createHub = function() {
       console.log('in controller')
-      if(vm.startAt) {
+      if(vm.startAt && vm.arriveAt) {
         Geocoder.getGeoCode(vm.startAt).then(function(response) {
-          var geoRouteStart = response.data.results[0].location.lat + ', ' + response.data.results[0].location.lng;
-          var hub = {
+          var geoRouteStart = response.data.results[0].geometry.location.lat + ', ' + response.data.results[0].geometry.location.lng;
+          vm.hub = {
             address: vm.startAt,
             endPoint: vm.arriveAt,
             lat: response.data.results[0].geometry.location.lat,
@@ -35,13 +35,10 @@ angular.module("RideHUB")
           }
 
           Geocoder.getGeoCode(vm.arriveAt).then(function(response) {
-            var geoRouteEnd = response.data.results[0].location.lat + ', ' + response.data.results[0].location.lng;
-            var geoRoute = hub.geoRoute.concat(', ', geoRouteEnd)
-            var hub = {
-              geoRoute: geoRoute,
-            }
-
-            Hubs.createHub(hub).then(function(response) {
+            var geoRouteEnd = response.data.results[0].geometry.location.lat + ', ' + response.data.results[0].geometry.location.lng;
+            var geoRoute = vm.hub.geoRoute.concat(', ', geoRouteEnd)
+            vm.hub.geoRoute = geoRoute;
+            Hubs.createHub(vm.hub).then(function(response) {
               console.log(response);
               vm.startAt = '';
               vm.arriveAt = '';
@@ -54,7 +51,7 @@ angular.module("RideHUB")
         });
       } else {
         var myPopup = $ionicPopup.show({
-            title: 'Please enter a starting location',
+            title: 'Please enter a starting and drop off location',
             scope: $scope,
             buttons: [
               { text: 'OK',

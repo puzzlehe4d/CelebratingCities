@@ -2,8 +2,11 @@
 <ion-view view-title="Dashboard" class="content-main">
 
   <ion-content>
+  
     <h4>Hubs near your location</h4>
-    <div class='card' id="map" map-lazy-load="https://maps.google.com/maps/api/js" map-lazy-load-params="{{vm.googleMapsUrl}}" >
+    <spinner name="bookSpinner" img-src="../img/loading.gif" on-loaded="vm.init()">
+    </spinner>
+    <div ng-show='!vm.loading' class='card' id="map" map-lazy-load="https://maps.google.com/maps/api/js" map-lazy-load-params="{{vm.googleMapsUrl}}">
 
       <ng-map default-style="true" center="{{vm.location}}" mapTypeControl='false' zoom="15" zoomControl='false' scaleControl='true' styles="{{vm.mapStyle}}" >
         <marker no-watcher="true"
