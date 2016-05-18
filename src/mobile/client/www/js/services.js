@@ -1,6 +1,6 @@
 angular.module('RideHUB.services', [])
 
-.factory('Hubs', function ($http) {
+.factory('Hubs', function ($http, Geocoder) {
   var getAllHubs = function () {
     return $http({
       method: 'GET',
@@ -97,7 +97,6 @@ angular.module('RideHUB.services', [])
       method: 'GET',
       url: baseUrl + '?address=' + address +"&key=AIzaSyCkSG2lTumeJ0awN_qxDoTj2Jenl2u3fUY"
     }).then(function(result) {
-      console.log(result)
       return result;
     }).catch(function(err) {
       return err;
@@ -174,7 +173,7 @@ angular.module('RideHUB.services', [])
 })
 
 .factory('Ride', function($http, Hubs) {
-  var requestRide = function(id) {
+  var getProducts = function(id) {
     return Hubs.getHubById(id).then(function(response){
       return $http({
         method:'GET',
@@ -187,6 +186,7 @@ angular.module('RideHUB.services', [])
     })
   }
 
+  // not used
   var getProductInfo = function(id) {
     return $http({
       method:'GET',
@@ -198,8 +198,37 @@ angular.module('RideHUB.services', [])
     })
   }
 
+  var getEstimate = function(product_id, hub_id) {
+    return $http({
+      method:'GET',
+      url: '/api/uber/estimate/' + product_id + '/' + hub_id
+    }).then(function(result) {
+      return result;
+    }).catch(function(err) {
+      return err;
+    })
+  }
+
+  var requestRide = function(product_id, hub) {
+    var coordinates = hub.geoRoute.split(', ');
+    return $http({
+      method:'POST',
+      url: '/api/uber/request/',
+      data: {
+        product_id: product_id,
+        coordinates: coordinates
+      }
+    }).then(function(result) {
+      return result;
+    }).catch(function(err) {
+      return err;
+    })
+  }
+
   return {
     requestRide: requestRide,
-    getProductInfo: getProductInfo
+    getProductInfo: getProductInfo,
+    getEstimate: getEstimate,
+    getProducts: getProducts
   }
 })

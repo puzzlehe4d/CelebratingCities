@@ -7,20 +7,29 @@
   <ion-content>
 
 	  <div class="button-bar">
-	    <a ng-class="vm.detail.display_name === product.display_name ? 'button button-balanced' : 'button button-stable'" ng-repeat='product in vm.products' ng-click="vm.getProductInfo(product.product_id)">{{product.display_name}}</a>
+	    <a ng-class="vm.detail.display_name === product.display_name ? 'button button-balanced rides' : 'button button-stable rides'" ng-repeat='product in vm.products' ng-click="vm.getProductInfo(product.product_id)">{{product.display_name}}</a>
 	  </div>
 
-	  <div id='requestInformation' class='list'>
-	  	<img src='{{vm.detail.image}}'>
-		  <div class='list-item'>
+	  <div ng-show="vm.detail" id='requestInformation' class='list list-inset'>
+	
+		  <div class='list-item item-icon-left'>
 				{{vm.detail.description}}
 		  </div>
 		  <div class='list-item'>
-		  	Cost per minute: {{vm.detail.price_details.cost_per_minute}}
+		  	Distance: {{vm.detail.distance}}
 		  </div>
 		  <div class='list-item'>
-		  	Cost per distance: {{vm.detail.price_details.cost_per_distance}}
+		  	Estimate: {{vm.detail.estimate}}
 		  </div>
+		  <div class='list-item'>
+		  	Duration: {{vm.detail.duration/60}} minutes
+		  </div>
+
+		  <div class='list-item'>
+		  	SURGE: {{vm.detail.surge_multiplier}}
+		  </div>
+
+		  <a ng-click='vm.requestRide(vm.detail.product_id)' class='button button-balanced button-large'>REQUEST</a>
 	  </div>
   </ion-content>
 </ion-view>

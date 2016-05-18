@@ -13,7 +13,8 @@ module.exports = {
 	    arriveTime: '7:12am',
 	    endPoint: 'West Balitmore (MARC)',
 	    lat: 39.32,
-	    lon: -76.60
+	    lon: -76.60,
+	    geoRoute: '39.32, -76.60, 38.946, -77.34005'
 		},
 		{
 	    name: 'Olive Express',
@@ -24,7 +25,8 @@ module.exports = {
 	    arriveTime: '7:29am',
 	    endPoint: '11400 Commerce Park Dr # 600, Reston, VA 20191',
 	    lat: 38.94631,
-	    lon: -77.34287
+	    lon: -77.34287,
+	    geoRoute: '38.94631, -77.34287, 38.946, -77.34005',
 		},
 		{
 			name: 'Architecture Inc',
@@ -35,7 +37,8 @@ module.exports = {
 			arriveTime: '7:13am',
 			endPoint: '11400 Commerce Park Dr # 600, Reston, VA 20191',
 			lat: 38.94523,
-			lon: -77.33751
+			lon: -77.33751,
+			geoRoute: '38.94523, -77.33751, 38.946, -77.34005'
 		},
 		{
 			name: 'Applie Information Sciences',
@@ -46,7 +49,8 @@ module.exports = {
 			arriveTime: '7:13am',
 			endPoint: '1108 Columbia Road NW Washington D.C. 20009',
 			lat: '38.94617',
-			lon: '-77.34005'
+			lon: '-77.34005',
+			geoRoute: '38.94523, -77.33751, 38.92771, -77.02763',
 		}
 		]
 
@@ -78,12 +82,12 @@ module.exports = {
 		})
 	},
 
-	getHubById: function(req, res) {
-		Hub.forge({id: req.params.hubId}).fetch().then(function (hub) {
+	getHubById: function(hubId, callback) {
+		Hub.forge({id: hubId}).fetch().then(function (hub) {
 			console.log('sucessfully found hub');
-			res.status(200).send(hub);
+			callback(null, hub);
 		}).catch(function(error) {
-			res.status(500).send(error);
+			callback(error, null);
 		});
 	},
 

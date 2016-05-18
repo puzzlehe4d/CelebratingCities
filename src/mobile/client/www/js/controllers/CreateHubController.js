@@ -25,22 +25,33 @@ angular.module("RideHUB")
       console.log('in controller')
       if(vm.startAt) {
         Geocoder.getGeoCode(vm.startAt).then(function(response) {
+          var geoRouteStart = response.data.results[0].location.lat + ', ' + response.data.results[0].location.lng;
           var hub = {
             address: vm.startAt,
             endPoint: vm.arriveAt,
             lat: response.data.results[0].geometry.location.lat,
-            lon: response.data.results[0].geometry.location.lng
+            lon: response.data.results[0].geometry.location.lng,
+            geoRoute: geoRouteStart,
           }
-          Hubs.createHub(hub).then(function(response) {
-            console.log(response);
-            vm.startAt = '';
-            vm.arriveAt = '';
-          }).catch(function(error){
-            console.log('error adding hub', error);
-          })
-        }).catch(function(error) {
-          console.log(error)
-        })
+
+          Geocoder.getGeoCode(vm.arriveAt).then(function(response) {
+            var geoRouteEnd = response.data.results[0].location.lat + ', ' + response.data.results[0].location.lng;
+            var geoRoute = hub.geoRoute.concat(', ', geoRouteEnd)
+            var hub = {
+              geoRoute: geoRoute,
+            }
+
+            Hubs.createHub(hub).then(function(response) {
+              console.log(response);
+              vm.startAt = '';
+              vm.arriveAt = '';
+            }).catch(function(error){
+              console.log('error adding hub', error);
+            })
+          }).catch(function(error) {
+            console.log(error)
+          });
+        });
       } else {
         var myPopup = $ionicPopup.show({
             title: 'Please enter a starting location',

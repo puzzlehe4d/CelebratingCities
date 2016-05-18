@@ -28,7 +28,6 @@ angular.module("RideHUB")
 
 		$scope.$on("$ionicView.beforeEnter", function(event, data){
 		   vm.doRefresh();
-		   console.log("State Params: ", data.stateParams);
 		});
 
 	   
