@@ -15,7 +15,7 @@
 
       vm.show = function() {
         $ionicLoading.show({
-          template: 'Finding nearest hubs... <br><ion-spinner icon="ripple"> </ion-spinner>'
+          template: 'Finding hubs closest to your location...<br><br><ion-spinner icon="lines"> </ion-spinner>'
         });
       };
 
@@ -23,7 +23,11 @@
         $ionicLoading.hide();
       };
       
-      
+      Authorization.isLoggedIn().then(function(response) {
+        if(!response.data) {
+          $location.path("/login");
+        } 
+      });
       if (navigator && navigator.geolocation && navigator.geolocation.getCurrentPosition) {
         vm.show($ionicLoading);
         navigator.geolocation.getCurrentPosition(function(position) {
@@ -49,11 +53,7 @@
         });
       }
 
-      Authorization.isLoggedIn().then(function(response) {
-        if(!response.data) {
-          $location.path("/login");
-        } 
-      });
+      
 
 
 

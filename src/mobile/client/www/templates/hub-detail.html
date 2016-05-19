@@ -17,6 +17,10 @@
       This ride will take<strong>{{vm.hub.duration}} minutes</strong> to travel <strong>{{vm.hub.distance}} miles</strong><br>
       <div id="map" map-lazy-load="https://maps.google.com/maps/api/js" map-lazy-load-params="{{vm.googleMapsUrl}}" >
         <ng-map default-style="true" center="41,-87" zoom="3" styles="{{vm.mapStyle}}">
+          <marker no-watcher="true"
+        ng-repeat="crime in vm.crimes"
+        draggable="false"
+        position="{{crime.location_1.latitude}}, {{crime.location_1.longitude}}" icon="{path:'CIRCLE', scale: 2}"></marker>
          <directions
            draggable="false"
            panel="directions-panel"

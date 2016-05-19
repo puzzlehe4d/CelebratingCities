@@ -27,6 +27,27 @@
 /*  height: 100% !important;*/
 }
 
+div[ng-controller=LayerHeatmapCtrl] {
+  position:relative;
+}
+div[ng-controller=LayerHeatmapCtrl] #panel{
+  position: absolute;
+  top: 5px;
+  left: 50%;
+  margin-left: -180px;
+  z-index: 5;
+  background-color: #fff;
+  padding: 5px;
+  border: 1px solid #999;
+}
+
+.spinner svg{
+  width: 100px;
+  height: 100px;
+  stroke: #444;
+  fill: #444;
+}
+
 .rides {
 	font-size: 8px;
 }

@@ -6,7 +6,7 @@ module.exports = {
 	seedWithData: function () {
 		var hubs = [{
 	    name: 'Giant Food on 33rd',
-	    address: '601 E 33rd Street',
+	    address: '601 E 33rd Street Baltimore, MD',
 	    distance: 0.3,
 	    duration: 6,
 	    leaveTime: '7:06am',
@@ -41,7 +41,7 @@ module.exports = {
 			geoRoute: '38.94523, -77.33751, 38.946, -77.34005'
 		},
 		{
-			name: 'Applie Information Sciences',
+			name: 'Applied Information Sciences',
 			address: '11400 Commerce Park Dr # 600, Reston, VA 20191',
 			distance: 1.1,
 			duration: 12,

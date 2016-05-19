@@ -7,7 +7,7 @@
 
       vm.show = function() {
         $ionicLoading.show({
-          template: '<ion-spinner icon="ripple"></ion-spinner>'
+          template: 'Gathering search results... <br><br><ion-spinner icon="ripple"></ion-spinner>'
         });
       };
 

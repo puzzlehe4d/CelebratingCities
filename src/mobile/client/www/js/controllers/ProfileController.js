@@ -9,7 +9,7 @@ angular.module("RideHUB")
     vm.loading = true;
     vm.show = function() {
       $ionicLoading.show({
-        template: '<ion-spinner icon="ripple"></ion-spinner>'
+        template: 'Gathering your favorites... <br><br><ion-spinner icon="ripple"></ion-spinner>'
       });
     };
 

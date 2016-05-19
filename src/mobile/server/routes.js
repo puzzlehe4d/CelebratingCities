@@ -221,11 +221,15 @@ module.exports = function (app, redisClient) {
 
   app.get('/api/crime', function (request, response) {
     var params = {
-      $select: ['fund_name', 'fiscal_year'],
+      $select: ['location_1', 'description', 'crimetime', 'location' ],
       $limit: 1000
     }
-    socrata.get(function (err, response, data) {
-      console.log(response, data, err)
+    socrata.get(params, function (err, res, data) {
+      if(err) {
+        console.log(err)
+        // response.status(500).send(err);
+      }
+      response.send(data)
     })
   })
 /*=====  End of CRIME API ROUTES  ======*/
