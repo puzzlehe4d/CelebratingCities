@@ -1,10 +1,11 @@
 (function() {
   angular.module("RideHUB")
-    .controller('StartController', function($scope, Geocoder, Hubs, $timeout, $ionicLoading, Authorization, hubSearch, $ionicPopup, $location, NgMap) {
+    .controller('StartController', function($scope, Geocoder, Ride, Hubs, $timeout, $ionicLoading, Authorization, hubSearch, $ionicPopup, $location, NgMap) {
       
       console.log('DashCtrl initialized')
       var vm = this;
       vm.lat;
+      vm.crimes = [];
       vm.lon;
       vm.loading = true;
       vm.positions = [];
@@ -40,6 +41,11 @@
           }).then(function(){
               NgMap.getMap().then(function(map) {
                 map.setCenter();
+                Ride.getCrime().then(function(response) {
+                  vm.crimes = response.data;
+                  console.log(response)
+                  vm.hide($ionicLoading)
+                })
               });
               vm.hide($ionicLoading);
               vm.loading = false;

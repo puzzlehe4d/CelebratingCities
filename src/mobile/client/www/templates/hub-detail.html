@@ -17,10 +17,7 @@
       This ride will take<strong>{{vm.hub.duration}} minutes</strong> to travel <strong>{{vm.hub.distance}} miles</strong><br>
       <div id="map" map-lazy-load="https://maps.google.com/maps/api/js" map-lazy-load-params="{{vm.googleMapsUrl}}" >
         <ng-map default-style="true" center="41,-87" zoom="3" styles="{{vm.mapStyle}}">
-          <marker no-watcher="true"
-        ng-repeat="crime in vm.crimes"
-        draggable="false"
-        position="{{crime.location_1.latitude}}, {{crime.location_1.longitude}}" icon="{path:'CIRCLE', scale: 2}"></marker>
+         
          <directions
            draggable="false"
            panel="directions-panel"
@@ -28,11 +25,15 @@
            origin="{{vm.hub.address}}"
            destination="{{vm.hub.endPoint}}">
          </directions>
+          <marker no-watcher="true"
+        ng-repeat="crime in vm.crimes"
+        draggable="false"
+        position="{{crime.location_1.latitude}}, {{crime.location_1.longitude}}" icon="{path:'CIRCLE', scale: 6, fillColor: 'red',
+          fillOpacity: 0.3, strokeOpacity: 0.4, strokeWeight: 0}"></marker>
         </ng-map>
       </div>
       <button type='submit' ng-click='vm.joinHub()' class='button button-large button-balanced icon-left ion-android-favorite'>ADD TO MY HUBS</button>
       <button type='submit' ng-click='vm.navToRequest()' class='button button-large button-balanced icon-left ion-android-navigate'>REQUEST RIDE</button>
-      <button type='submit' ng-click='vm.test()' class='button button-large button-balanced icon-left ion-android-navigate'>TEST CRIME</button>
     </div>
   </ion-content>
 </ion-view>

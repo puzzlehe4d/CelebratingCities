@@ -29,7 +29,7 @@
       Hubs.getHubById($stateParams.hubId).then(function(response){
         
         vm.hub = response.data;
-        
+        vm.hide($ionicLoading)
       }).catch(function(error) {
         console.log('error getting hub', error);
       })
@@ -37,11 +37,10 @@
       Ride.getCrime().then(function(response) {
         vm.crimes = response.data;
         console.log(response)
-        vm.hide($ionicLoading)
+        
       })
 
       vm.joinHub = function(){
-        console.log('in hub')
         User.addHub($stateParams.hubId).then(function(response){
           $location.path('/tab/profile');
         }).catch(function(error) {

@@ -95,7 +95,7 @@ module.exports = {
 	},
 
 	getHubsByGeoCode: function (req, res) {
-		return Hub.query().where('lat', '<=', Number(req.params.lat) + .5).andWhere('lat', '>=', Number(req.params.lat) - .5).andWhere('lon', '<=', Number(req.params.lon) + .5).andWhere('lon', '>=', Number(req.params.lon) - .5)
+		return Hub.query().where('lat', '<=', Number(req.params.lat) + .05).andWhere('lat', '>=', Number(req.params.lat) - .05).andWhere('lon', '<=', Number(req.params.lon) + .05).andWhere('lon', '>=', Number(req.params.lon) - .05)
 		.then(function(collection) {
 			res.status(200).send(collection);
 		}).catch(function(error) {

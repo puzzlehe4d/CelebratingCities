@@ -16,7 +16,7 @@ module.exports = {
 			refresh_token: req.refresh_token
 		}
 		User.forge({uuid: userObject.uuid}).fetch().then(function(user){
-			if(user) {
+			if(!user) {
 			  User.forge(userObject).save().then(function(user) {
 			    console.log('added user', user.attributes.first_name, user.attributes.last_name, 'to db');
 			    callback(null, user);
@@ -32,6 +32,7 @@ module.exports = {
 	},
 
 	addHub: function(hub, user, callback) {
+		console.log('ehre')
 		User.forge({uuid:user.uuid}).fetch().then(function(user) {
 			if(user) {
 				callback(null, user);

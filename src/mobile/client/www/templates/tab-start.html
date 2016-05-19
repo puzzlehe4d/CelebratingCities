@@ -13,6 +13,11 @@
       draggable="false"
       position="{{p.lat}}, {{p.lng}}"
       title="{{p.address}}"></marker>
+      <marker no-watcher="true"
+        ng-repeat="crime in vm.crimes"
+        draggable="false"
+        position="{{crime.location_1.latitude}}, {{crime.location_1.longitude}}" icon="{path:'CIRCLE', scale: 2, fillColor: 'red',
+          fillOpacity: 0.2, strokeOpacity: 0.4, strokeWeight: 0}"></marker>
       </ng-map>
        
     </div>
@@ -32,42 +37,7 @@
 		    </div>
 	     </div>
 
-       <ion-toggle  ng-model="vm.scheduleRide">
-           Schedule Ride
-       </ion-toggle>
-      <div ng-show="vm.scheduleRide">
-       <div class="form-group vertical">
-         	<div class="input-group">
-   		      <input type="text" placeholder="Enter travel date" name="travelDate" size="40" ng-model="vm.travelDate"/>
-   		    </div>
-   	    </div>
-        <br>
-        <div class="list">
-           <label class="item item-input item-select">
-              <div class="input-label">
-                {{vm.search.timingType}}
-              </div>
-              <select ng-model="vm.search.timingType" ng-init="vm.timingType = 'Arrive'">
-                <option ng-value="Arrive">Arrive</option>
-                <option ng-value="Leave">Leave</option>
-              </select>
-            </label>
-        </div>
-
-        <div class="form-group vertical">
-         <div class="input-group">
-           <input type="text" placeholder="No earlier than..." name="earliestArrival" size="40" ng-model="vm.search.earliestArrival"/>
-         </div>
-       </div>
-       <div class="form-group vertical">
-        <div class="input-group">
-          <input type="text" placeholder="No later than..." name="latestArrival" size="40" ng-model="vm.search.latestArrival"/>
-        </div>
-      </div>
-      <ion-toggle ng-model="vm.search.recurring">
-          Recurring
-      </ion-toggle>
-    </div>
+       
 
 
 	     <div class="form-group vertical">

@@ -66,7 +66,7 @@ module.exports = function (app, redisClient) {
   /*----------  route to check whether current user is authorized  ----------*/
   app.get('/api/auth/isLoggedIn', function(request, response) {
     response.status(200).send(request.session.isLoggedIn);
-  })
+  });
 
   /*----------  route to logout current user  ----------*/
   app.get('/logout', function (request, response) {
@@ -93,8 +93,8 @@ module.exports = function (app, redisClient) {
           console.log(err)
         } 
         response.send(res);
-      })
-    })
+      });
+    });
   });
 
   /*----------  GET: get user profile  ----------*/
@@ -132,7 +132,7 @@ module.exports = function (app, redisClient) {
       } else {
         response.status(200).send(hub);
       }
-    })
+    });
   });
 
   /*----------  GET: get hub by latitude and longitude  ----------*/
@@ -150,13 +150,13 @@ module.exports = function (app, redisClient) {
     var lat = Number(request.params.lat);
     var lon = Number(request.params.lon);
     uber.products.getAllForLocation(lat, lon, function(err, products) {
-          if (err) {
-            console.error(err);
-            response.status(500);
-          } else {
-            response.json(products);
-          }
-      })
+      if (err) {
+        console.error(err);
+        response.status(500);
+      } else {
+        response.json(products);
+      }
+    });
   });
 
   /*----------  GET: get uber product info by id  ----------*/
@@ -168,7 +168,7 @@ module.exports = function (app, redisClient) {
       } else {
         response.json(product);
       }
-    })
+    });
   });
 
   /*----------  GET: get price estimates by uber product id and hub id  ----------*/
@@ -213,7 +213,7 @@ module.exports = function (app, redisClient) {
         response.status(201).send(res);
       }
     });
-  })
+  });
 /*=====  End of UBER RIDE REQUEST ROUTES   ======*/
 /*========================================
 =            CRIME API ROUTES            =
@@ -227,11 +227,11 @@ module.exports = function (app, redisClient) {
     socrata.get(params, function (err, res, data) {
       if(err) {
         console.log(err)
-        // response.status(500).send(err);
+        response.status(500).send(err);
       }
       response.send(data)
-    })
-  })
+    });
+  });
 /*=====  End of CRIME API ROUTES  ======*/
 
 
@@ -250,23 +250,9 @@ module.exports = function (app, redisClient) {
     }).catch(function(err){
       response.status(500).send(err);
       return;
-    })
-  })
+    });
+  });
  
  /*=====  End of DATABASE MANAGEMENT ROUTES  ======*/
-  
-  
-  
-  
-  
-  
- 
-  
-  
-  
-
-  
-  
-  
 
 };
