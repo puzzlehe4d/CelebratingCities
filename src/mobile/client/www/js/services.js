@@ -299,28 +299,45 @@ angular.module('RideHUB.services', [])
     });
   };
 
-  var getCrime = function() {
+
+  /*----------  export functions  ----------*/
+  return {
+    requestRide: requestRide,
+    getProductInfo: getProductInfo,
+    getEstimate: getEstimate,
+    getProducts: getProducts
+  }
+})
+
+/*=====  End of RIDE FACTORY  ======*/
+
+/*=====================================
+=            CRIME FACTORY            =
+=====================================*/
+.factory('Crime', function($http, Geocoder) {
+
+  /*----------  get crime reports for a specfic location  ----------*/
+  var getCrime = function(lat, lon) {
     return $http({
       method:'GET',
-      url: '/api/crime'
+      url: '/api/crime/' + lat +'/' + lon
     }).then(function(result) {
       return result;
     }).catch(function(err) {
       return err;
     });
   };
+
   /*----------  export functions  ----------*/
   return {
-    requestRide: requestRide,
-    getProductInfo: getProductInfo,
-    getEstimate: getEstimate,
-    getProducts: getProducts,
     getCrime: getCrime
   }
+  
 })
 
 
-/*=====  End of RIDE FACTORY  ======*/
+/*=====  End of CRIME FACTORY  ======*/
+
 
 
 

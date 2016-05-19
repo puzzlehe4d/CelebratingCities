@@ -28,7 +28,7 @@
           <marker no-watcher="true"
         ng-repeat="crime in vm.crimes"
         draggable="false"
-        position="{{crime.location_1.latitude}}, {{crime.location_1.longitude}}" icon="{path:'CIRCLE', scale: 6, fillColor: 'red',
+        position="{{crime.lat}}, {{crime.lon}}" icon="{path:'CIRCLE', scale: 6, fillColor: 'red',
           fillOpacity: 0.3, strokeOpacity: 0.4, strokeWeight: 0}"></marker>
         </ng-map>
       </div>

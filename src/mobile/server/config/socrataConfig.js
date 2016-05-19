@@ -9,4 +9,5 @@ var config = {
 
 var soda = new Socrata(config);
 
+
 module.exports = soda;
