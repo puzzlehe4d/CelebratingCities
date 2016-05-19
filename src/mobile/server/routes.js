@@ -1,9 +1,10 @@
 var uber = require('./config/uberAuthConfig.js');
 var userController = require('./db/userController.js');
 var hubController = require('./db/hubController.js');
+var crimeController = require('./db/crimeController.js');
 var db = require('./config/dbConfig.js');
-
-module.exports = function (app) {
+var socrata = require('./config/socrataConfig.js');
+module.exports = function (app, redisClient) {
 
 /*============================================
 =            AUTHORIZATION ROUTES            =
@@ -71,7 +72,7 @@ module.exports = function (app) {
   app.get('/logout', function (request, response) {
     request.session.isLoggedIn = false;
     console.log('logging out...')
-    response.redirect('/');
+    response.redirect('/#/login');
   });
 
 /*=====  End of AUTHORIZATION ROUTES  ======*/
@@ -214,6 +215,20 @@ module.exports = function (app) {
     });
   })
 /*=====  End of UBER RIDE REQUEST ROUTES   ======*/
+/*========================================
+=            CRIME API ROUTES            =
+========================================*/
+
+  app.get('/api/crime', function (request, response) {
+    var params = {
+      $select: ['fund_name', 'fiscal_year'],
+      $limit: 1000
+    }
+    socrata.get(function (err, response, data) {
+      console.log(response, data, err)
+    })
+  })
+/*=====  End of CRIME API ROUTES  ======*/
 
 
 /*==================================================

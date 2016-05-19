@@ -299,14 +299,27 @@ angular.module('RideHUB.services', [])
     });
   };
 
+  var getCrime = function() {
+    return $http({
+      method:'GET',
+      url: '/api/crime'
+    }).then(function(result) {
+      return result;
+    }).catch(function(err) {
+      return err;
+    });
+  };
   /*----------  export functions  ----------*/
   return {
     requestRide: requestRide,
     getProductInfo: getProductInfo,
     getEstimate: getEstimate,
-    getProducts: getProducts
+    getProducts: getProducts,
+    getCrime: getCrime
   }
 })
+
+
 /*=====  End of RIDE FACTORY  ======*/
 
 

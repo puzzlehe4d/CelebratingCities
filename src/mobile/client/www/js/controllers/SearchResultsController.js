@@ -21,21 +21,27 @@
           $location.path("/login");
         } 
       });
-      console.log($stateParams, 'state')
+      
       Geocoder.getGeoCode($stateParams.address).then(function(response) {
         vm.show($ionicLoading);
-        var position = {
-          coords: {
-            latitude: response.data.results[0].geometry.location.lat,
-            longitude: response.data.results[0].geometry.location.lng
+        if(response.data.results.length > 0) {
+          var position = {
+            coords: {
+              latitude: response.data.results[0].geometry.location.lat,
+              longitude: response.data.results[0].geometry.location.lng
+            }
           }
+          vm.hide($ionicLoading);
+          Hubs.getHubsByGeoCode(position).then(function(response){
+            response.data.forEach(function(element) {
+              vm.hubs.push(element);
+              
+            });  
+          })
+        } else {
+          vm.hide($ionicLoading);
         }
-        Hubs.getHubsByGeoCode(position).then(function(response){
-          response.data.forEach(function(element) {
-            vm.hubs.push(element);
-            vm.hide($ionicLoading);
-          });  
-        })
+        
       });
     	// Hubs.getHubsBy().then(function(response){
      //    vm.hubs = response.data;
