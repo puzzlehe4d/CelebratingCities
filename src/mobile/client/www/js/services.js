@@ -20,7 +20,6 @@ angular.module('RideHUB.services', [])
 
   /*----------  create hub in database: POST to /api/hubs  ----------*/
   var createHub = function (hub) {
-    console.log(hub, 'in services')
     return $http({
       method: 'POST',
       url: '/api/hubs',
@@ -96,6 +95,21 @@ angular.module('RideHUB.services', [])
     })
   };
 
+  var checkIfValidAddress = function(address) {
+    var baseUrl = "https://maps.google.com/maps/api/geocode/json";
+    var address = address.split(' ').join('+');
+
+    return $http({
+      method: 'GET',
+      url: baseUrl + '?address=' + address +"&key=AIzaSyCkSG2lTumeJ0awN_qxDoTj2Jenl2u3fUY"
+    }).then(function(result) {
+      console.log(result)
+      return result;
+    }).catch(function(err) {
+      return err;
+    })
+  };
+
   /*----------  get current address from current geo location: GET to google maps api  ----------*/
   var getAddress = function() {
     var baseUrl = "https://maps.google.com/maps/api/geocode/json";
@@ -106,6 +120,7 @@ angular.module('RideHUB.services', [])
           method: "GET",
           url: baseUrl + "?sensor=false&latlng=" + encodeURIComponent(String(coords))
         }).then(function (response) {
+
           try {
             var json = response.data;
             if (json && json.results && json.results.length && json.results[0].formatted_address) {
@@ -150,7 +165,8 @@ angular.module('RideHUB.services', [])
   /*----------  export functions  ----------*/
   return {
     getGeoCode: getGeoCode,
-    getAddress: getAddress
+    getAddress: getAddress,
+    checkIfValidAddress: checkIfValidAddress
   }
 
 })

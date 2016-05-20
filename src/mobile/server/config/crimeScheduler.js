@@ -14,17 +14,11 @@ module.exports = function(redisClient){
 	      			// var loc = element.location_1.latitude + ', ' + element.location_1.longitude;
 	      			var crimeString = String(element.description) + ', ' + String(element.crimetime);
 	      			// currently socrata only pulls data from baltimore
-		      		redisClient.geoadd('baltimore', element.location_1.latitude, element.location_1.longitude, crimeString, function(err, reply) {
+		      		redisClient.geoadd('CRIME', element.location_1.latitude, element.location_1.longitude, crimeString, function(err, reply) {
 		 						if(err) {
 		 							console.log(err);
 		 						} 
 		      		});
-		      		var loc = element.location_1.latitude + ', ' + element.location_1.longitude;
-		      		redisClient.lpush(loc, crimeString, function(err, reply) {
-		 						if(err) {
-		 							console.log(err);
-		 						} 
-		      		});		
 	      		}
 	      	})
 	      }

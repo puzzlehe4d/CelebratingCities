@@ -32,7 +32,6 @@ module.exports = {
 	},
 
 	addHub: function(hub, user, callback) {
-		console.log('ehre')
 		User.forge({uuid:user.uuid}).fetch().then(function(user) {
 			if(user) {
 				callback(null, user);

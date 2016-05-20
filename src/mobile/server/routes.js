@@ -122,7 +122,9 @@ module.exports = function (app, redisClient) {
   app.get('/api/hubs', hubController.getAllHubs);
 
   /*----------  POST: create hub in database  ----------*/
-  app.post('/api/hubs', hubController.createHub);
+  app.post('/api/hubs', function(request, response) {
+    hubController.createHub(request, response, redisClient);
+  });
 
   /*----------  GET: get hub by specifc hubID  ----------*/
   app.get('/api/hubs/:hubId', function(request, response) {
@@ -233,7 +235,7 @@ module.exports = function (app, redisClient) {
   
   app.get('/api/resetDBWithData', function (request, response) {
     db.resetEverythingPromise().then(function(){
-      return hubController.seedWithData();
+      return hubController.seedWithData(redisClient);
     }).then(function() {
       response.status(201).send('successfully reset db with data');
       return;

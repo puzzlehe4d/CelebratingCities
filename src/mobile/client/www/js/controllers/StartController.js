@@ -41,9 +41,8 @@
           }).then(function(){
               NgMap.getMap().then(function(map) {
                 map.setCenter();
-                Crime.getCrime(vm.location.split(', ')[0], vm.location.split(', ')[1]).then(function(response) {
+                Crime.getCrime(vm.location.split(',')[0], vm.location.split(', ')[1]).then(function(response) {
                   vm.crimes = response.data;
-                  console.log(response)
                   vm.hide($ionicLoading)
                 })
               });

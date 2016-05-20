@@ -22,13 +22,14 @@ angular.module("RideHUB")
     });
 
     vm.createHub = function() {
-      console.log('in controller')
       if(vm.startAt && vm.arriveAt) {
         Geocoder.getGeoCode(vm.startAt).then(function(response) {
           var geoRouteStart = response.data.results[0].geometry.location.lat + ', ' + response.data.results[0].geometry.location.lng;
+          var area = response.data.results[0].address_components[2] || 'N/A';
           vm.hub = {
             address: vm.startAt,
             endPoint: vm.arriveAt,
+            area: area,
             lat: response.data.results[0].geometry.location.lat,
             lon: response.data.results[0].geometry.location.lng,
             geoRoute: geoRouteStart,
@@ -39,7 +40,6 @@ angular.module("RideHUB")
             var geoRoute = vm.hub.geoRoute.concat(', ', geoRouteEnd)
             vm.hub.geoRoute = geoRoute;
             Hubs.createHub(vm.hub).then(function(response) {
-              console.log(response);
               vm.startAt = '';
               vm.arriveAt = '';
             }).catch(function(error){

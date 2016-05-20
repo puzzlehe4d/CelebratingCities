@@ -3,12 +3,13 @@ var Hub = require('./hubModel.js');
 
 module.exports = {
 
-	seedWithData: function () {
+	seedWithData: function (redisClient) {
 		var hubs = [{
 	    name: 'Giant Food on 33rd',
 	    address: '601 E 33rd Street Baltimore, MD',
 	    distance: 0.3,
 	    duration: 6,
+	    area: 'Baltimore',
 	    leaveTime: '7:06am',
 	    arriveTime: '7:12am',
 	    endPoint: 'West Balitmore (MARC)',
@@ -21,6 +22,7 @@ module.exports = {
 	    address: '11490 Commerce Park Drive, Reston, VA 20191',
 	    distance: 0.6,
 	    duration: 9,
+	    area: 'Reston',
 	    leaveTime: '7:20am',
 	    arriveTime: '7:29am',
 	    endPoint: '11400 Commerce Park Dr # 600, Reston, VA 20191',
@@ -33,6 +35,7 @@ module.exports = {
 			address: '1902 Campus Commons Dr # 101, Reston, VA 20191',
 			distance: 1.1,
 			duration: 12,
+			area: 'Reston',
 			leaveTime: '7:01am',
 			arriveTime: '7:13am',
 			endPoint: '11400 Commerce Park Dr # 600, Reston, VA 20191',
@@ -45,6 +48,7 @@ module.exports = {
 			address: '11400 Commerce Park Dr # 600, Reston, VA 20191',
 			distance: 1.1,
 			duration: 12,
+			area: 'Reston',
 			leaveTime: '7:01am',
 			arriveTime: '7:13am',
 			endPoint: '1108 Columbia Road NW Washington D.C. 20009',
@@ -55,6 +59,13 @@ module.exports = {
 		]
 
 		hubs.forEach(function(element){
+			var hubString = element.address;
+			redisClient.geoadd('HUB', element.lat, element.lon, hubString, function(err, reply) {
+				if(err) {
+					console.log(err);
+				}
+			});
+
 			Hub.forge(element).save().then(function(hub){
 				console.log('succesfully added hub');
 			}).catch(function(error){
@@ -71,11 +82,18 @@ module.exports = {
 		})
 	},
 
-	createHub: function(req, res) {
+	createHub: function(req, res, redisClient) {
 		if(!req.body.name && req.body.address){
 			req.body.name = req.body.address;
 		}
-		console.log(req.body)
+
+		console.log(req.body.area, 'area')
+		redisClient.geoadd(req.body.area, req.body.lat, req.body.lon, 'Hub', function(err, reply) {
+			if(err) {
+				console.log(err);
+			}
+		});
+
 		Hub.forge(req.body).save().then(function(hub){
 			console.log('succesfully added hub');
 			res.status(201).send(hub);
@@ -83,6 +101,9 @@ module.exports = {
 			console.log('error adding hub', error);
 			res.status(500).send(error);
 		})
+
+		
+
 	},
 
 	getHubById: function(hubId, callback) {
