@@ -45,6 +45,14 @@ angular.module("RideHUB")
             Hubs.createHub(vm.hub).then(function(response) {
               vm.startAt = '';
               vm.arriveAt = '';
+              vm.monday = undefined;
+              vm.tuesday = undefined;
+              vm.wednesday = undefined;
+              vm.thursday = undefined;
+              vm.friday = undefined;
+              vm.saturday = undefined;
+              vm.sunday = undefined;
+
             }).catch(function(error){
               console.log('error adding hub', error);
             })

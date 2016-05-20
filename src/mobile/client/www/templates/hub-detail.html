@@ -14,7 +14,7 @@
       <h4>{{vm.hub.name}}</h4>
       <strong>{{vm.hub.address}}</strong> to <strong>{{vm.hub.endPoint}}</strong><br>
       Departing at <strong>{{vm.hub.leaveTime}}</strong> and arriving at <strong>{{vm.hub.arriveTime}}</strong><br>
-      This ride will take<strong>{{vm.hub.duration}} minutes</strong> to travel <strong>{{vm.hub.distance}} miles</strong><br>
+      This ride will take approximately <strong>{{vm.hub.duration}} minutes</strong> to travel <strong>{{vm.hub.distance}} miles</strong><br>
       <div id="map" map-lazy-load="https://maps.google.com/maps/api/js" map-lazy-load-params="{{vm.googleMapsUrl}}" >
         <ng-map default-style="true" center="41,-87" zoom="3" styles="{{vm.mapStyle}}">
          
