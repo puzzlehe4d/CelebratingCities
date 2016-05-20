@@ -26,7 +26,30 @@
 /*  width: 100% !important;*/
 /*  height: 100% !important;*/
 }
+.item-checkbox {
+	border: 0px !important;
+	padding-left: 40px;
+	padding-right:20px;
+}
 
+.my-element.ng-hide-add, .my-element.ng-hide-remove {
+  /* this is required as of 1.3x to properly
+     apply all styling in a show/hide animation */
+  transition: 0s linear all;
+}
+
+.my-element.ng-hide-add-active,
+.my-element.ng-hide-remove-active {
+  /* the transition is defined in the active class */
+  transition: 1s linear all;
+}
+
+.button-bar > .button:last-child {
+  border-radius: 0px 20px 20px 0px !important;
+}
+.button-bar > .button:first-child {
+    border-radius: 20px 0px 0px 20px !important;
+}
 div[ng-controller=LayerHeatmapCtrl] {
   position:relative;
 }

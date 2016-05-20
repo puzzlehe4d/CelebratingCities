@@ -7,6 +7,27 @@ angular.module("RideHUB")
     vm.hubs;
     vm.profile;
     vm.loading = true;
+
+    vm.doRefresh = function() {
+    	vm.show($ionicLoading);
+      $timeout( function() {
+        User.getProfile().then(function(response) {
+
+        	vm.profile = response.data;
+        	User.getHubs(response.data.uuid).then(function(response){
+    	    	vm.hubs = response.data.hubs;
+    	    	vm.hide($ionicLoading);
+    	    	vm.loading = false;
+        	});
+        });
+
+        //Stop the ion-refresher from spinning
+        $scope.$broadcast('scroll.refreshComplete');
+
+      }, 1000);
+
+    };
+
     vm.show = function() {
       $ionicLoading.show({
         template: 'Gathering your favorites... <br><br><ion-spinner icon="ripple"></ion-spinner>'
@@ -23,22 +44,12 @@ angular.module("RideHUB")
       } 
     });
 
-  	vm.show($ionicLoading);
-    User.getProfile().then(function(response) {
-
-    	vm.profile = response.data;
-    	User.getHubs(response.data.uuid).then(function(response){
-	    	console.log(response.data)
-	    	vm.hubs = response.data.hubs;
-	    	vm.hide($ionicLoading);
-	    	vm.loading = false;
-    	})
-    })
+  	
 
 
-		// $scope.$on("$ionicView.beforeEnter", function(event, data){
-		//    vm.doRefresh();
-		// });
+		$scope.$on("$ionicView.beforeEnter", function(event, data){
+		   vm.doRefresh();
+		});
 
 	   
 

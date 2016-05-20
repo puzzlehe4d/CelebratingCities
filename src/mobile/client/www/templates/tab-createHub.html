@@ -1,5 +1,6 @@
 <ion-view view-title="Account" class="content-main">
   <ion-content class='center'>
+    <h4>Create your own hub!</h4>
     <form ng-submit="vm.createHub()">
 
     	<div class="form-group vertical">
@@ -10,21 +11,54 @@
 	    </div>
 
   		<div class="form-group vertical">
-        	<div class="input-group">
-  		      <input type="text" placeholder="Enter drop off location" name="arriveAt" ng-model="vm.arriveAt"/>
-  		      <button type="button" class="geolocate" ng-click="vm.geolocate('arrive')"><span class="ion-icon ion-android-pin"></span></button>
-  		    </div>
+      	<div class="input-group">
+		      <input type="text" placeholder="Enter drop off location" name="arriveAt" ng-model="vm.arriveAt"/>
+		      <button type="button" class="geolocate" ng-click="vm.geolocate('arrive')"><span class="ion-icon ion-android-pin"></span></button>
+		    </div>
        </div>
+
 
        <div class="form-group vertical">
-        	<div class="input-group">
-  		      <input type="text" placeholder="Enter Time" name="travelDate" size="40" ng-model="search.travelDate"/>
-  		    </div>
+      	<div class="input-group">
+		      <input type="text" placeholder="Enter Time" name="travelTime" size="40" ng-model="vm.travelTime"/>
+		    </div>
        </div>
 
-      <ion-toggle  ng-model="search.recurring">
-        Recurring
-      </ion-toggle>
+      <div class='form-group vertical'>
+        <ion-toggle  ng-model="vm.recurring">
+          Recurring
+        </ion-toggle>
+      </div>
+
+      <div ng-show="!vm.recurring" class="form-group vertical">
+        <div class="input-group">
+          <input type="text" placeholder="Enter Date" name="travelDate" size="40" ng-model="vm.travelDate"/>
+        </div>
+      </div>
+
+      <div ng-show="vm.recurring">
+        <table class='input-group'>
+          <tr>
+            <td class='no-border'><ion-checkbox class='checkbox-balanced' ng-model="vm.monday"></ion-checkbox></td>
+            <td class='no-border'><ion-checkbox class='checkbox-balanced' ng-model="vm.tuesday"></ion-checkbox></td>
+            <td class='no-border'><ion-checkbox class='checkbox-balanced' ng-model="vm.wednesday"></ion-checkbox></td>
+            <td class='no-border'><ion-checkbox class='checkbox-balanced' ng-model="vm.thursday"></ion-checkbox></td>
+            <td class='no-border'><ion-checkbox class='checkbox-balanced' ng-model="vm.friday"></ion-checkbox></td>
+            <td class='no-border'><ion-checkbox class='checkbox-balanced' ng-model="vm.saturday"></ion-checkbox></td>
+            <td class='no-border'><ion-checkbox class='checkbox-balanced' ng-model="vm.sunday"></ion-checkbox></td>
+          </tr>
+          <tr>
+            <td >M</td>
+            <td >Tu</td>
+            <td >W</td>
+            <td >Th</td>
+            <td >F</td>
+            <td >Sa</td>
+            <td >Su</td>
+          </tr>
+        </table>
+      </div>
+
       <button class='button button-block button-balanced' type='sumit'> Create Hub </button>
      
     </form>

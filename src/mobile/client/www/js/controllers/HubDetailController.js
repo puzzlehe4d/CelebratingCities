@@ -1,6 +1,6 @@
 (function() {
   angular.module("RideHUB")
-    .controller('HubDetailController', function($scope, $stateParams, $ionicLoading, Hubs, Authorization, User, Ride, Crime, $location) {
+    .controller('HubDetailController', function($scope, $stateParams, NgMap, $ionicLoading, Hubs, Authorization, User, Ride, Crime, $location) {
         console.log('initialized Hub Detail Controller')
     	var vm = this;
       vm.crimes = [];
@@ -31,10 +31,13 @@
         vm.hub = response.data;
         Crime.getCrime(vm.hub.lat, vm.hub.lon).then(function(response) {
         vm.crimes = response.data;
-        console.log(response)
+        NgMap.getMap().then(function(map) {
+          map.setCenter();
+          vm.hide($ionicLoading)
+        });
         
-      })
-        vm.hide($ionicLoading)
+      });
+        
       }).catch(function(error) {
         console.log('error getting hub', error);
       })

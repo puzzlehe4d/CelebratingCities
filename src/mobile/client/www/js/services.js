@@ -24,6 +24,7 @@ angular.module('RideHUB.services', [])
       method: 'POST',
       url: '/api/hubs',
       data: {
+        recurring: hub.recurring,
         address: hub.address,
         endPoint: hub.endPoint,
         lat: hub.lat,

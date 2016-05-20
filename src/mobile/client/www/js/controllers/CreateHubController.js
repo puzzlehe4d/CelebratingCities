@@ -26,9 +26,12 @@ angular.module("RideHUB")
         Geocoder.getGeoCode(vm.startAt).then(function(response) {
           var geoRouteStart = response.data.results[0].geometry.location.lat + ', ' + response.data.results[0].geometry.location.lng;
           var area = response.data.results[0].address_components[2] || 'N/A';
+
+          var recurring = vm.recurring ? '' + vm.monday + ', ' + vm.tuesday + ', ' + vm.wednesday + ', ' + vm.thursday + ', ' + vm.friday + ', ' + vm.saturday + ', ' + vm.sunday : null
           vm.hub = {
             address: vm.startAt,
             endPoint: vm.arriveAt,
+            recurring: recurring,
             area: area,
             lat: response.data.results[0].geometry.location.lat,
             lon: response.data.results[0].geometry.location.lng,

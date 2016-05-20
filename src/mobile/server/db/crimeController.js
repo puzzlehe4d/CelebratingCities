@@ -1,6 +1,6 @@
 module.exports = {
 	getCrimes: function(req, res, redisClient) {
-		redisClient.georadius('baltimore', Number(req.params.lat), Number(req.params.lon), .4, 'km', 'withcoord', function(err, reply) {
+		redisClient.georadius('CRIME', Number(req.params.lat), Number(req.params.lon), .4, 'km', 'withcoord', function(err, reply) {
 			
 			if(reply) {
 				res.send(reply.map(function(element) {

@@ -47,6 +47,7 @@ var createHubsTable = function () {
     hub.string('name');
     hub.string('address');
     hub.string('area');
+    hub.string('recurring');
     hub.decimal('distance');
     hub.decimal('duration');
     hub.string('leaveTime');

@@ -9,6 +9,7 @@ module.exports = {
 	    address: '601 E 33rd Street Baltimore, MD',
 	    distance: 0.3,
 	    duration: 6,
+	    recurring: null,
 	    area: 'Baltimore',
 	    leaveTime: '7:06am',
 	    arriveTime: '7:12am',
@@ -22,6 +23,7 @@ module.exports = {
 	    address: '11490 Commerce Park Drive, Reston, VA 20191',
 	    distance: 0.6,
 	    duration: 9,
+	    recurring: null,
 	    area: 'Reston',
 	    leaveTime: '7:20am',
 	    arriveTime: '7:29am',
@@ -35,6 +37,7 @@ module.exports = {
 			address: '1902 Campus Commons Dr # 101, Reston, VA 20191',
 			distance: 1.1,
 			duration: 12,
+			recurring: null,
 			area: 'Reston',
 			leaveTime: '7:01am',
 			arriveTime: '7:13am',
@@ -48,6 +51,7 @@ module.exports = {
 			address: '11400 Commerce Park Dr # 600, Reston, VA 20191',
 			distance: 1.1,
 			duration: 12,
+			recurring: 'true, undefined, true, undefined, undefined, undefined, undefined',
 			area: 'Reston',
 			leaveTime: '7:01am',
 			arriveTime: '7:13am',
@@ -87,13 +91,13 @@ module.exports = {
 			req.body.name = req.body.address;
 		}
 
-		console.log(req.body.area, 'area')
-		redisClient.geoadd(req.body.area, req.body.lat, req.body.lon, 'Hub', function(err, reply) {
+		var hubString = req.body.address;
+		redisClient.geoadd('HUB', req.body.lat, req.body.lon, hubString, function(err, reply) {
 			if(err) {
 				console.log(err);
 			}
 		});
-
+		console.log(req.body)
 		Hub.forge(req.body).save().then(function(hub){
 			console.log('succesfully added hub');
 			res.status(201).send(hub);
