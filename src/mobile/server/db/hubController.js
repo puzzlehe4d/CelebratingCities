@@ -11,6 +11,7 @@ module.exports = {
 	    recurring: null,
 	    area: 'Baltimore',
 	    leaveTime: '7:06am',
+	    duration: 8,
 	    endPoint: 'West Balitmore (MARC)',
 	    lat: 39.32,
 	    lon: -76.60,
@@ -23,6 +24,7 @@ module.exports = {
 	    recurring: null,
 	    area: 'Reston',
 	    leaveTime: '7:20am',
+	    duration: 8,
 	    endPoint: '11400 Commerce Park Dr # 600, Reston, VA 20191',
 	    lat: 38.94631,
 	    lon: -77.34287,
@@ -35,6 +37,7 @@ module.exports = {
 			recurring: null,
 			area: 'Reston',
 			leaveTime: '7:01am',
+			duration: 8,
 			endPoint: '11400 Commerce Park Dr # 600, Reston, VA 20191',
 			lat: 38.94523,
 			lon: -77.33751,
@@ -47,6 +50,7 @@ module.exports = {
 			recurring: 'true, undefined, true, undefined, undefined, undefined, undefined',
 			area: 'Reston',
 			leaveTime: '7:01am',
+			duration: 8,
 			endPoint: '1108 Columbia Road NW Washington D.C. 20009',
 			lat: '38.94617',
 			lon: '-77.34005',
@@ -78,25 +82,43 @@ module.exports = {
 		})
 	},
 
-	createHub: function(req, res, redisClient) {
+	createHub: function(req, res, redisClient, uber) {
 		if(!req.body.name && req.body.address){
 			req.body.name = req.body.address;
 		}
 
-		var hubString = req.body.address;
-		redisClient.geoadd('HUB', req.body.lat, req.body.lon, hubString, function(err, reply) {
-			if(err) {
-				console.log(err);
-			}
-		});
-		console.log(req.body)
-		Hub.forge(req.body).save().then(function(hub){
-			console.log('succesfully added hub');
-			res.status(201).send(hub);
-		}).catch(function(error){
-			console.log('error adding hub', error);
-			res.status(500).send(error);
-		})
+		var coords = req.body.geoRoute.split(', ')
+    var start_latitude = coords[0];
+    var start_longitude = coords[1];
+    var end_latitude = coords[2];
+    var end_longitude = coords[3];
+
+    uber.estimates.getPriceForRoute(start_latitude, start_longitude, end_latitude, end_longitude, function(err, estimate) {
+      if(err) {
+        console.log(err)
+        res.status(500).send(err);
+      } else {
+      	if(estimate.prices[0]) {
+        	req.body.duration = Math.floor(estimate.prices[0].duration/60);
+        	req.body.distance = estimate.prices[0].distance;	
+					var hubString = req.body.address;
+					redisClient.geoadd('HUB', req.body.lat, req.body.lon, hubString, function(err, reply) {
+						if(err) {
+							console.log(err);
+						}
+					});
+					console.log(req.body)
+					Hub.forge(req.body).save().then(function(hub){
+						console.log('succesfully added hub');
+						res.status(201).send(hub);
+					}).catch(function(error){
+						console.log('error adding hub', error);
+						res.status(500).send(error);
+					})
+      	}
+      }
+    });
+
 
 		
 

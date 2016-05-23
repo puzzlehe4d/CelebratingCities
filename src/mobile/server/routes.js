@@ -123,7 +123,7 @@ module.exports = function (app, redisClient) {
 
   /*----------  POST: create hub in database  ----------*/
   app.post('/api/hubs', function(request, response) {
-    hubController.createHub(request, response, redisClient);
+    hubController.createHub(request, response, redisClient, uber);
   });
 
   /*----------  GET: get hub by specifc hubID  ----------*/
@@ -192,7 +192,7 @@ module.exports = function (app, redisClient) {
           console.log(err)
           response.status(500).send(err);
         } else {
-          response.json(estimate);
+          response.status(200).json(estimate);
         }
       });
     });
@@ -208,17 +208,25 @@ module.exports = function (app, redisClient) {
       "end_latitude": Number(request.body.coordinates[2]),
       "end_longitude": Number(request.body.coordinates[3])
     }, function (err, res) {
+      console.log(res)
       if (err) {
         console.log('error requesting ride',  err)
         response.status(500).send(err);
       } else {
-        uber.requests.setStatusByID(res.request_id, "accepted", function (err, res) {
-          if(err) {
-            console.log('error mockign status', err);
-          } else {
-            response.status(201).send(res);
-          }
-        });
+        res.driver = 'John Smith';
+        res.eta = 3;
+        res.location = [39.54, -76.32];
+        res.vehicle = 'Toyota Prius';
+        res.surge_multiplier = 2;
+        response.status(201).send(res);
+        // mocking status for request not working
+        // uber.requests.setStatusByID(res.request_id, 'accepted', function (err, res) {
+        //   if(err) {
+        //     console.log('error mockign status', err);
+        //   } else {
+        //     response.status(201).send(res);
+        //   }
+        // });
         
       }
     });

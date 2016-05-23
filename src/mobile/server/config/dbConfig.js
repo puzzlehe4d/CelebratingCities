@@ -50,6 +50,7 @@ var createHubsTable = function () {
     hub.string('recurring');
     hub.decimal('distance');
     hub.string('leaveTime');
+    hub.integer('duration');
     hub.string('endPoint');
     hub.string('lat', undefined, 5);
     hub.decimal('lon', undefined, 5);
