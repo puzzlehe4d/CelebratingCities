@@ -65,8 +65,12 @@ var createHubsTable = function () {
 var createRidesTable = function () {
   return db.knex.schema.createTable('rides', function (ride) {
     ride.increments('id').primary();
-    ride.string('requestId');
+    ride.string('request_id');
+    ride.string('product_id');
+    ride.string('surge_multiplier')
     ride.string('status');
+    ride.string('eta');
+    ride.integer('hub_id');
     ride.string('driver');
     ride.string('vehicle');
     ride.timestamps();
@@ -97,16 +101,6 @@ var createRidesUsersTable = function () {
   });
 };
 
-var createRidesHubsTable = function () {
-  return db.knex.schema.createTable('rides_hubs', function (rides_hubs) {
-    rides_hubs.increments('id').primary();
-    rides_hubs.integer('hub_id');
-    rides_hubs.integer('ride_id');
-    rides_hubs.timestamps();
-  }).then(function (table) {
-    console.log('Created rides_hubs Table');
-  });
-};
 
 db.knex.schema.hasTable('hubs').then(function(exists) {
   if (!exists) {
@@ -138,11 +132,6 @@ db.knex.schema.hasTable('rides_users').then(function(exists) {
   }
 });
 
-db.knex.schema.hasTable('rides_hubs').then(function(exists) {
-  if (!exists) {
-    createRidesHubsTable();
-  }
-});
 
 var resetUsersTable = function () {
   return db.knex.schema.dropTable('users').then(createUsersTable);
@@ -164,9 +153,6 @@ var resetRidesUsersTable = function () {
   return db.knex.schema.dropTable('rides_users').then(createRidesUsersTable);
 };
 
-var resetRidesHubsTable = function () {
-  return db.knex.schema.dropTable('rides_hubs').then(createRidesHubsTable);
-};
 
 // Exposed function that resets the entire database
 db.resetEverything = function (req, res) {
@@ -176,8 +162,6 @@ db.resetEverything = function (req, res) {
     resetRidesTable();
   }).then(function(){
     resetHubsUsersTable();
-  }).then(function(){
-    resetRidesHubsTable();
   }).then(function(){
     resetRidesUsersTable();
   }).then(function() {
@@ -194,8 +178,6 @@ db.resetEverythingPromise = function () {
     return resetHubsUsersTable();
   }).then(function(){
     return resetRidesUsersTable();
-  }).then(function(){
-    return resetRidesHubsTable();
   }).catch(function(e) {
     console.log(e);
   });

@@ -217,6 +217,7 @@ module.exports = function (app, redisClient) {
         response.redirect('/#/login');
       } else {
         res.driver = 'John Smith';
+        res.hub_id = response.body.hub_id;
         res.eta = 3;
         res.location = [39.54, -76.32];
         res.vehicle = 'Toyota Prius';

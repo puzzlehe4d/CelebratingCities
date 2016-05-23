@@ -308,7 +308,8 @@ angular.module('RideHUB.services', [])
       url: '/api/uber/request',
       data: {
         product_id: product_id,
-        coordinates: coordinates
+        coordinates: coordinates,
+        hub_id: hub.id
       }
     }).then(function(result) {
       if(result.data.status === 'accepted') {
@@ -318,6 +319,7 @@ angular.module('RideHUB.services', [])
           data: {
             driver: result.data.driver,
             eta: result.data.eta,
+            hub_id: result.data.hub_id,
             vehicle: result.data.vehicle,
             status: result.data.status,
             surge_multiplier: result.data.surge_multiplier,
