@@ -212,7 +212,14 @@ module.exports = function (app, redisClient) {
         console.log('error requesting ride',  err)
         response.status(500).send(err);
       } else {
-        response.status(201).send(res);
+        uber.requests.setStatusByID(res.request_id, "accepted", function (err, res) {
+          if(err) {
+            console.log('error mockign status', err);
+          } else {
+            response.status(201).send(res);
+          }
+        });
+        
       }
     });
   });
