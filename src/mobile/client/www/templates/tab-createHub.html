@@ -20,7 +20,15 @@
 
        <div class="form-group vertical">
       	<div class="input-group">
-		      <input type="text" placeholder="Leave At" name="travelTime" size="40" ng-model="vm.travelTime"/>
+		      <input type="time" placeholder="Leave At" type="time"
+       [name="string"]
+       [min="string"]
+       [max="string"]
+       [ng-min=""]
+       [ng-max=""]
+       [required="string"]
+       [ng-required="string"]
+       [ng-change="string"] name="leaveTime" size="40" ng-model="vm.leaveTime"/>
 		    </div>
        </div>
 

@@ -23,6 +23,7 @@ if (process.env.DEPLOYED) {
   });
 }
 
+
 var db = require('bookshelf')(knex);
 
 var createUsersTable = function () {
@@ -61,6 +62,19 @@ var createHubsTable = function () {
   });
 };
 
+var createRidesTable = function () {
+  return db.knex.schema.createTable('rides', function (ride) {
+    ride.increments('id').primary();
+    ride.string('requestId');
+    ride.string('status');
+    ride.string('driver');
+    ride.string('vehicle');
+    ride.timestamps();
+  }).then(function (table) {
+    console.log('Created ride Table');
+  });
+};
+
 var createHubsUsersTable = function () {
   return db.knex.schema.createTable('hubs_users', function (hubs_users) {
     hubs_users.increments('id').primary();
@@ -69,6 +83,28 @@ var createHubsUsersTable = function () {
     hubs_users.timestamps();
   }).then(function (table) {
     console.log('Created hubs_users Table');
+  });
+};
+
+var createRidesUsersTable = function () {
+  return db.knex.schema.createTable('rides_users', function (rides_users) {
+    rides_users.increments('id').primary();
+    rides_users.integer('user_id');
+    rides_users.integer('ride_id');
+    rides_users.timestamps();
+  }).then(function (table) {
+    console.log('Created rides_users Table');
+  });
+};
+
+var createRidesHubsTable = function () {
+  return db.knex.schema.createTable('rides_hubs', function (rides_hubs) {
+    rides_hubs.increments('id').primary();
+    rides_hubs.integer('hub_id');
+    rides_hubs.integer('ride_id');
+    rides_hubs.timestamps();
+  }).then(function (table) {
+    console.log('Created rides_hubs Table');
   });
 };
 
@@ -84,18 +120,38 @@ db.knex.schema.hasTable('users').then(function(exists) {
   }
 });
 
+db.knex.schema.hasTable('rides').then(function(exists) {
+  if (!exists) {
+    createRidesTable();
+  }
+});
+
 db.knex.schema.hasTable('hubs_users').then(function(exists) {
   if (!exists) {
     createHubsUsersTable();
   }
 });
 
-// Shortcut function to reset challenges
+db.knex.schema.hasTable('rides_users').then(function(exists) {
+  if (!exists) {
+    createRidesUsersTable();
+  }
+});
+
+db.knex.schema.hasTable('rides_hubs').then(function(exists) {
+  if (!exists) {
+    createRidesHubsTable();
+  }
+});
+
 var resetUsersTable = function () {
   return db.knex.schema.dropTable('users').then(createUsersTable);
 };
 
-// Shortcut function to reset matches
+var resetRidesTable = function () {
+  return db.knex.schema.dropTable('rides').then(createRidesTable);
+};
+
 var resetHubsTable = function () {
   return db.knex.schema.dropTable('hubs').then(createHubsTable);
 };
@@ -104,12 +160,26 @@ var resetHubsUsersTable = function () {
   return db.knex.schema.dropTable('hubs_users').then(createHubsUsersTable);
 };
 
+var resetRidesUsersTable = function () {
+  return db.knex.schema.dropTable('rides_users').then(createRidesUsersTable);
+};
+
+var resetRidesHubsTable = function () {
+  return db.knex.schema.dropTable('rides_hubs').then(createRidesHubsTable);
+};
+
 // Exposed function that resets the entire database
 db.resetEverything = function (req, res) {
   resetUsersTable().then(function() {
     resetHubsTable();
   }).then(function(){
+    resetRidesTable();
+  }).then(function(){
     resetHubsUsersTable();
+  }).then(function(){
+    resetRidesHubsTable();
+  }).then(function(){
+    resetRidesUsersTable();
   }).then(function() {
     res.status(201).end();
   });
@@ -119,7 +189,13 @@ db.resetEverythingPromise = function () {
   return resetUsersTable().then(function() {
     return resetHubsTable();
   }).then(function(){
+    return resetRidesTable();
+  }).then(function(){
     return resetHubsUsersTable();
+  }).then(function(){
+    return resetRidesUsersTable();
+  }).then(function(){
+    return resetRidesHubsTable();
   }).catch(function(e) {
     console.log(e);
   });

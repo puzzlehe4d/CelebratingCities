@@ -1,6 +1,7 @@
 var uber = require('./config/uberAuthConfig.js');
 var userController = require('./db/userController.js');
 var hubController = require('./db/hubController.js');
+var rideController = require('./db/rideController.js');
 var crimeController = require('./db/crimeController.js');
 var db = require('./config/dbConfig.js');
 var socrata = require('./config/socrataConfig.js');
@@ -211,15 +212,18 @@ module.exports = function (app, redisClient) {
       console.log(res)
       if (err) {
         console.log('error requesting ride',  err)
-        response.status(500).send(err);
+        request.session.isLoggedIn = false;
+        console.log('logging out...')
+        response.redirect('/#/login');
       } else {
         res.driver = 'John Smith';
         res.eta = 3;
         res.location = [39.54, -76.32];
         res.vehicle = 'Toyota Prius';
+        res.status = 'accepted';
         res.surge_multiplier = 2;
         response.status(201).send(res);
-        // mocking status for request not working
+        // mocking status for request ::not working::
         // uber.requests.setStatusByID(res.request_id, 'accepted', function (err, res) {
         //   if(err) {
         //     console.log('error mockign status', err);
@@ -231,6 +235,8 @@ module.exports = function (app, redisClient) {
       }
     });
   });
+
+  app.post('/api/uber/rides', rideController.createRide)
 /*=====  End of UBER RIDE REQUEST ROUTES   ======*/
 /*========================================
 =            CRIME API ROUTES            =

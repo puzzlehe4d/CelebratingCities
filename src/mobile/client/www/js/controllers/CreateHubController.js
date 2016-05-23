@@ -30,6 +30,7 @@ angular.module("RideHUB")
           var recurring = vm.recurring ? '' + vm.monday + ', ' + vm.tuesday + ', ' + vm.wednesday + ', ' + vm.thursday + ', ' + vm.friday + ', ' + vm.saturday + ', ' + vm.sunday : null
           vm.hub = {
             address: vm.startAt,
+            leaveTime: vm.leaveTime,
             endPoint: vm.arriveAt,
             recurring: recurring,
             area: area,
@@ -45,6 +46,7 @@ angular.module("RideHUB")
             Hubs.createHub(vm.hub).then(function(response) {
               vm.startAt = '';
               vm.arriveAt = '';
+              vm.leaveTime= '';
               vm.monday = undefined;
               vm.tuesday = undefined;
               vm.wednesday = undefined;

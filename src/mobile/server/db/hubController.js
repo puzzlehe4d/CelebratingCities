@@ -107,7 +107,6 @@ module.exports = {
 							console.log(err);
 						}
 					});
-					console.log(req.body)
 					Hub.forge(req.body).save().then(function(hub){
 						console.log('succesfully added hub');
 						res.status(201).send(hub);

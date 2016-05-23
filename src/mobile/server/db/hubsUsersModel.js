@@ -3,4 +3,4 @@
      tableName: 'hubs_users'
  });
 
- module.exports = db.model('HubUsers', HubsUsers);;
+ module.exports = db.model('HubsUsers', HubsUsers);;

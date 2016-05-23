@@ -6,6 +6,10 @@ var User = db.Model.extend({
   tableName: 'users',
   hubs: function() {
     return this.belongsToMany(Hub).through(HubsUsers);
+  },
+
+  rides: function() {
+  	return this.hasMany(Ride).through(RidesUsers);
   }
 });
  

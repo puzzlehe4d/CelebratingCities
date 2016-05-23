@@ -12,7 +12,8 @@
         <h2>{{hub.name}}</h2>
         <p>{{hub.address}}</p>
         <p>To: <strong>{{hub.endPoint}}</strong></p>
-        <p>Ride: <strong>{{hub.leaveTime}}</strong> - <strong>{{hub.arriveTime}}</strong></p>
+        <p>Leaving at: <strong>{{hub.leaveTime | date: "HH:mm"}}</strong></p>
+        <p>Duration: <strong>{{hub.duration}}</strong> mins</p>
         <i class="icon ion-chevron-right icon-accessory"></i>
 
        <!--  <ion-option-button class="button-assertive" ng-click="remove(hub)">

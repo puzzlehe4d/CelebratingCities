@@ -5,7 +5,7 @@
   </ion-nav-bar>
 
   <ion-content class='center'>
-  	<div class="button-bar">
+  	<div>
 	    <a ng-class="vm.detail.display_name === product.display_name ? 'button button-balanced rides' : 'button button-stable rides'" ng-repeat='product in vm.products' ng-click="vm.getProductInfo(product.product_id)">{{product.display_name}}</a>
 	  </div>
 	  

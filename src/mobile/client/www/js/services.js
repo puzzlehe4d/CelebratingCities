@@ -24,6 +24,7 @@ angular.module('RideHUB.services', [])
       method: 'POST',
       url: '/api/hubs',
       data: {
+        leaveTime: hub.leaveTime,
         recurring: hub.recurring,
         address: hub.address,
         endPoint: hub.endPoint,
@@ -310,7 +311,26 @@ angular.module('RideHUB.services', [])
         coordinates: coordinates
       }
     }).then(function(result) {
-      return result;
+      if(result.data.status === 'accepted') {
+        return $http({
+          method: 'POST',
+          url:'/api/uber/rides',
+          data: {
+            driver: result.data.driver,
+            eta: result.data.eta,
+            vehicle: result.data.vehicle,
+            status: result.data.status,
+            surge_multiplier: result.data.surge_multiplier,
+            product_id: result.data.product_id,
+            request_id: result.data.request_id,
+            location: result.data.location
+          }
+        }).then(function(result){
+          return result;
+        })
+      } else {
+        return result;
+      }
     }).catch(function(err) {
       return err;
     });
