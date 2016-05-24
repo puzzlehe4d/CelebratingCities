@@ -13,7 +13,10 @@
     <div class='hub-detail'>
       <h4>{{vm.hub.name}}</h4>
       <strong>{{vm.hub.address}}</strong> to <strong>{{vm.hub.endPoint}}</strong><br>
-      This hub will be departing at <strong>{{vm.hub.leaveTime | date: "HH:mm"}}</strong> and will take approximately <strong>{{vm.hub.duration}} minutes</strong> to travel <strong>{{vm.hub.distance}} miles</strong><br>
+      This hub will be departing at <strong>{{vm.hub.leaveTime | date: "HH:mm"}}</strong> and will take approximately <strong>{{vm.hub.duration}} minutes</strong> to travel <strong>{{vm.hub.distance}} miles</strong><br><br>
+      Number of users using this hub: {{vm.hub.user_count}}<br>
+      Number of riders actively using this hub: {{vm.hub.rider_count}}
+
       <div id="map" map-lazy-load="https://maps.google.com/maps/api/js" map-lazy-load-params="{{vm.googleMapsUrl}}" >
         <ng-map default-style="true" center="41,-87" zoom="3" styles="{{vm.mapStyle}}">
          
@@ -33,6 +36,7 @@
       </div>
       <button type='submit' ng-click='vm.joinHub()' class='button button-large button-balanced icon-left ion-android-favorite'>ADD TO MY HUBS</button>
       <button type='submit' ng-click='vm.navToRequest()' class='button button-large button-balanced icon-left ion-android-navigate'>REQUEST RIDE</button>
+      <button type='submit' ng-click='vm.navToJoinRide()' class='button button-large button-balanced icon-left ion-android-navigate'>JOIN A RIDE</button>
     </div>
   </ion-content>
 </ion-view>

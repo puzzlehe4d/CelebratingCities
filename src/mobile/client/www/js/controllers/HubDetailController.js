@@ -59,5 +59,11 @@
         }
       }
 
+      vm.navToJoinRide = function(){
+        if(vm.hub){ 
+          $location.path('/tab/start/joinRide/' + vm.hub.id);
+        }
+      }
+
     });
 })();

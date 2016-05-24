@@ -1,5 +1,7 @@
 var User = require('./userModel.js');
 var Hub = require('./hubModel.js');
+var Ride = require('./rideModel.js');
+var HubsUsers = require('./hubsUsersModel.js')
 
 module.exports = {
 
@@ -126,7 +128,18 @@ module.exports = {
 	getHubById: function(hubId, callback) {
 		Hub.forge({id: hubId}).fetch().then(function (hub) {
 			console.log('sucessfully found hub');
-			callback(null, hub);
+			Ride.query().where('hub_id', '=', hub.attributes.id).andWhere('status', '=', 'accepted').then(function(collection) {
+				console.log(collection.length)
+				hub.attributes.rider_count = collection.length;
+				HubsUsers.query().where('hub_id', '=', hub.attributes.id).then(function(collection){
+					hub.attributes.user_count = collection.length;
+					callback(null, hub);
+				}).catch(function(error){
+					callback(error,null);
+				})	
+			}).catch(function(error) {
+				callback(error, null);
+			})
 		}).catch(function(error) {
 			callback(error, null);
 		});

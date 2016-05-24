@@ -63,6 +63,17 @@
                 },
               ]
             });
+          } 
+          else if(response.status === 201 && response.data.status) {
+            var myPopup = $ionicPopup.show({
+              title: 'You are already part of a ride that is in progress!',
+              scope: $scope,
+              buttons: [
+                { text: 'OK',
+                  type: 'button-balanced'
+                },
+              ]
+            }); 
           } else {
             var myPopup = $ionicPopup.show({
               title: 'success!',
@@ -74,6 +85,7 @@
               ]
             }); 
           }
+
         }).catch(function(error) {
           console.log('error making request', error);
         })

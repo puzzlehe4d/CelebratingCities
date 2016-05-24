@@ -71,7 +71,7 @@ var createRidesTable = function () {
     ride.string('surge_multiplier')
     ride.string('status');
     ride.string('eta');
-    ride.integer('hub_id');
+    ride.integer('hub_id').unsigned().references('hubs.id')
     ride.string('driver');
     ride.string('vehicle');
     ride.timestamps();
@@ -117,16 +117,26 @@ db.knex.schema.hasTable('hubs_users').then(function(exists) {
 });
 
 
-var resetUsersAndRidesTable = function () {
+var resetUsersRidesAndHubsTable = function () {
   return db.knex.schema.dropTable('users').then(function(){
     return db.knex.schema.dropTable('rides').then(function(){
-      return createRidesTable().then(createUsersTable);
+      return db.knex.schema.dropTable('hubs').then(function(){
+        return createHubsTable().then(function(){
+          return createRidesTable().then(function(){
+            return createUsersTable();
+          })
+        })
+      })
     })
   });
 };
 
 var resetRidesTable = function () {
   return db.knex.schema.dropTable('rides').then(createRidesTable);
+};
+
+var resetUsersTable = function () {
+  return db.knex.schema.dropTable('users').then(createUsersTable);
 };
 
 var resetHubsTable = function () {
@@ -139,9 +149,7 @@ var resetHubsUsersTable = function () {
 
 // Exposed function that resets the entire database
 db.resetEverything = function (req, res) {
-  resetUsersAndRidesTable().then(function() {
-    resetHubsTable();
-  }).then(function(){
+  resetUsersRidesHubsTable().then(function() {
     resetHubsUsersTable();
   }).then(function() {
     res.status(201).end();
@@ -149,9 +157,7 @@ db.resetEverything = function (req, res) {
 };
 
 db.resetEverythingPromise = function () {
-  return resetUsersAndRidesTable().then(function() {
-    return resetHubsTable();
-  }).then(function(){
+  return resetUsersRidesAndHubsTable().then(function() {
     return resetHubsUsersTable();
   }).catch(function(e) {
     console.log(e);

@@ -55,26 +55,32 @@ module.exports = {
 		}).catch(function(err) {
 			res.status(500).send(err);
 		})
-		// User.forge({uuid: req.params.id}).fetch().then(function(user) {
-		// 	HubsUsers.query({where: {user_id: user.attributes.id}}).fetch().then(function(model){
-		// 		console.log(model, 'model')
-		// 		res.send(model)
-		// 	})
-		// })
+	},
+
+	checkIfUserIsRiding: function (uuid, callback) {
+		User.forge({uuid: uuid}).fetch().then(function(user) {
+			if(user) {
+				if(user.attributes.ride_id) {
+					var result = {
+						status: true,
+						ride_id: user.attributes.ride_id
+					}
+				} else {
+					var result = {
+						status: false,
+						ride_id: null
+					}
+				}
+				callback(null, result)
+			} else {
+				callback(null, 'no user found')
+			}
+		}).catch(function(error) {
+			callback(error, null);
+		})
 	}
 
-	// var getEvents = function(participantId) {  
- //      // return a certain Participant
- //      return new models.Participant()
- //        // with a given participantId
- //        .query({where: {id: participantId}})
- //        // get the related event data
- //        // require: true will throw an error if the query fails
- //        .fetch({withRelated: ['events'], require: true})
- //        .then(function(model) {
- //          return model;
- //        });
- //    };
+
     
 
 

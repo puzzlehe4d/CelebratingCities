@@ -141,6 +141,10 @@ module.exports = function (app, redisClient) {
   /*----------  GET: get hub by latitude and longitude  ----------*/
   app.get('/api/hubs/:lat/:lon', hubController.getHubsByGeoCode);
 
+  /*----------  GET: get current rides for a specific hub  ----------*/
+  
+  app.get('/api/rides/:hub_id', rideController.getRidesByHubId);
+
 /*=====  End of HUB SPECIFIC ROUTES    ======*/
 
 
@@ -202,37 +206,54 @@ module.exports = function (app, redisClient) {
   /*----------  POST: request ride by uber product id + start & end latitude and longitude  ----------*/
   
   app.post('/api/uber/request', function(request, response) {
-    uber.requests.createRequest({
-      "product_id": request.body.product_id,
-      "start_latitude": Number(request.body.coordinates[0]),
-      "start_longitude": Number(request.body.coordinates[1]),
-      "end_latitude": Number(request.body.coordinates[2]),
-      "end_longitude": Number(request.body.coordinates[3])
-    }, function (err, res) {
-      if (err) {
-        console.log('error requesting ride',  err)
-        request.session.isLoggedIn = false;
-        console.log('logging out...')
-        response.redirect('/#/login');
+    uber.user.getProfile(function(err, profile) {
+      if(err) {
+        console.log('error getting profile', err);
+        response.status(500).send(err);
       } else {
-        res.driver = 'John Smith';
-        res.hub_id = request.body.hub_id;
-        res.eta = 3;
-        res.location = [39.54, -76.32];
-        res.vehicle = 'Toyota Prius';
-        res.status = 'accepted';
-        res.surge_multiplier = 2;
-        response.status(201).send(res);
-        
-        // mocking status for request ::not working::
-        // uber.requests.setStatusByID(res.request_id, 'accepted', function (err, res) {
-        //   if(err) {
-        //     console.log('error mockign status', err);
-        //   } else {
-        //     response.status(201).send(res);
-        //   }
-        // });
-        
+        userController.checkIfUserIsRiding(profile.uuid, function(err, status) {
+          if(err) {
+            console.log(err)
+            // response.status(500).send(err);
+          } 
+          if(status.status) {
+            response.status(201).send(status);
+          } else {
+            uber.requests.createRequest({
+              "product_id": request.body.product_id,
+              "start_latitude": Number(request.body.coordinates[0]),
+              "start_longitude": Number(request.body.coordinates[1]),
+              "end_latitude": Number(request.body.coordinates[2]),
+              "end_longitude": Number(request.body.coordinates[3])
+            }, function (err, res) {
+              if (err) {
+                console.log('error requesting ride',  err)
+                request.session.isLoggedIn = false;
+                console.log('logging out...')
+                response.redirect('/#/login');
+              } else {
+                res.driver = 'John Smith';
+                res.hub_id = request.body.hub_id;
+                res.eta = 3;
+                res.location = [39.54, -76.32];
+                res.vehicle = 'Toyota Prius';
+                res.status = 'accepted';
+                res.surge_multiplier = 2;
+                response.status(201).send(res);
+                
+                // mocking status for request ::not working::
+                // uber.requests.setStatusByID(res.request_id, 'accepted', function (err, res) {
+                //   if(err) {
+                //     console.log('error mockign status', err);
+                //   } else {
+                //     response.status(201).send(res);
+                //   }
+                // });
+                
+              }
+            });
+          }
+        })
       }
     });
   });
@@ -244,7 +265,6 @@ module.exports = function (app, redisClient) {
         response.status(500).send(err);
       } else {
         request.body.uuid = profile.uuid;
-        console.log(request.body, 'in routes')
       }
       
       rideController.createRide(request, response, function(err, ride) {

@@ -101,6 +101,17 @@ angular.module('RideHUB', ['ionic', 'RideHUB.services', 'ngMap'])
       }
     })
 
+    .state('tab.ride-join', {
+      url: '/start/joinRide/:hubId',
+      views: {
+        'tab-start': {
+          templateUrl: 'templates/ride-join.html',
+          controller: 'RideJoinController',
+          controllerAs: 'vm'
+        }
+      }
+    })
+
     .state('tab.hub-request', {
       url: '/start/request/:hubId',
       views: {

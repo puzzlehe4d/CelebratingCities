@@ -1,7 +1,7 @@
 var User = require('./userModel.js');
 var Hub = require('./hubModel.js');
 var Ride = require('./rideModel.js');
-
+var HubsUsers = require('./hubsUsersModel.js');
 module.exports = {
 	createRide: function(req, res, callback) {
 		var ride = {
@@ -17,8 +17,12 @@ module.exports = {
 		Ride.forge(ride).save().then(function(ride) {
 			User.forge({uuid: req.body.uuid}).fetch().then(function(user) {
 				if (user) {
+					var response = {
+						status: false,
+						ride_id: null
+					}
 					user.set({ride_id: ride.attributes.id}).save().then(function(user) {
-						callback(null, user);
+						callback(null, response);
 					})
 				} else {
 					callback('user not found', null);
@@ -27,10 +31,16 @@ module.exports = {
 		}).catch(function(err) {
 			callback(err, null);
 		});
-	
+	},
 
+	getRidesByHubId: function(req, res) {
+		console.log('in controller', req.params)
+		Ride.query().where('hub_id', '=', req.params.hub_id).then(function(collection){
+			console.log(collection)
+			res.status(200).send(collection);
+		}).catch(function(error){
+			res.status(500).send(error);
+		})
 	}
-
-
 
 }

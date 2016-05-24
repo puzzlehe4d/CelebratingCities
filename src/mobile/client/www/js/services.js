@@ -63,12 +63,26 @@ angular.module('RideHUB.services', [])
     })
   };
 
+  var getRidesByHubId = function (hub_id) {
+    console.log(hub_id)
+    return $http({
+      method:'GET',
+      url: '/api/rides/' + hub_id
+    }).then(function(result){
+      console.log(result)
+      return result;
+    }).catch(function(error) {
+      return error;
+    })
+  }
+
   /*----------  export functions  ----------*/
   return {
     getAllHubs: getAllHubs,
     createHub: createHub,
     getHubById: getHubById,
-    getHubsByGeoCode: getHubsByGeoCode
+    getHubsByGeoCode: getHubsByGeoCode,
+    getRidesByHubId: getRidesByHubId
   }
 
 })
