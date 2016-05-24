@@ -209,7 +209,6 @@ module.exports = function (app, redisClient) {
       "end_latitude": Number(request.body.coordinates[2]),
       "end_longitude": Number(request.body.coordinates[3])
     }, function (err, res) {
-      console.log(res)
       if (err) {
         console.log('error requesting ride',  err)
         request.session.isLoggedIn = false;
@@ -217,13 +216,14 @@ module.exports = function (app, redisClient) {
         response.redirect('/#/login');
       } else {
         res.driver = 'John Smith';
-        res.hub_id = response.body.hub_id;
+        res.hub_id = request.body.hub_id;
         res.eta = 3;
         res.location = [39.54, -76.32];
         res.vehicle = 'Toyota Prius';
         res.status = 'accepted';
         res.surge_multiplier = 2;
         response.status(201).send(res);
+        
         // mocking status for request ::not working::
         // uber.requests.setStatusByID(res.request_id, 'accepted', function (err, res) {
         //   if(err) {
@@ -237,7 +237,29 @@ module.exports = function (app, redisClient) {
     });
   });
 
-  app.post('/api/uber/rides', rideController.createRide)
+  app.post('/api/uber/rides', function(request, response) {
+    uber.user.getProfile(function(err, profile) {
+      if(err) {
+        console.log('error getting profile', err);
+        response.status(500).send(err);
+      } else {
+        request.body.uuid = profile.uuid;
+        console.log(request.body, 'in routes')
+      }
+      
+      rideController.createRide(request, response, function(err, ride) {
+        if(err) {
+          console.log('error creating ride', err);
+          response.status(500).send(err);
+        }
+        response.status(201).send(ride);
+      })
+      
+    });
+    
+  })
+
+  
 /*=====  End of UBER RIDE REQUEST ROUTES   ======*/
 /*========================================
 =            CRIME API ROUTES            =

@@ -1,7 +1,8 @@
 var db = require('../config/dbConfig');
 db.plugin('registry')
 var Hub = require('../db/hubModel');
-var HubsUsers = require('../db/hubsUsersModel')
+var Ride = require('../db/rideModel');
+var HubsUsers = require('../db/hubsUsersModel');
 var User = db.Model.extend({
   tableName: 'users',
   hubs: function() {
@@ -9,7 +10,7 @@ var User = db.Model.extend({
   },
 
   rides: function() {
-  	return this.hasMany(Ride).through(RidesUsers);
+  	return this.hasOne(Ride);
   }
 });
  

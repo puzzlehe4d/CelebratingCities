@@ -36,6 +36,7 @@ var createUsersTable = function () {
     user.string('rider_id');
     user.string('access_token');
     user.string('refresh_token');
+    user.integer('ride_id').unsigned().references('rides.id');
     user.timestamps();
   }).then(function (table) {
     console.log('Created user Table');
@@ -90,17 +91,6 @@ var createHubsUsersTable = function () {
   });
 };
 
-var createRidesUsersTable = function () {
-  return db.knex.schema.createTable('rides_users', function (rides_users) {
-    rides_users.increments('id').primary();
-    rides_users.integer('user_id');
-    rides_users.integer('ride_id');
-    rides_users.timestamps();
-  }).then(function (table) {
-    console.log('Created rides_users Table');
-  });
-};
-
 
 db.knex.schema.hasTable('hubs').then(function(exists) {
   if (!exists) {
@@ -126,15 +116,13 @@ db.knex.schema.hasTable('hubs_users').then(function(exists) {
   }
 });
 
-db.knex.schema.hasTable('rides_users').then(function(exists) {
-  if (!exists) {
-    createRidesUsersTable();
-  }
-});
 
-
-var resetUsersTable = function () {
-  return db.knex.schema.dropTable('users').then(createUsersTable);
+var resetUsersAndRidesTable = function () {
+  return db.knex.schema.dropTable('users').then(function(){
+    return db.knex.schema.dropTable('rides').then(function(){
+      return createRidesTable().then(createUsersTable);
+    })
+  });
 };
 
 var resetRidesTable = function () {
@@ -149,35 +137,22 @@ var resetHubsUsersTable = function () {
   return db.knex.schema.dropTable('hubs_users').then(createHubsUsersTable);
 };
 
-var resetRidesUsersTable = function () {
-  return db.knex.schema.dropTable('rides_users').then(createRidesUsersTable);
-};
-
-
 // Exposed function that resets the entire database
 db.resetEverything = function (req, res) {
-  resetUsersTable().then(function() {
+  resetUsersAndRidesTable().then(function() {
     resetHubsTable();
   }).then(function(){
-    resetRidesTable();
-  }).then(function(){
     resetHubsUsersTable();
-  }).then(function(){
-    resetRidesUsersTable();
   }).then(function() {
     res.status(201).end();
   });
 };
 
 db.resetEverythingPromise = function () {
-  return resetUsersTable().then(function() {
+  return resetUsersAndRidesTable().then(function() {
     return resetHubsTable();
   }).then(function(){
-    return resetRidesTable();
-  }).then(function(){
     return resetHubsUsersTable();
-  }).then(function(){
-    return resetRidesUsersTable();
   }).catch(function(e) {
     console.log(e);
   });

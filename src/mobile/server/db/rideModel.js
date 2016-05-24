@@ -2,17 +2,15 @@ var db = require('../config/dbConfig');
 db.plugin('registry');
 var User = require('../db/userModel');
 var Hub = require('../db/hubModel');
-var RidesUsers = require('../db/ridesUsersModel');
-
 
 var Ride = db.Model.extend({
   tableName: 'rides',
   users: function() {
-    return this.belongsToMany(User).through(RidesUsers);
+    return this.hasMany(User);
   },
 
   hubs: function () {
-  	return this.belongsTo(Hub)
+  	return this.belongsTo(Hub);
   }
 });
 
