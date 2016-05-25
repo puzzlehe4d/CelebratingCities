@@ -23,11 +23,14 @@ module.exports = function (app, redisClient) {
       picture:'mock picture',
       first_name:'mock first_name',
       last_name:'mock last_name',
-      uuid: request.body.id,
+      uuid: request.body.uuid,
       rider_id:'mock rider_id',
       access_token:'mock access_token',
       refresh_token:'mock access_token'
     }
+
+    process.env.user = request.body.uuid;
+    console.log(process.env)
     userController.addUser(userObject, function(err, res) {
       if(err) {
         console.log(err)
@@ -72,6 +75,7 @@ module.exports = function (app, redisClient) {
   app.get('/logout', function (request, response) {
     request.session.isLoggedIn = false;
     console.log('logging out...')
+    delete process.env.user
     response.redirect('/#/login');
   });
 
@@ -84,17 +88,28 @@ module.exports = function (app, redisClient) {
 
   /*----------  POST: add hub to specfic user  ----------*/
   app.post('/api/user/hubs', function(request, response) {
-    uber.user.getProfile(function(err,res){
-      if(err) {
-        console.log(err)
-      }
-      userController.addHub(request.body, res, function(err, res) {
+    if(!process.env.TESTING) {
+      uber.user.getProfile(function(err,res){
+        if(err) {
+          console.log(err)
+        }
+        userController.addHub(request.body, res.uuid, function(err, res) {
+          if(err) {
+            console.log(err)
+          } 
+          response.status(200).send(res);
+        });
+      })
+    } 
+
+    else if(process.env.TESTING) {
+      userController.addHub(request.body, process.env.user, function(err, res) {
         if(err) {
           console.log(err)
         } 
-        response.send(res);
+        response.status(200).send(res);
       });
-    });
+    }
   });
 
   /*----------  GET: get user profile  ----------*/

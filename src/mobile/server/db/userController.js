@@ -31,8 +31,8 @@ module.exports = {
 		})
 	},
 
-	addHub: function(hub, user, callback) {
-		User.forge({uuid:user.uuid}).fetch().then(function(user) {
+	addHub: function(hub, uuid, callback) {
+		User.forge({uuid: uuid}).fetch().then(function(user) {
 			if(user) {
 				callback(null, user);
 				return user.hubs().attach(hub.id);
