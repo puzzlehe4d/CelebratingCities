@@ -102,7 +102,7 @@ angular.module('RideHUB', ['ionic', 'RideHUB.services', 'ngMap'])
     })
 
     .state('tab.ride-join', {
-      url: '/start/joinRide/:hubId',
+      url: '/joinRide/:hubId',
       views: {
         'tab-start': {
           templateUrl: 'templates/ride-join.html',

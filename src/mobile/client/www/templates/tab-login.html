@@ -1,4 +1,4 @@
-<ion-view view-title="Login" ng-controller="LoginController as vm" class="content-main">
+<ion-view view-title="Login" class="content-main">
 
   <ion-content has-header='true' padding='true' class='center'>
     <div class='row row-center'>
@@ -8,7 +8,10 @@
     </div>
     <div class='row'>
     <div class='col'>
-      <form action="/auth/uber">
+      <form ng-show='!vm.environment.TESTING'action="/auth/uber">
+          <input type="submit" class='button button-block button-balanced' value="Sign in with Uber">
+      </form>
+      <form ng-show='vm.environment.TESTING' ng-submit='vm.fakeLogin()'>
           <input type="submit" class='button button-block button-balanced' value="Sign in with Uber">
       </form>
     </div>

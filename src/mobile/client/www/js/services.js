@@ -206,9 +206,24 @@ angular.module('RideHUB.services', [])
     })
   }
 
+  var authorizeFakeUser = function (id) {
+    return $http({
+      method: 'POST',
+      url: '/auth/uber',
+      data: {
+        uuid: id
+      }
+    }).then(function(result) {
+      return result;
+    }).catch(function(err) {
+      return err;
+    })
+  }
+
   /*----------  export functions  ----------*/
   return {
-    isLoggedIn: isLoggedIn
+    isLoggedIn: isLoggedIn,
+    authorizeFakeUser: authorizeFakeUser
   }
 
 })
@@ -390,6 +405,28 @@ angular.module('RideHUB.services', [])
 
 
 /*=====  End of CRIME FACTORY  ======*/
+/*=======================================
+=            Testing Service            =
+=======================================*/
+
+.factory('Testing', function ($http) {
+  var getProcessEnvironment = function () {
+    return $http({
+      method:'GET',
+      url: '/api/testing'
+    }).then(function(result) {
+      return result;
+    }).catch(function(err) {
+      return err;
+    })
+  }
+
+  return {
+    getProcessEnvironment: getProcessEnvironment
+  }
+})
+
+/*=====  End of Testing Service  ======*/
 
 
 

@@ -13,29 +13,28 @@ module.exports = function (app, redisClient) {
 
   /*----------  Uber OAUTH 2.0 Authentication Route ----------*/
   app.get('/auth/uber', function(request, response) {
-    if(process.env.TEST) {
-      request.session.isLoggedIn = true;
-      var userObject = {
-        picture:'mock picture',
-        first_name:'mock first_name',
-        last_name:'mock last_name',
-        uuid:'mock uuid',
-        rider_id:'mock rider_id',
-        access_token:'mock access_token',
-        refresh_token:'mock access_token'
-      }
-      userController.addUser(userObject, function(err, res) {
-        if(err) {
-          console.log(err)
-        }
-      });
-      response.redirect('/#/tab/start');
-    } else {
-      var url = uber.getAuthorizeUrl(['history','profile', 'request', 'places']);
-      response.redirect(url); 
-    }
+    var url = uber.getAuthorizeUrl(['history','profile', 'request', 'places']);
+    response.redirect(url); 
   });
 
+  app.post('/auth/uber', function(request, response) {
+    request.session.isLoggedIn = true;
+    var userObject = {
+      picture:'mock picture',
+      first_name:'mock first_name',
+      last_name:'mock last_name',
+      uuid: request.body.id,
+      rider_id:'mock rider_id',
+      access_token:'mock access_token',
+      refresh_token:'mock access_token'
+    }
+    userController.addUser(userObject, function(err, res) {
+      if(err) {
+        console.log(err)
+      }
+    });
+    response.send({redirect: '/#/tab/start'});
+  })
   /*----------  Uber OAUTH 2.0 callback route  ----------*/
   app.get('/auth/uber/callback', function(request, response) {
     uber.authorization({
@@ -239,17 +238,7 @@ module.exports = function (app, redisClient) {
                 res.vehicle = 'Toyota Prius';
                 res.status = 'accepted';
                 res.surge_multiplier = 2;
-                response.status(201).send(res);
-                
-                // mocking status for request ::not working::
-                // uber.requests.setStatusByID(res.request_id, 'accepted', function (err, res) {
-                //   if(err) {
-                //     console.log('error mockign status', err);
-                //   } else {
-                //     response.status(201).send(res);
-                //   }
-                // });
-                
+                response.status(201).send(res);                
               }
             });
           }
@@ -310,5 +299,17 @@ module.exports = function (app, redisClient) {
   });
  
  /*=====  End of DATABASE MANAGEMENT ROUTES  ======*/
+
+/*=================================================
+=            TESTING ENVIROMENT ROUTES            =
+=================================================*/
+/*----------  GET: route that returns process env  ----------*/
+
+  app.get('/api/testing', function (request, response) {
+    response.status(200).send(process.env)
+  })
+
+
+/*=====  End of TESTING ENVIROMENT ROUTES  ======*/
 
 };

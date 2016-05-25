@@ -61,7 +61,7 @@
 
       vm.navToJoinRide = function(){
         if(vm.hub){ 
-          $location.path('/tab/start/joinRide/' + vm.hub.id);
+          $location.path('/tab/joinRide/' + vm.hub.id);
         }
       }
 
