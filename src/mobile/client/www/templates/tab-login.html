@@ -8,7 +8,7 @@
     </div>
     <div class='row'>
     <div class='col'>
-      <form ng-show='!vm.environment.TESTING'action="/auth/uber">
+      <form ng-show='!vm.environment.TESTING' action="/auth/uber">
           <input type="submit" class='button button-block button-balanced' value="Sign in with Uber">
       </form>
       <form ng-show='vm.environment.TESTING' ng-submit='vm.fakeLogin()'>

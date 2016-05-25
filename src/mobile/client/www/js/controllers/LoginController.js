@@ -11,7 +11,7 @@
    		vm.fakeLogin = function () {
    			var myPopup = $ionicPopup.show({
  			    template: '<input ng-model="data.id">',
- 			    title: 'enter unique id for testing environment',
+ 			    title: 'You have started server in TESTING MODE -- your default location will be somewhere in Baltimore, MD. Please enter unique id for testing environment',
  			    subTitle: 'if testing multiple users, be sure to use a different id for each login',
  			    scope: $scope,
  			    buttons: [
