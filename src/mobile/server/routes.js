@@ -245,6 +245,7 @@ module.exports = function (app, redisClient) {
         if(isRiding.status) {
           response.status(201).send(isRiding);
         } else {
+          mockData.uberData.requests.hub_id = request.body.hub_id;
           response.status(201).send(mockData.uberData.requests);  
         }
       })
