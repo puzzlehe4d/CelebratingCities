@@ -7,8 +7,9 @@ WORKDIR app
 # TODO: ADD all the application code into /app
 ADD . /app
 
+WORKDIR src/mobile
 # TODO: RUN `npm install`
 RUN npm install
 
-EXPOSE 8000 
-CMD ["npm", "start"] 
+EXPOSE 3000
+CMD ["node", "server/server.js"] 

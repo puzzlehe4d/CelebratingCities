@@ -25,6 +25,14 @@ angular.module("RideHUB")
     vm.hide = function(){
       $ionicLoading.hide();
     };
+
+    vm.Authorize = function () {
+    	Authorization.isLoggedIn().then(function(response) {
+    	  if(!response.data) {
+    	    $location.path("/login");
+    	  } 
+    	});
+    }
     
     vm.getHubs = function(uuid){
     	User.getHubs(uuid).then(function(response){
@@ -55,12 +63,7 @@ angular.module("RideHUB")
     /*======================================
     =            Init functions            =
     ======================================*/
-    // check if user is logged in; if not, navigate to login
-    Authorization.isLoggedIn().then(function(response) {
-      if(!response.data) {
-        $location.path("/login");
-      } 
-    });
+    vm.Authorize();
 
 		$scope.$on("$ionicView.beforeEnter", function(event, data){
 		   vm.doRefresh();

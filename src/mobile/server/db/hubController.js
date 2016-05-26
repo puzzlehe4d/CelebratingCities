@@ -7,30 +7,30 @@ module.exports = {
 
 	seedWithData: function (redisClient) {
 		var hubs = [{
-	    name: 'Giant Food on 33rd',
-	    address: '601 E 33rd Street Baltimore, MD',
+	    name: 'Baltimore Penn Station',
+	    address: '1500 N charles st baltimore md 21201',
 	    distance: 0.3,
 	    recurring: null,
 	    area: 'Baltimore',
 	    leaveTime: '7:06am',
 	    duration: 5,
 	    endPoint: 'West Balitmore (MARC)',
-	    lat: 39.3278140,
-	    lon: -76.6079990,
-	    geoRoute: '39.3278140, -76.6079990, 38.946, -77.34005'
+	    lat: 39.3074290,
+	    lon: -76.6157150,
+	    geoRoute: '39.3074290, -76.6157150, 38.946, -77.34005'
 		},
 		{
-	    name: 'Thai Restaraunt',
-	    address: '601 E 33rd St, Baltimore, MD 21218, USA',
+	    name: 'Avenue Market',
+	    address: ' 1700 Pennsylvania Ave, Baltimore, MD 21217',
 	    distance: 0.6,
 	    recurring: null,
-	    area: 'Reston',
+	    area: 'Baltimore',
 	    leaveTime: '7:20am',
 	    duration: 3,
 	    endPoint: '601 E 33rd Street Baltimore, MD',
-	    lat: 39.3290174,
-	    lon: -76.6096083,
-	    geoRoute: '39.3290174, -76.6096083, 39.3278140, -76.6079990',
+	    lat: 39.3036560,
+	    lon: -76.6357120,
+	    geoRoute: '39.3036560, -76.6357120, 39.3278140, -76.6079990',
 		},
 		{
 			name: 'Architecture Inc',

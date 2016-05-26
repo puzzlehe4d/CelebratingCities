@@ -209,7 +209,7 @@ angular.module('RideHUB.services', [])
   var authorizeFakeUser = function (id) {
     return $http({
       method: 'POST',
-      url: '/auth/uber',
+      url: '/mock/auth/uber',
       data: {
         uuid: id
       }

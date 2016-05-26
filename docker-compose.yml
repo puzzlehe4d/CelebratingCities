@@ -1,4 +1,4 @@
-qplayer:
+ridehub:
   build: .
   environment:
     sandbox: "true"

@@ -21,6 +21,7 @@
     "pg": "^4.4.3",
     "pg-copy-streams": "^0.3.0",
     "protractor": "^3.3.0",
+    "randomstring": "^1.1.5",
     "redis": "^2.6.0-2"
   },
   "devDependencies": {

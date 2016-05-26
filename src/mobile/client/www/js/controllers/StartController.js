@@ -32,6 +32,14 @@
       $ionicLoading.hide();
     };
 
+    vm.Authorize = function() {
+      Authorization.isLoggedIn().then(function(response) {
+        if(!response.data) {
+          $location.path("/tab/login");
+        } 
+      });
+    }
+
     vm.getHubsByGeoCode = function(position) {
       Hubs.getHubsByGeoCode(position).then(function(response) {
         console.log(response)
@@ -42,7 +50,8 @@
       }).then(function(){
         NgMap.getMap().then(function(map) {
           map.setCenter();
-          Crime.getCrime(vm.location.split(',')[0], vm.location.split(',')[1]).then(function(response) {
+          var locationArray = vm.location.split(',');
+          Crime.getCrime(locationArray[0], locationArray[1]).then(function(response) {
             vm.crimes = response.data;
             vm.hide($ionicLoading)
           })
@@ -94,12 +103,8 @@
     /*======================================
     =            Init functions            =
     ======================================*/
-    Authorization.isLoggedIn().then(function(response) {
-      if(!response.data) {
-        $location.path("/tab/login");
-      } 
-    });
-
+    
+    vm.Authorize();
     Testing.getProcessEnvironment().then(function(response) {
       vm.show($ionicLoading);
       vm.environment = response.data;

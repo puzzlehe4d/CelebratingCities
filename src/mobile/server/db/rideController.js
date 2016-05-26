@@ -34,9 +34,7 @@ module.exports = {
 	},
 
 	getRidesByHubId: function(req, res) {
-		console.log('in controller', req.params)
 		Ride.query().where('hub_id', '=', req.params.hub_id).then(function(collection){
-			console.log(collection)
 			res.status(200).send(collection);
 		}).catch(function(error){
 			res.status(500).send(error);

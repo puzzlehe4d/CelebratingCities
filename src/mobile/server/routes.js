@@ -4,6 +4,7 @@ var hubController = require('./db/hubController.js');
 var rideController = require('./db/rideController.js');
 var crimeController = require('./db/crimeController.js');
 var db = require('./config/dbConfig.js');
+var mockData = require('./config/mockData.js');
 var socrata = require('./config/socrataConfig.js');
 module.exports = function (app, redisClient) {
 
@@ -17,7 +18,8 @@ module.exports = function (app, redisClient) {
     response.redirect(url); 
   });
 
-  app.post('/auth/uber', function(request, response) {
+  /*----------  POST: post for creating fake user for testing  ----------*/
+  app.post('/mock/auth/uber', function(request, response) {
     request.session.isLoggedIn = true;
     var userObject = {
       picture:'mock picture',
@@ -28,7 +30,6 @@ module.exports = function (app, redisClient) {
       access_token:'mock access_token',
       refresh_token:'mock access_token'
     }
-
     process.env.user = request.body.uuid;
     console.log(process.env)
     userController.addUser(userObject, function(err, res) {
@@ -56,10 +57,8 @@ module.exports = function (app, redisClient) {
             if(err) {
               console.log(err)
             }
-
           });
-        });
-       
+        }); 
         // redirect the user back to app
         response.redirect('/#/tab/start');
       }
@@ -81,6 +80,8 @@ module.exports = function (app, redisClient) {
 
 /*=====  End of AUTHORIZATION ROUTES  ======*/
  
+
+
 
 /*=====================================
 =        USER SPECIFIC ROUTES         =
@@ -129,6 +130,8 @@ module.exports = function (app, redisClient) {
 
 
 
+
+
 /*============================================
 =            HUB SPECIFIC ROUTES            =
 ============================================*/
@@ -162,6 +165,8 @@ module.exports = function (app, redisClient) {
 /*=====  End of HUB SPECIFIC ROUTES    ======*/
 
 
+
+
 /*================================================
 =            UBER RIDE REQUEST ROUTES            =
 ================================================*/
@@ -170,14 +175,21 @@ module.exports = function (app, redisClient) {
   app.get('/api/uber/products/:lat/:lon', function(request, response) {
     var lat = Number(request.params.lat);
     var lon = Number(request.params.lon);
-    uber.products.getAllForLocation(lat, lon, function(err, products) {
-      if (err) {
-        console.error(err);
-        response.status(500);
-      } else {
-        response.json(products);
-      }
-    });
+
+    if(process.env.TESTING) {
+      response.json(mockData.uberData)
+    } else {
+      uber.products.getAllForLocation(lat, lon, function(err, products) {
+        console.log(products)
+        if (err) {
+          console.error(err);
+          response.status(500);
+        } else {
+          console.log(products)
+          response.json(products);
+        }
+      });
+    }
   });
 
   /*----------  GET: get uber product info by id  ----------*/
@@ -205,72 +217,85 @@ module.exports = function (app, redisClient) {
       var start_longitude = coords[1];
       var end_latitude = coords[2];
       var end_longitude = coords[3];
-
-      uber.estimates.getPriceForRoute(start_latitude, start_longitude, end_latitude, end_longitude, function(err, estimate) {
-        if(err) {
-          console.log(err)
-          response.status(500).send(err);
-        } else {
-          response.status(200).json(estimate);
-        }
-      });
+      if(process.env.TESTING) {
+        response.status(200).json(mockData.uberData);
+      } else {
+        uber.estimates.getPriceForRoute(start_latitude, start_longitude, end_latitude, end_longitude, function(err, estimate) {
+          if(err) {
+            console.log(err)
+            response.status(500).send(err);
+          } else {
+            response.status(200).json(estimate);
+          }
+        }); 
+      }
     });
   });
 
   /*----------  POST: request ride by uber product id + start & end latitude and longitude  ----------*/
   
   app.post('/api/uber/request', function(request, response) {
-    uber.user.getProfile(function(err, profile) {
-      if(err) {
-        console.log('error getting profile', err);
-        response.status(500).send(err);
-      } else {
-        userController.checkIfUserIsRiding(profile.uuid, function(err, status) {
-          if(err) {
-            console.log(err)
-            // response.status(500).send(err);
-          } 
-          if(status.status) {
-            response.status(201).send(status);
-          } else {
-            uber.requests.createRequest({
-              "product_id": request.body.product_id,
-              "start_latitude": Number(request.body.coordinates[0]),
-              "start_longitude": Number(request.body.coordinates[1]),
-              "end_latitude": Number(request.body.coordinates[2]),
-              "end_longitude": Number(request.body.coordinates[3])
-            }, function (err, res) {
-              if (err) {
-                console.log('error requesting ride',  err)
-                request.session.isLoggedIn = false;
-                console.log('logging out...')
-                response.redirect('/#/login');
-              } else {
-                res.driver = 'John Smith';
-                res.hub_id = request.body.hub_id;
-                res.eta = 3;
-                res.location = [39.54, -76.32];
-                res.vehicle = 'Toyota Prius';
-                res.status = 'accepted';
-                res.surge_multiplier = 2;
-                response.status(201).send(res);                
-              }
-            });
-          }
-        })
-      }
-    });
+    if(process.env.TESTING) {
+      console.log(process.env.user)
+      userController.checkIfUserIsRiding(process.env.user, function(err, isRiding) {
+        if(err) {
+          console.log(err)
+          // response.status(500).send(err);
+        } 
+        if(isRiding.status) {
+          response.status(201).send(isRiding);
+        } else {
+          response.status(201).send(mockData.uberData.requests);  
+        }
+      })
+    } else {
+      uber.user.getProfile(function(err, profile) {
+        if(err) {
+          console.log('error getting profile', err);
+          response.status(500).send(err);
+        } 
+        else if (profile) {
+          userController.checkIfUserIsRiding(profile.uuid, function(err, isRiding) {
+            if(err) {
+              console.log(err)
+              // response.status(500).send(err);
+            } 
+            if(isRiding.status) {
+              response.status(201).send(isRiding);
+            } else {
+              uber.requests.createRequest({
+                "product_id": request.body.product_id,
+                "start_latitude": Number(request.body.coordinates[0]),
+                "start_longitude": Number(request.body.coordinates[1]),
+                "end_latitude": Number(request.body.coordinates[2]),
+                "end_longitude": Number(request.body.coordinates[3])
+              }, function (err, res) {
+                if (err) {
+                  console.log('error requesting ride',  err)
+                  request.session.isLoggedIn = false;
+                  console.log('logging out...')
+                  response.redirect('/#/login');
+                } else {
+                  res.driver = 'John Smith';
+                  res.hub_id = request.body.hub_id;
+                  res.eta = 3;
+                  res.location = [39.54, -76.32];
+                  res.vehicle = 'Toyota Prius';
+                  res.status = 'accepted';
+                  // res.surge_multiplier = 2;
+                  response.status(201).send(res);                
+                }
+              });
+            }
+          })
+        }
+      });
+    }
   });
 
   app.post('/api/uber/rides', function(request, response) {
-    uber.user.getProfile(function(err, profile) {
-      if(err) {
-        console.log('error getting profile', err);
-        response.status(500).send(err);
-      } else {
-        request.body.uuid = profile.uuid;
-      }
-      
+    if(process.env.TESTING) {
+      request.body.uuid = process.env.user;
       rideController.createRide(request, response, function(err, ride) {
         if(err) {
           console.log('error creating ride', err);
@@ -278,13 +303,30 @@ module.exports = function (app, redisClient) {
         }
         response.status(201).send(ride);
       })
-      
-    });
-    
+    } else {
+      uber.user.getProfile(function(err, profile) {
+        if(err) {
+          console.log('error getting profile', err);
+          response.status(500).send(err);
+        } else {
+          request.body.uuid = profile.uuid;
+          rideController.createRide(request, response, function(err, ride) {
+            if(err) {
+              console.log('error creating ride', err);
+              response.status(500).send(err);
+            }
+            response.status(201).send(ride);
+          })
+        }
+      });
+    }
   })
-
-  
 /*=====  End of UBER RIDE REQUEST ROUTES   ======*/
+
+
+
+
+
 /*========================================
 =            CRIME API ROUTES            =
 ========================================*/
@@ -293,6 +335,9 @@ module.exports = function (app, redisClient) {
     crimeController.getCrimes(request, response, redisClient);
   });
 /*=====  End of CRIME API ROUTES  ======*/
+
+
+
 
 
 /*==================================================
@@ -315,15 +360,16 @@ module.exports = function (app, redisClient) {
  
  /*=====  End of DATABASE MANAGEMENT ROUTES  ======*/
 
+
+
+
 /*=================================================
 =            TESTING ENVIROMENT ROUTES            =
 =================================================*/
 /*----------  GET: route that returns process env  ----------*/
-
   app.get('/api/testing', function (request, response) {
     response.status(200).send(process.env)
   })
-
 
 /*=====  End of TESTING ENVIROMENT ROUTES  ======*/
 
