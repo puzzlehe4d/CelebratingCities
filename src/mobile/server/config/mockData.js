@@ -2,7 +2,8 @@ var randomstring = require("randomstring");
 var carList = ['Toyota Prius', 'Toyota Camry', 'Nissan Versa', 'Toyota Highlander', 'Honda CR-V', 'Ford Escape', 'Ford Focus'];
 var drivers = ['John Smith', 'Jane Doe', 'John Doe', 'Maddy Johnson', 'Paul Williams', 'Trevor Anderson'];
 module.exports = {
-  uberData: {
+  uberData: function () {
+    return {
     products:
        [ { capacity: 4,
            product_id: '73070b26-7fb0-44b6-a8b5-789bba6cc96c',
@@ -93,6 +94,8 @@ module.exports = {
       status: 'accepted',
       shared: false  
     } 
+  }
+
   }
 }
       

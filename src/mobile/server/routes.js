@@ -177,7 +177,8 @@ module.exports = function (app, redisClient) {
     var lon = Number(request.params.lon);
 
     if(process.env.TESTING) {
-      response.json(mockData.uberData)
+      var data = new mockData.uberData
+      response.json(data)
     } else {
       uber.products.getAllForLocation(lat, lon, function(err, products) {
         console.log(products)
@@ -185,7 +186,6 @@ module.exports = function (app, redisClient) {
           console.error(err);
           response.status(500);
         } else {
-          console.log(products)
           response.json(products);
         }
       });
@@ -218,7 +218,8 @@ module.exports = function (app, redisClient) {
       var end_latitude = coords[2];
       var end_longitude = coords[3];
       if(process.env.TESTING) {
-        response.status(200).json(mockData.uberData);
+        var data = new mockData.uberData;
+        response.status(200).json(data);
       } else {
         uber.estimates.getPriceForRoute(start_latitude, start_longitude, end_latitude, end_longitude, function(err, estimate) {
           if(err) {
@@ -245,8 +246,9 @@ module.exports = function (app, redisClient) {
         if(isRiding.status) {
           response.status(201).send(isRiding);
         } else {
-          mockData.uberData.requests.hub_id = request.body.hub_id;
-          response.status(201).send(mockData.uberData.requests);  
+          var data = new mockData.uberData;
+          data.requests.hub_id = request.body.hub_id;
+          response.status(201).send(data.requests);  
         }
       })
     } else {

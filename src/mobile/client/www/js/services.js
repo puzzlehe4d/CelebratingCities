@@ -341,6 +341,7 @@ angular.module('RideHUB.services', [])
         hub_id: hub.id
       }
     }).then(function(result) {
+      console.log(result)
       if(result.data.status === 'accepted') {
         return $http({
           method: 'POST',
