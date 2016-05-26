@@ -1,6 +1,6 @@
 (function() {
   angular.module("RideHUB")
-  .controller('HubRequestController', function($scope, $stateParams, Hubs, Authorization, $ionicPopup, User, Ride, $location) {
+  .controller('HubRequestController', function($scope, $stateParams, Hubs, Authorization, $ionicPopup, $location, User, Ride, $location) {
     console.log('initialized Hub Detail Controller')
     var vm = this;
 
@@ -44,7 +44,7 @@
             ]
           });
         } 
-        else if(response.status === 201 && response.data.status) {
+        else if(response.status === 200 && response.data.status) {
           var myPopup = $ionicPopup.show({
             title: 'You are already part of a ride that is in progress!',
             scope: $scope,
@@ -54,7 +54,8 @@
               },
             ]
           }); 
-        } else {
+        } 
+        else if (response.status === 201) {
           var myPopup = $ionicPopup.show({
             title: 'success!',
             scope: $scope,
@@ -63,7 +64,9 @@
                 type: 'button-balanced'
               },
             ]
-          }); 
+          });
+          $location.path('/tab/profile');
+
         }
       }).catch(function(error) {
         console.log('error making request', error);

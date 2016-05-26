@@ -1,6 +1,7 @@
 var User = require('./userModel.js');
 var Hub = require('./hubModel.js');
 var HubsUsers = require('./hubsUsersModel.js');
+var Ride = require('./rideModel.js');
 
 module.exports = {
 
@@ -76,6 +77,31 @@ module.exports = {
 				callback(null, 'no user found')
 			}
 		}).catch(function(error) {
+			callback(error, null);
+		})
+	},
+
+	getRide: function (uuid, callback) {
+		User.forge({uuid: uuid}).fetch().then(function(user){
+			if(user && user.attributes.ride_id) {
+				callback(null, user.attributes.ride_id);
+				// Ride.forge({id: user.attributes.ride_id}).then(function(ride) {
+				// 	console.log('ride', ride)
+				// 	// if(ride) {
+				// 	// 	res.status(200).send(ride);
+				// 	// } else {
+				// 	// 	res.status(404).send('ride not found');
+				// 	// }
+				// }).catch(function(error) {
+				// 	console.log('error fetching ride');
+				// 	res.status(500).send('error getting ride');
+				// })
+			} else {
+				console.log('user not found')
+				callback(null, null);
+			}
+		}).catch(function(error) {
+			console.log('error finding user')
 			callback(error, null);
 		})
 	}

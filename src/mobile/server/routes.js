@@ -126,6 +126,29 @@ module.exports = function (app, redisClient) {
   /*----------  GET: get all hubs that belong to a specifc user id  ----------*/
   app.get('/api/:user/hubs', userController.getHubs);
 
+  /*----------  GET: get current ride for a specific user  ----------*/
+  app.get('/api/:user/ride', function(request, response) {
+    userController.getRide(request.params.user, function(err, ride_id) {
+      if(err) {
+        response.status(500).send('error finding ride_id');
+      } 
+      else if(!err && !ride_id) {
+        response.status(404).send('no ride for user');
+      } else {
+        rideController.getRideById(ride_id, function(err, ride) {
+          if(err) {
+            response.status(500).send('error getting ride info')
+          } 
+          else if(!err && !ride) {
+            response.status(404).send('ride does not exist');
+          } else {
+            response.status(200).send(ride);
+          }
+        })
+      }
+    })
+  });
+
 /*=====  End of USER SPECIFIC ROUTES  ======*/
 
 
@@ -244,7 +267,7 @@ module.exports = function (app, redisClient) {
           // response.status(500).send(err);
         } 
         if(isRiding.status) {
-          response.status(201).send(isRiding);
+          response.status(200).send(isRiding);
         } else {
           var data = new mockData.uberData;
           data.requests.hub_id = request.body.hub_id;
@@ -264,7 +287,7 @@ module.exports = function (app, redisClient) {
               // response.status(500).send(err);
             } 
             if(isRiding.status) {
-              response.status(201).send(isRiding);
+              response.status(200).send(isRiding);
             } else {
               uber.requests.createRequest({
                 "product_id": request.body.product_id,

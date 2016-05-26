@@ -39,6 +39,18 @@ module.exports = {
 		}).catch(function(error){
 			res.status(500).send(error);
 		})
+	},
+
+	getRideById: function(id, callback) {
+		Ride.forge({id: id}).fetch().then(function(ride) {
+			if(ride) {
+				callback(null, ride);
+			} else {
+				callback(null, null);
+			}
+		}).catch(function(error) {
+			callback(error, null);
+		})
 	}
 
 }

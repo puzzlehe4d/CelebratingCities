@@ -10,6 +10,7 @@ angular.module("RideHUB")
     vm.hubs;
     vm.profile;
     vm.loading = true;
+    vm.ride;
     vm.environment;
     /*=====  End of vm variables  ======*/
     
@@ -41,6 +42,24 @@ angular.module("RideHUB")
 	    	vm.loading = false;
     	});
     }
+
+    vm.navToStart = function () {
+      $location.path('/tab/start');
+    }
+
+    vm.getCurrentRide = function (uuid) {
+      User.getCurrentRide(uuid).then(function(response) {
+        if(response.status === 200) {
+          vm.ride = response.data;
+          Hubs.getHubById(response.data.hub_id).then(function(response) {
+            console.log(response)
+            vm.ride.hub = response.data;
+          })
+        }
+        
+      })
+    }
+
     vm.doRefresh = function() {
     	vm.show($ionicLoading);
       $timeout( function() {
@@ -50,10 +69,13 @@ angular.module("RideHUB")
 	  		    User.getProfile().then(function(response) {
 	  		    	vm.profile = response.data;
 	  		    	vm.getHubs(response.data.uuid);
+              vm.getCurrentRide(response.data.uuid);
 	  		    });
+
       		}
       		else if(vm.environment.TESTING) {
 			    	vm.getHubs(vm.environment.user);
+            vm.getCurrentRide(vm.environment.user);
       		} 
       	}) 
       }, 1000);

@@ -1,10 +1,31 @@
 <ion-view view-title="Account" class="content-main">
   <ion-content class='center'>
 
-   
+    
+    <h2 ng-show='!vm.loading'>Current Ride</h2>
+    <div ng-show='!vm.hubs.length'>
+    <h4>EMPTY</h4>
+    </div>
+    <ion-list ng-show="vm.ride" class="hub-list">
+      <ion-item class="item-avatar item-icon-right">
+        <div class="badge">
+          <span>{{vm.ride.eta}} <p>mins</p></span>
+        </div>
 
-  	<h4 ng-show='!vm.loading'>Your Hubs</h4>
-  	<ion-list class="hub-list">
+        <h2>Driver: {{vm.ride.driver}}</h2>
+        <p>Vehicle: {{vm.ride.vehicle}}</p>
+        <p>Surge Multiplier: <strong>{{vm.ride.surge_multiplier}}</strong></p>
+        <p><strong>Start: </strong> {{vm.ride.hub.address}}</p>
+        <p><strong>End:</strong> {{vm.ride.hub.endPoint}}</p>
+ <!--        <i class="icon ion-chevron-right icon-accessory"></i> -->
+      </ion-item>
+    </ion-list>
+  	<h2 ng-show='!vm.loading'>Your Hubs</h2>
+    <div ng-show='!vm.hubs.length'>
+    <h4>You have not added any hubs!</h4>
+      <input type="submit" class="button button-balanced button-block" value="Search for a hub" ng-click="vm.navToStart()">
+    </div>
+  	<ion-list ng-show="vm.hubs.length" class="hub-list">
       <ion-item class="item-avatar item-icon-right" ng-repeat="hub in vm.hubs" type="item-text-wrap" href="/#/tab/start/results/{{hub.id}}">
         <div class="badge">
           <span>{{hub.duration}} <p>mins</p></span>

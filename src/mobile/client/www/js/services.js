@@ -276,11 +276,24 @@ angular.module('RideHUB.services', [])
     })
   }
 
+  /*----------  get current ride for a specific user: GET to /api/:user/ride  ----------*/
+  var getCurrentRide = function(uuid) {
+    return $http ({
+      method:'GET',
+      url: '/api/' + uuid + '/' + 'ride'
+    }).then(function(result) {
+      return result;
+    }).catch(function(err) {
+      return err;
+    })
+  }
+
   /*----------  export functions  ----------*/
   return {
     addHub: addHub,
     getHubs: getHubs,
-    getProfile: getProfile
+    getProfile: getProfile,
+    getCurrentRide: getCurrentRide
   }
 
 })
@@ -341,7 +354,6 @@ angular.module('RideHUB.services', [])
         hub_id: hub.id
       }
     }).then(function(result) {
-      console.log(result)
       if(result.data.status === 'accepted') {
         return $http({
           method: 'POST',
