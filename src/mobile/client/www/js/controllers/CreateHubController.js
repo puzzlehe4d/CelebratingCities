@@ -55,6 +55,17 @@ angular.module("RideHUB")
               vm.saturday = undefined;
               vm.sunday = undefined;
 
+              var myPopup = $ionicPopup.show({
+                title: 'successfully added hub!',
+                scope: $scope,
+                buttons: [
+                  { text: 'OK',
+                    type: 'button-balanced'
+                  },
+                ]
+              });
+
+              $location.path("/tab/start/results/" + response.data.id);
             }).catch(function(error){
               console.log('error adding hub', error);
             })
@@ -64,14 +75,14 @@ angular.module("RideHUB")
         });
       } else {
         var myPopup = $ionicPopup.show({
-            title: 'Please enter a starting and drop off location',
-            scope: $scope,
-            buttons: [
-              { text: 'OK',
-                type: 'button-balanced'
-              },
-            ]
-          });
+          title: 'Please enter a starting and drop off location',
+          scope: $scope,
+          buttons: [
+            { text: 'OK',
+              type: 'button-balanced'
+            },
+          ]
+        });
       }
       
     }

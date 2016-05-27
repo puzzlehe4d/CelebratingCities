@@ -1,7 +1,15 @@
 var randomstring = require("randomstring");
 var carList = ['Toyota Prius', 'Toyota Camry', 'Nissan Versa', 'Toyota Highlander', 'Honda CR-V', 'Ford Escape', 'Ford Focus'];
 var drivers = ['John Smith', 'Jane Doe', 'John Doe', 'Maddy Johnson', 'Paul Williams', 'Trevor Anderson'];
+var firstNames = ['Brittany', 'Harun', 'Greg', 'Will', 'Vishal', 'Sophia', 'Matthew', 'Jeff']
+var lastNames = ['Patterson', 'Zager', 'Mckee', 'Raithel', 'Hund', 'Arya', 'Anzelone', 'Davood']
 module.exports = {
+  nameData: function () {
+    return {
+      first_name: firstNames[Math.floor(Math.random() * firstNames.length)],
+      last_name: lastNames[Math.floor(Math.random() * lastNames.length)]
+    }
+  },
   uberData: function () {
     return {
       products:
@@ -93,7 +101,75 @@ module.exports = {
         surge_multiplier: Math.floor(Math.random() * 3) + 1,
         status: 'accepted',
         shared: false  
-      } 
+      },
+
+      request_status: {
+           "request_id":"17cb78a7-b672-4d34-a288-a6c6e44d5315",
+           "product_id": "a1111c8c-c720-46c3-8534-2fcdd730040d",
+           "status":"accepted",
+           "location":{
+              "latitude":37.7886532015,
+              "longitude":-122.3961987534,
+              "bearing":135
+           },
+           "pickup":{
+              "latitude":37.7872486012,
+              "longitude":-122.4026315287,
+              "eta":5
+           },
+           "destination":{
+              "latitude":37.7766874,
+              "longitude":-122.394857,
+              "eta":19
+           },
+           "driver": {
+              "phone_number": "(555)555-5555",
+              "rating": 5,
+              "picture_url": "https://s-media-cache-ak0.pinimg.com/75x75/4b/84/13/4b8413a7cb88e873d254603ea8f0abc5.jpg",
+              "name": drivers[Math.floor(Math.random() * drivers.length)]
+           },
+           "vehicle":{
+              "make": "Bugatti",
+              "model": "Veyron",
+              "license_plate": "I<3Uber",
+              "picture_url": "https:\/\/d1w2poirtb3as9.cloudfront.net\/car.jpeg"
+           },
+           "surge_multiplier":1.0,
+           "eta": 5,
+           "shared": true,
+           "riders":[  
+              {
+                 "rider_id":"8KwsIO_YG6Y2jijSMf",
+                 "first_name":"Alec",
+                 "me":"true"
+              },
+              {  
+                 "rider_id":null,
+                 "first_name":"Kevin",
+                 "me":"false"
+              }
+           ],
+          "waypoints":[  
+              {  
+                 "rider_id":null,
+                 "latitude":37.77508531,
+                 "type":"pickup",
+                 "longitude":-122.3976683872
+              },
+              {  
+                 "rider_id":null,
+                 "latitude":37.773133,
+                 "type":"dropoff",
+                 "longitude":-122.415069
+              },
+              {  
+                 "rider_id":"8KwsIO_YG6Y2jijSMf",
+                 "latitude":37.7752423,
+                 "type":"dropoff",
+                 "longitude":-122.4175658
+              }
+           ],
+        }
     }
   }
 }

@@ -20,11 +20,12 @@ module.exports = function (app, redisClient) {
 
   /*----------  POST: post for creating fake user for testing  ----------*/
   app.post('/mock/auth/uber', function(request, response) {
+    var data = new mockData.nameData;
     request.session.isLoggedIn = true;
     var userObject = {
       picture:'mock picture',
-      first_name:'mock first_name',
-      last_name:'mock last_name',
+      first_name: data.first_name,
+      last_name: data.last_name,
       uuid: request.body.uuid,
       rider_id:'mock rider_id',
       access_token:'mock access_token',
@@ -142,7 +143,12 @@ module.exports = function (app, redisClient) {
           else if(!err && !ride) {
             response.status(404).send('ride does not exist');
           } else {
-            response.status(200).send(ride);
+            userController.getUsersForRide(ride.id, function(err, users) {
+              ride.attributes.riders = users;
+              console.log(ride, ';aldsf')
+              response.status(200).send(ride);
+            })
+            
           }
         })
       }
@@ -319,6 +325,7 @@ module.exports = function (app, redisClient) {
     }
   });
 
+  /*----------  POST: adds ride to database  ----------*/
   app.post('/api/uber/rides', function(request, response) {
     if(process.env.TESTING) {
       request.body.uuid = process.env.user;
@@ -343,6 +350,23 @@ module.exports = function (app, redisClient) {
             }
             response.status(201).send(ride);
           })
+        }
+      });
+    }
+  });
+
+  app.get('/api/uber/rides/:request_id', function(request, response) {
+    if(process.env.TESTING) {
+      var data = new mockData.uberData
+      response.status(200).send(data.request_status)
+    } else {
+      uber.requests.getRequestByID(request.params.request_id, function (err, res) {
+        if (err) {
+          console.log('error getting request');
+          response.status(500).send(err);
+        } else {
+          console.log('success getting request');
+          response.status(200).send(res)
         }
       });
     }

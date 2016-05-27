@@ -10,5 +10,9 @@
         vm.rides = response.data;
       })
 
+      vm.joinRide = function (ride_id) {
+        console.log(ride_id)
+      }
+
     });
 })();

@@ -277,7 +277,7 @@ angular.module('RideHUB.services', [])
   }
 
   /*----------  get current ride for a specific user: GET to /api/:user/ride  ----------*/
-  var getCurrentRide = function(uuid) {
+  var getCurrentRideByUserId = function(uuid) {
     return $http ({
       method:'GET',
       url: '/api/' + uuid + '/' + 'ride'
@@ -288,12 +288,19 @@ angular.module('RideHUB.services', [])
     })
   }
 
+  var joinRide = function (ride_id) {
+    return $http ({
+      method: 'POST',
+      url:'/api/'
+    })
+  }
+
   /*----------  export functions  ----------*/
   return {
     addHub: addHub,
     getHubs: getHubs,
     getProfile: getProfile,
-    getCurrentRide: getCurrentRide
+    getCurrentRideByUserId: getCurrentRideByUserId
   }
 
 })
@@ -380,11 +387,22 @@ angular.module('RideHUB.services', [])
     });
   };
 
+  var getRideByRequestId = function(request_id) {
+    return $http({
+      method: 'GET',
+      url: '/api/uber/rides/' + request_id
+    }).then(function(result) {
+      return result;
+    }).catch(function(error) {
+      return error;
+    })
+  }
 
   /*----------  export functions  ----------*/
   return {
     requestRide: requestRide,
     getProductInfo: getProductInfo,
+    getRideByRequestId: getRideByRequestId,
     getEstimate: getEstimate,
     getProducts: getProducts
   }

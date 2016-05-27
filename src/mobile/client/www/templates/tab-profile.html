@@ -3,13 +3,13 @@
 
     
     <h2 ng-show='!vm.loading'>Current Ride</h2>
-    <div ng-show='!vm.hubs.length'>
-    <h4>EMPTY</h4>
+    <div ng-show='!vm.ride'>
+      <h5>You are not currently riding</h5>
     </div>
     <ion-list ng-show="vm.ride" class="hub-list">
-      <ion-item class="item-avatar item-icon-right">
+      <ion-item class="item-avatar item-icon-right" href="/#/tab/current/{{vm.ride.request_id}}">
         <div class="badge">
-          <span>{{vm.ride.eta}} <p>mins</p></span>
+          <span>{{vm.ride.eta}} <p>min</p></span>
         </div>
 
         <h2>Driver: {{vm.ride.driver}}</h2>

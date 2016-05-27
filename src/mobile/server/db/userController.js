@@ -104,6 +104,16 @@ module.exports = {
 			console.log('error finding user')
 			callback(error, null);
 		})
+	},
+
+	getUsersForRide: function(ride_id, callback) {
+		User.query().where('ride_id', '=', ride_id).then(function(collection) {
+			console.log('found collection of users for ride')
+			callback(null, collection);
+		}).catch(function(error) {
+			console.log('error finding users for ride', error)
+			callback(error, null);
+		})
 	}
 
 

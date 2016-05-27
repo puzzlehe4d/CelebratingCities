@@ -1,0 +1,37 @@
+<ion-view view-title="Account" class="content-main">
+  <ion-content class='center'>
+
+    
+    <h2 ng-show='!vm.loading'>Current Ride</h2>
+    <div ng-show='!vm.ride'>
+      <h5>You are not currently riding</h5>
+    </div>
+    <ion-list ng-show="vm.ride" class="hub-list">
+      <ion-item class="item-avatar item-icon-right">
+        <div class="badge">
+          <span>{{vm.ride.eta}} <p>min</p></span>
+        </div>
+
+        <h2>Driver: {{vm.ride.driver.name || vm.ride.driver}}</h2>
+        <img src="{{vm.ride.driver.picture_url}}"><br>
+        <p>Phone: {{vm.ride.driver.phone_number}}</p>
+        <p>Rating: {{vm.ride.driver.rating || 5}} / 5 </p>
+        <p>Surge Multiplier: <strong>{{vm.ride.surge_multiplier}}</strong></p>
+        <p><strong>Start: </strong> {{vm.ride.hub.address}}</p>
+        <p><strong>End:</strong> {{vm.ride.hub.endPoint}}</p>
+ <!--        <i class="icon ion-chevron-right icon-accessory"></i> -->
+      </ion-item>
+    </ion-list>
+
+    <h4>Riders: </h4>
+    <ion-list ng-show="vm.ride" class="hub-list">
+      <ion-item class="item-avatar item-icon-right" ng-repeat="rider in vm.ride.riders">
+       <!--  <div class="badge">
+          <img>{{vm.ride.eta}} <p>min</p></span>
+        </div> -->
+        {{rider.first_name}} {{rider.last_name}}
+ <!--        <i class="icon ion-chevron-right icon-accessory"></i> -->
+      </ion-item>
+    </ion-list>
+  </ion-content>
+</ion-view>
