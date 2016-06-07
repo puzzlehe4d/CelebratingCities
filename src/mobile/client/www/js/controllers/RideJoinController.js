@@ -12,6 +12,9 @@
 
       vm.joinRide = function (ride_id) {
         console.log(ride_id)
+        Ride.joinRide(ride_id).then(function(response) {
+          $location.path('/tab/current/' + response.data.request_id)
+        });
       }
 
     });

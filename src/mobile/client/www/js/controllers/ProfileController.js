@@ -47,13 +47,10 @@ angular.module("RideHUB")
       $location.path('/tab/start');
     }
 
-    vm.navToCurrentRide = function () {
-      $location.path('/tab/current');
-    }
-
     vm.getCurrentRide = function (uuid) {
       User.getCurrentRideByUserId(uuid).then(function(response) {
         if(response.status === 200) {
+          console.log(response.data)
           vm.ride = response.data;
           Hubs.getHubById(response.data.hub_id).then(function(response) {
             console.log(response)
@@ -78,8 +75,8 @@ angular.module("RideHUB")
 
       		}
       		else if(vm.environment.TESTING) {
-			    	vm.getHubs(vm.environment.user);
-            vm.getCurrentRide(vm.environment.user);
+			    	vm.getHubs(vm.environment.uuid);
+            vm.getCurrentRide(vm.environment.uuid);
       		} 
       	}) 
       }, 1000);

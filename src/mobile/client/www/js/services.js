@@ -246,6 +246,7 @@ angular.module('RideHUB.services', [])
         id: id
       }
     }).then(function(result){
+      console.log(result)
       return result;
     }).catch(function(err){
       return err;
@@ -398,9 +399,24 @@ angular.module('RideHUB.services', [])
     })
   }
 
+  var joinRide = function(ride_id) {
+    return $http({
+      method: 'POST',
+      url: '/api/uber/rides/join',
+      data: {
+        ride_id: ride_id
+      }
+    }).then(function(result) {
+      return result;
+    }).catch(function(error) {
+      return error;
+    })
+  }
+
   /*----------  export functions  ----------*/
   return {
     requestRide: requestRide,
+    joinRide: joinRide,
     getProductInfo: getProductInfo,
     getRideByRequestId: getRideByRequestId,
     getEstimate: getEstimate,

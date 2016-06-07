@@ -51,6 +51,30 @@ module.exports = {
 		}).catch(function(error) {
 			callback(error, null);
 		})
+	},
+
+	getRideByRequestId: function(id, callback) {
+		Ride.forge({request_id: id}).fetch().then(function(ride) {
+			if(ride) {
+				callback(null, ride);
+			} else {
+				callback(null, null);
+			}
+		}).catch(function(error) {
+			callback(error, null);
+		})
+	},
+
+	joinRide: function(req, callback) {
+		User.forge({uuid: req.body.uuid}).fetch().then(function(user) {
+			if (user) {
+				user.set({ride_id: req.body.ride_id}).save().then(function(user) {
+					callback(null, user);
+				})
+			} else {
+				callback('user not found', null);
+			}
+		})
 	}
 
 }

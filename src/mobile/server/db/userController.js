@@ -117,8 +117,4 @@ module.exports = {
 	}
 
 
-    
-
-
-
 }

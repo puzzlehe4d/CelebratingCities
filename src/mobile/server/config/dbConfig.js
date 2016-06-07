@@ -33,6 +33,7 @@ var createUsersTable = function () {
     user.string('first_name');
     user.string('last_name');
     user.string('uuid');
+    user.string('filled');
     user.string('rider_id');
     user.string('access_token');
     user.string('refresh_token');

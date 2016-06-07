@@ -130,7 +130,7 @@ module.exports = {
 			console.log('sucessfully found hub');
 			Ride.query().where('hub_id', '=', hub.attributes.id).andWhere('status', '=', 'accepted').then(function(collection) {
 				console.log(collection.length)
-				hub.attributes.rider_count = collection.length;
+				hub.attributes.ride_count = collection.length;
 				HubsUsers.query().where('hub_id', '=', hub.attributes.id).then(function(collection){
 					hub.attributes.user_count = collection.length;
 					callback(null, hub);

@@ -21,6 +21,7 @@ module.exports = function (app, redisClient) {
   /*----------  POST: post for creating fake user for testing  ----------*/
   app.post('/mock/auth/uber', function(request, response) {
     var data = new mockData.nameData;
+    console.log('mock response', request.body )
     request.session.isLoggedIn = true;
     var userObject = {
       picture:'mock picture',
@@ -31,8 +32,7 @@ module.exports = function (app, redisClient) {
       access_token:'mock access_token',
       refresh_token:'mock access_token'
     }
-    process.env.user = request.body.uuid;
-    console.log(process.env)
+    process.env.uuid = request.body.uuid;
     userController.addUser(userObject, function(err, res) {
       if(err) {
         console.log(err)
@@ -75,7 +75,7 @@ module.exports = function (app, redisClient) {
   app.get('/logout', function (request, response) {
     request.session.isLoggedIn = false;
     console.log('logging out...')
-    delete process.env.user
+    delete process.env.uuid;
     response.redirect('/#/login');
   });
 
@@ -105,7 +105,7 @@ module.exports = function (app, redisClient) {
     } 
 
     else if(process.env.TESTING) {
-      userController.addHub(request.body, process.env.user, function(err, res) {
+      userController.addHub(request.body, process.env.uuid, function(err, res) {
         if(err) {
           console.log(err)
         } 
@@ -266,8 +266,7 @@ module.exports = function (app, redisClient) {
   
   app.post('/api/uber/request', function(request, response) {
     if(process.env.TESTING) {
-      console.log(process.env.user)
-      userController.checkIfUserIsRiding(process.env.user, function(err, isRiding) {
+      userController.checkIfUserIsRiding(process.env.uuid, function(err, isRiding) {
         if(err) {
           console.log(err)
           // response.status(500).send(err);
@@ -290,7 +289,7 @@ module.exports = function (app, redisClient) {
           userController.checkIfUserIsRiding(profile.uuid, function(err, isRiding) {
             if(err) {
               console.log(err)
-              // response.status(500).send(err);
+              response.status(500).send(err);
             } 
             if(isRiding.status) {
               response.status(200).send(isRiding);
@@ -308,11 +307,12 @@ module.exports = function (app, redisClient) {
                   console.log('logging out...')
                   response.redirect('/#/login');
                 } else {
-                  res.driver = 'John Smith';
+                  var data = new mockData.uberData;
+                  res.driver = data.requests.driver;
                   res.hub_id = request.body.hub_id;
-                  res.eta = 3;
+                  res.eta = data.requests.eta;
                   res.location = [39.54, -76.32];
-                  res.vehicle = 'Toyota Prius';
+                  res.vehicle = data.requests.vehicle;
                   res.status = 'accepted';
                   // res.surge_multiplier = 2;
                   response.status(201).send(res);                
@@ -328,7 +328,7 @@ module.exports = function (app, redisClient) {
   /*----------  POST: adds ride to database  ----------*/
   app.post('/api/uber/rides', function(request, response) {
     if(process.env.TESTING) {
-      request.body.uuid = process.env.user;
+      request.body.uuid = process.env.uuid;
       rideController.createRide(request, response, function(err, ride) {
         if(err) {
           console.log('error creating ride', err);
@@ -355,21 +355,63 @@ module.exports = function (app, redisClient) {
     }
   });
 
-  app.get('/api/uber/rides/:request_id', function(request, response) {
+  app.post('/api/uber/rides/join', function(request, response) {
+    console.log(request.body)
     if(process.env.TESTING) {
-      var data = new mockData.uberData
-      response.status(200).send(data.request_status)
+      request.body.uuid = process.env.uuid;
+      rideController.joinRide(request, function(err, ride) {
+        if(err) {
+          console.log('error creating ride', err);
+          response.status(500).send(err);
+        } else {
+          response.status(201).send(ride);
+        }
+        
+      })
     } else {
-      uber.requests.getRequestByID(request.params.request_id, function (err, res) {
+      uber.user.getProfile(function(err, profile) {
+        if(err) {
+          console.log('error getting profile', err);
+          response.status(500).send(err);
+        } else {
+          request.body.uuid = profile.uuid;
+          rideController.joinRide(request, response, function(err, ride) {
+            if(err) {
+              console.log('error creating ride', err);
+              response.status(500).send(err);
+            }
+            response.status(201).send(ride);
+          })
+        }
+      });
+    }
+  })
+
+  app.get('/api/uber/rides/:request_id', function(request, response) {
+    if(process.env.TESTING || process.env.sandbox) {
+      rideController.getRideByRequestId(request.params.request_id, function(err, res) {
         if (err) {
           console.log('error getting request');
           response.status(500).send(err);
         } else {
           console.log('success getting request');
+          if(process.env.sandbox) {
+            console.log(res)
+          }
           response.status(200).send(res)
         }
-      });
-    }
+      })
+    } else {
+        uber.requests.getRequestByID(request.params.request_id, function (err, res) {
+          if (err) {
+            console.log('error getting request');
+            response.status(500).send(err);
+          } else {
+            console.log('success getting request');
+            response.status(200).send(res)
+          }
+        });
+      }
   })
 /*=====  End of UBER RIDE REQUEST ROUTES   ======*/
 
@@ -418,7 +460,7 @@ module.exports = function (app, redisClient) {
 =================================================*/
 /*----------  GET: route that returns process env  ----------*/
   app.get('/api/testing', function (request, response) {
-    response.status(200).send(process.env)
+    response.status(200).send(process.env);
   })
 
 /*=====  End of TESTING ENVIROMENT ROUTES  ======*/
