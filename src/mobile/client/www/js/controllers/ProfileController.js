@@ -12,6 +12,9 @@ angular.module("RideHUB")
     vm.loading = true;
     vm.ride;
     vm.environment;
+    $scope.shouldShowDelete = false;
+    $scope.shouldShowReorder = false;
+    $scope.listCanSwipe = true
     /*=====  End of vm variables  ======*/
     
     /*====================================
@@ -43,8 +46,19 @@ angular.module("RideHUB")
     	});
     }
 
+    vm.leaveRide = function () {
+      if(vm.ride) {
+        User.leaveCurrentRide().then(function(response) {
+          console.log(response);
+        })
+      }
+    }
+
     vm.navToStart = function () {
       $location.path('/tab/start');
+    }
+    vm.navToRide = function () {
+      $location.path('/tab/profile/current/' + vm.ride.request_id);
     }
 
     vm.getCurrentRide = function (uuid) {

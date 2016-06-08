@@ -69,7 +69,6 @@ angular.module('RideHUB.services', [])
       method:'GET',
       url: '/api/rides/' + hub_id
     }).then(function(result){
-      console.log(result)
       return result;
     }).catch(function(error) {
       return error;
@@ -281,7 +280,7 @@ angular.module('RideHUB.services', [])
   var getCurrentRideByUserId = function(uuid) {
     return $http ({
       method:'GET',
-      url: '/api/' + uuid + '/' + 'ride'
+      url: '/api/user/ride'
     }).then(function(result) {
       return result;
     }).catch(function(err) {
@@ -289,16 +288,32 @@ angular.module('RideHUB.services', [])
     })
   }
 
-  var joinRide = function (ride_id) {
-    return $http ({
+  var joinRide = function(ride_id) {
+    return $http({
       method: 'POST',
-      url:'/api/'
+      url: '/api/uber/rides/join',
+      data: {
+        ride_id: ride_id,
+        uuid: uuid
+      }
+    }).then(function(result) {
+      return result;
+    }).catch(function(error) {
+      return error;
     })
   }
+
+  // var leaveCurrentRide = function () {
+  //   return $http ({
+  //     method: 'POST',
+  //     url:
+  //   })
+  // }
 
   /*----------  export functions  ----------*/
   return {
     addHub: addHub,
+    // leaveCurrentRide: leaveCurrentRide,
     getHubs: getHubs,
     getProfile: getProfile,
     getCurrentRideByUserId: getCurrentRideByUserId

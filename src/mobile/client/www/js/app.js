@@ -135,7 +135,7 @@ angular.module('RideHUB', ['ionic', 'RideHUB.services', 'ngMap'])
   })
 
   .state('tab.current', {
-    url: '/current/:request_id',
+    url: '/profile/current/:request_id',
     views: {
       'tab-profile': {
         templateUrl: 'templates/current-ride.html',

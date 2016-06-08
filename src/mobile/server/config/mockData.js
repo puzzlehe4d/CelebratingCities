@@ -1,8 +1,8 @@
 var randomstring = require("randomstring");
 var carList = ['Toyota Prius', 'Toyota Camry', 'Nissan Versa', 'Toyota Highlander', 'Honda CR-V', 'Ford Escape', 'Ford Focus'];
-var drivers = ['John Smith', 'Jane Doe', 'John Doe', 'Maddy Johnson', 'Paul Williams', 'Trevor Anderson'];
-var firstNames = ['Brittany', 'Harun', 'Greg', 'Will', 'Vishal', 'Sophia', 'Matthew', 'Jeff']
-var lastNames = ['Patterson', 'Zager', 'Mckee', 'Raithel', 'Hund', 'Arya', 'Anzelone', 'Davood']
+var drivers = ['John Smith', 'Jane Doe', 'John Doe', 'Maddy Johnson', 'Paul Williams', 'Trevor Anderson', 'Harun Davood'];
+var firstNames = ['Sam', 'Spencer', 'Dylan', 'Sydney', 'Taylor', 'Jordan', 'Dylan', 'Sydney']
+var lastNames = ['Smith', 'Daniels', 'Bell', 'Curtis', 'Madison', 'Johnson', 'Chapman', 'Williams']
 module.exports = {
   nameData: function () {
     return {

@@ -33,12 +33,13 @@ module.exports = function (app, redisClient) {
       refresh_token:'mock access_token'
     }
     process.env.uuid = request.body.uuid;
+    request.session.uuid = request.body.uuid;
     userController.addUser(userObject, function(err, res) {
       if(err) {
         console.log(err)
       }
     });
-    response.send({redirect: '/#/tab/start'});
+    response.send({redirect: '/#/tab/start', userObject: userObject});
   })
   /*----------  Uber OAUTH 2.0 callback route  ----------*/
   app.get('/auth/uber/callback', function(request, response) {
@@ -128,8 +129,9 @@ module.exports = function (app, redisClient) {
   app.get('/api/:user/hubs', userController.getHubs);
 
   /*----------  GET: get current ride for a specific user  ----------*/
-  app.get('/api/:user/ride', function(request, response) {
-    userController.getRide(request.params.user, function(err, ride_id) {
+  app.get('/api/user/ride', function(request, response) {
+    var uuid = request.session.uuid || process.env.uuid;
+    userController.getRide(uuid, function(err, ride_id) {
       if(err) {
         response.status(500).send('error finding ride_id');
       } 
@@ -328,6 +330,7 @@ module.exports = function (app, redisClient) {
   /*----------  POST: adds ride to database  ----------*/
   app.post('/api/uber/rides', function(request, response) {
     if(process.env.TESTING) {
+      console.log(process.env.uuid, 'uuid')
       request.body.uuid = process.env.uuid;
       rideController.createRide(request, response, function(err, ride) {
         if(err) {

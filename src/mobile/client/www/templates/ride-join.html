@@ -12,7 +12,7 @@
   <ion-content class='center'>
     <h4>Rides in progress...</h4>
     <ion-list class='hub-list'>
-      <ion-item class="item-remove-animate item-avatar item-icon-right" ng-repeat="ride in vm.rides" type="item-text-wrap" ng-click="vm.joinRide(ride.id)">
+      <ion-item class="item-remove-animate item-avatar item-icon-right" ng-repeat="ride in vm.rides" type="item-text-wrap" ng-click="vm.joinRide(ride.id, ride.request_id)">
         <div class="badge">
           <span>{{ride.eta}} <p>mins</p></span>
         </div>

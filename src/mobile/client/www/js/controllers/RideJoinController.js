@@ -10,10 +10,10 @@
         vm.rides = response.data;
       })
 
-      vm.joinRide = function (ride_id) {
+      vm.joinRide = function (ride_id, request_id) {
         console.log(ride_id)
         Ride.joinRide(ride_id).then(function(response) {
-          $location.path('/tab/current/' + response.data.request_id)
+          $location.path('/tab/profile/current/' + request_id)
         });
       }
 

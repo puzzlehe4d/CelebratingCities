@@ -25,7 +25,20 @@
  			            e.preventDefault();
  			          } else {
  			            Authorization.authorizeFakeUser($scope.data.id).then(function(response) {
- 			            	$location.path(response.data.redirect);
+                            var myPopup = $ionicPopup.show({
+                              title: 'You are logged in as ' + response.data.userObject.first_name + ' ' + response.data.userObject.last_name,
+                              scope: $scope,
+                              buttons: [
+                                {
+                                  text: '<b>OK</b>',
+                                  type: 'button-balanced',
+                                  onTap: function(e) {
+                                    $location.path(response.data.redirect);
+                                  }
+                                }
+                              ]
+                            });
+ 			            	
  			            })
  			          }
  			        }

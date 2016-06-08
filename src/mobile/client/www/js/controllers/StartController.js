@@ -42,7 +42,6 @@
 
     vm.getHubsByGeoCode = function(position) {
       Hubs.getHubsByGeoCode(position).then(function(response) {
-        console.log('found hubs:', response)
         response.data.forEach(function(element) {
           var point = {lat: element.lat, lng: element.lon, name: element.name, address: element.address};
           vm.positions.push(point); 
