@@ -1,8 +1,8 @@
 <ion-view view-title="Account" class="content-main">
   <ion-content class='center'>
 
-    
-    <h2 ng-show='!vm.loading'>Current Ride</h2>
+    <h2 ng-show='!vm.loading'>Welcome {{vm.profile.first_name}} {{vm.profile.last_name}},</h2>
+    <h4 ng-show='!vm.loading'>Current Ride</h4> <span ng-show="vm.isOwner"> (Owner)</span>
     <div ng-show='!vm.ride'>
       <h5>You are not currently riding</h5>
     </div>
@@ -17,15 +17,13 @@
         <p>Surge Multiplier: <strong>{{vm.ride.surge_multiplier}}</strong></p>
         <p><strong>Start: </strong> {{vm.ride.hub.address}}</p>
         <p><strong>End:</strong> {{vm.ride.hub.endPoint}}</p>
-        <ion-option-button class="button-critical"
-                               ng-click="vm.leaveRide()">
-              Cancel
-            </ion-option-button>
+        <ion-option-button ng-show='!vm.isOwner' class="button-positive" ng-click="vm.leaveRide()"> Leave Ride </ion-option-button>
+        <ion-option-button ng-show='vm.isOwner' class="button-assertive" ng-click="vm.cancelRide()"> Cancel Ride </ion-option-button>
       </ion-item>
     </ion-list>
-  	<h2 ng-show='!vm.loading'>Your Hubs</h2>
+  	<h4 ng-show='!vm.loading'>Your Hubs</h4>
     <div ng-show='!vm.hubs.length'>
-    <h4>You have not added any hubs!</h4>
+    <h5>You have not added any hubs!</h5>
       <input type="submit" class="button button-balanced button-block" value="Search for a hub" ng-click="vm.navToStart()">
     </div>
   	<ion-list ng-show="vm.hubs.length" class="hub-list">

@@ -8,7 +8,9 @@ var Ride = db.Model.extend({
   users: function() {
     return this.hasMany(User);
   },
-
+  owner: function() {
+    return this.belongsTo(User);
+  },
   hubs: function () {
   	return this.belongsTo(Hub);
   }

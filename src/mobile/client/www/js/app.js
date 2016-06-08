@@ -166,7 +166,7 @@ angular.module('RideHUB', ['ionic', 'RideHUB.services', 'ngMap'])
   // });
 
   // if none of the above states are matched, use this as the fallback
-  $urlRouterProvider.otherwise('/tab/start');
+  $urlRouterProvider.otherwise('/tab/profile');
 
   // (function () {
   //     if (typeof (Connection) !== "undefined") {

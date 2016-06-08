@@ -4,7 +4,9 @@ var Ride = require('./rideModel.js');
 var HubsUsers = require('./hubsUsersModel.js');
 module.exports = {
 	createRide: function(req, res, callback) {
+		var uuid = req.session.uuid || process.env.uuid;
 		var ride = {
+			owner: uuid,
 			request_id: req.body.request_id,
 			status: req.body.status,
 			driver: req.body.driver,
@@ -62,18 +64,6 @@ module.exports = {
 			}
 		}).catch(function(error) {
 			callback(error, null);
-		})
-	},
-
-	joinRide: function(req, callback) {
-		User.forge({uuid: req.body.uuid}).fetch().then(function(user) {
-			if (user) {
-				user.set({ride_id: req.body.ride_id}).save().then(function(user) {
-					callback(null, user);
-				})
-			} else {
-				callback('user not found', null);
-			}
 		})
 	}
 

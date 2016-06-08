@@ -69,6 +69,7 @@ var createRidesTable = function () {
     ride.increments('id').primary();
     ride.string('request_id');
     ride.string('product_id');
+    ride.string('owner');
     ride.string('surge_multiplier')
     ride.string('status');
     ride.string('eta');

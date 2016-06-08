@@ -37,9 +37,11 @@ module.exports = function (app, redisClient) {
     userController.addUser(userObject, function(err, res) {
       if(err) {
         console.log(err)
+      } else {
+        response.send({redirect: '/#/tab/start', userObject: res.attributes});
       }
     });
-    response.send({redirect: '/#/tab/start', userObject: userObject});
+    
   })
   /*----------  Uber OAUTH 2.0 callback route  ----------*/
   app.get('/auth/uber/callback', function(request, response) {
@@ -117,12 +119,25 @@ module.exports = function (app, redisClient) {
 
   /*----------  GET: get user profile  ----------*/
   app.get('/api/user', function(request, response) {
-    uber.user.getProfile(function(err, res) {
-      if(err) {
-        console.log(err)
-      }
-      response.status(200).send(res)
-    });
+    var uuid = request.session.uuid || process.env.uuid;
+    if (process.env.TESTING) {
+      userController.getUser(uuid, function(err, user) {
+        if(err) {
+          console.log(err);
+          response.status(500).send(err);
+        } else {
+          response.status(200).send(user)
+        }
+      })
+    } else {
+      uber.user.getProfile(function(err, res) {
+        if (err) {
+          response.status(500).send(err);
+          console.log(err);
+        }
+        response.status(200).send(res);
+      });
+    }
   });
 
   /*----------  GET: get all hubs that belong to a specifc user id  ----------*/
@@ -153,6 +168,17 @@ module.exports = function (app, redisClient) {
             
           }
         })
+      }
+    })
+  });
+
+  app.post('/api/user/ride/leave', function(request, response) {
+    var uuid = request.session.uuid || process.env.uuid;
+    userController.leaveRide(uuid, function (err, status) {
+      if(err) {
+        response.status(500).send(err);
+      } else {
+        response.status(201).send(status);
       }
     })
   });
@@ -330,7 +356,6 @@ module.exports = function (app, redisClient) {
   /*----------  POST: adds ride to database  ----------*/
   app.post('/api/uber/rides', function(request, response) {
     if(process.env.TESTING) {
-      console.log(process.env.uuid, 'uuid')
       request.body.uuid = process.env.uuid;
       rideController.createRide(request, response, function(err, ride) {
         if(err) {
@@ -362,7 +387,7 @@ module.exports = function (app, redisClient) {
     console.log(request.body)
     if(process.env.TESTING) {
       request.body.uuid = process.env.uuid;
-      rideController.joinRide(request, function(err, ride) {
+      userController.joinRide(request, function(err, ride) {
         if(err) {
           console.log('error creating ride', err);
           response.status(500).send(err);
@@ -378,7 +403,7 @@ module.exports = function (app, redisClient) {
           response.status(500).send(err);
         } else {
           request.body.uuid = profile.uuid;
-          rideController.joinRide(request, response, function(err, ride) {
+          userController.joinRide(request, response, function(err, ride) {
             if(err) {
               console.log('error creating ride', err);
               response.status(500).send(err);
@@ -388,7 +413,9 @@ module.exports = function (app, redisClient) {
         }
       });
     }
-  })
+  });
+
+
 
   app.get('/api/uber/rides/:request_id', function(request, response) {
     if(process.env.TESTING || process.env.sandbox) {

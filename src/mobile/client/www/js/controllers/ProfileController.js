@@ -1,6 +1,6 @@
 (function() {
 angular.module("RideHUB")
-  .controller('ProfileController', function ($scope, Hubs, User, $ionicLoading, Testing, $state, $scope, $timeout, $ionicTabsDelegate, $location, Authorization) {
+  .controller('ProfileController', function ($scope, Hubs, Ride, User, $ionicLoading, Testing, $state, $scope, $timeout, $ionicTabsDelegate, $location, Authorization) {
   	console.log('initializing Profile Controller')
     var vm = this;
 
@@ -11,6 +11,7 @@ angular.module("RideHUB")
     vm.profile;
     vm.loading = true;
     vm.ride;
+    vm.isOwner;
     vm.environment;
     $scope.shouldShowDelete = false;
     $scope.shouldShowReorder = false;
@@ -48,15 +49,30 @@ angular.module("RideHUB")
 
     vm.leaveRide = function () {
       if(vm.ride) {
-        User.leaveCurrentRide().then(function(response) {
-          console.log(response);
+        Ride.leaveCurrentRide(vm.ride.id).then(function(response) {
+          if(response.status === 201) {
+            vm.ride = undefined;
+            vm.doRefresh();
+          }
         })
+      }
+    }
+
+    vm.cancelRide = function () {
+      if(vm.ride && vm.profile) {
+        console.log('TODO: cancel ride and remove all user from ride')
+        // Ride.cancelCurrentRide(vm.ride.id, vm.profile.id).then(function(response) {
+        //   if(response.status === 201) {
+        //     vm.leaveRide();
+        //   }
+        // })
       }
     }
 
     vm.navToStart = function () {
       $location.path('/tab/start');
     }
+
     vm.navToRide = function () {
       $location.path('/tab/profile/current/' + vm.ride.request_id);
     }
@@ -64,14 +80,14 @@ angular.module("RideHUB")
     vm.getCurrentRide = function (uuid) {
       User.getCurrentRideByUserId(uuid).then(function(response) {
         if(response.status === 200) {
-          console.log(response.data)
           vm.ride = response.data;
+          if(vm.ride.owner === vm.profile.uuid) {
+            vm.isOwner = true;
+          }
           Hubs.getHubById(response.data.hub_id).then(function(response) {
-            console.log(response)
             vm.ride.hub = response.data;
           })
         }
-        
       })
     }
 
@@ -80,18 +96,11 @@ angular.module("RideHUB")
       $timeout( function() {
       	Testing.getProcessEnvironment().then(function(response){
       		vm.environment = response.data;
-      		if(!vm.environment.TESTING) {
-	  		    User.getProfile().then(function(response) {
-	  		    	vm.profile = response.data;
-	  		    	vm.getHubs(response.data.uuid);
-              vm.getCurrentRide(response.data.uuid);
-	  		    });
-
-      		}
-      		else if(vm.environment.TESTING) {
-			    	vm.getHubs(vm.environment.uuid);
-            vm.getCurrentRide(vm.environment.uuid);
-      		} 
+  		    User.getProfile().then(function(response) {
+  		    	vm.profile = response.data;
+  		    	vm.getHubs(response.data.uuid);
+            vm.getCurrentRide(response.data.uuid);
+  		    });
       	}) 
       }, 1000);
     };

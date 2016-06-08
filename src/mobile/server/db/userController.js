@@ -27,9 +27,21 @@ module.exports = {
 			  });
 			} else {
 				console.log('user already exists')
-				callback(null, null);
+				callback(null, user);
 			}
 		})
+	},
+
+	getUser: function(uuid, callback) {
+		User.forge({uuid: uuid}).fetch().then(function(user) {
+			if(user) {
+				callback(null, user);
+			} else {
+				callback('user not found', null);
+			}
+		}).catch(function(err) {
+			callback(err, null);
+		});
 	},
 
 	addHub: function(hub, uuid, callback) {
@@ -113,6 +125,30 @@ module.exports = {
 		}).catch(function(error) {
 			console.log('error finding users for ride', error)
 			callback(error, null);
+		})
+	},
+
+	joinRide: function(req, callback) {
+		User.forge({uuid: req.body.uuid}).fetch().then(function(user) {
+			if (user) {
+				user.set({ride_id: req.body.ride_id}).save().then(function(user) {
+					callback(null, user);
+				})
+			} else {
+				callback('user not found', null);
+			}
+		})
+	},
+
+	leaveRide: function(uuid, callback) {
+		User.forge({uuid: uuid}).fetch().then(function(user) {
+			if (user) {
+				user.set({ride_id: null}).save().then(function(user) {
+					callback(null, 'sucessfully left ride');
+				})
+			} else {
+				callback('user not found', null);
+			}
 		})
 	}
 

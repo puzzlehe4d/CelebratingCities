@@ -428,10 +428,25 @@ angular.module('RideHUB.services', [])
     })
   }
 
+  var leaveCurrentRide = function(ride_id) {
+    return $http({
+      method: 'POST',
+      url: '/api/user/ride/leave',
+      data: {
+        ride_id: ride_id
+      }
+    }).then(function(result) {
+      return result;
+    }).catch(function(error) {
+      return error;
+    })
+  }
+
   /*----------  export functions  ----------*/
   return {
     requestRide: requestRide,
     joinRide: joinRide,
+    leaveCurrentRide: leaveCurrentRide,
     getProductInfo: getProductInfo,
     getRideByRequestId: getRideByRequestId,
     getEstimate: getEstimate,
